@@ -605,6 +605,39 @@ h3{font-size:var(--fs-h3)}
 .reviews__bar .track{flex:1;height:8px;background:var(--bg);border-radius:var(--radius-pill);overflow:hidden}
 .reviews__bar .track i{display:block;height:100%;background:var(--star)}
 .review{border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.reviews__score b{display:block;font-size:44px;font-weight:900;line-height:1;color:var(--brand)}
+.reviews__score .rating__stars{display:flex;gap:2px;justify-content:center;margin-block:6px 4px;color:var(--star)}
+.reviews__based{font-size:12.5px;color:var(--muted)}
+.reviews__bar span:first-child{display:flex;align-items:center;gap:3px;width:34px;color:var(--muted)}
+.reviews__bar span:first-child .icon{color:var(--star)}
+.reviews__bar-count{width:28px;text-align:end;color:var(--muted)}
+.reviews__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.reviews__more{display:flex;justify-content:center;margin-block-start:20px}
+.review__who{flex:1;min-width:0}
+.review__who b{display:block;font-size:14px}
+.review__meta{font-size:11.5px;color:var(--muted)}
+.review .rating__stars{display:flex;gap:2px;color:var(--star);margin-block-end:8px}
+.review__title{font-size:14.5px;font-weight:800;margin-block-end:5px}
+.review__body{font-size:13.8px;line-height:1.65;color:var(--muted)}
+.review__photos{display:flex;gap:7px;flex-wrap:wrap;margin-block-start:11px}
+.review__photos img{width:72px;height:72px;object-fit:cover;border-radius:var(--radius-sm)}
+
+.review-form{padding:24px}
+.review-form h2{font-size:20px;margin-block-end:4px}
+.review-form__product{font-size:13px;color:var(--muted);margin-block-end:16px}
+.review-form form{display:flex;flex-direction:column;gap:14px}
+.review-form fieldset{border:0;padding:0}
+.review-form legend{font-size:12.5px;font-weight:700;margin-block-end:6px}
+
+/* Stars are laid out in reverse so `~` can reach the ones before the hovered
+   star; `row-reverse` puts them back in visual order. */
+.star-input{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.star-input label{color:var(--line);cursor:pointer;transition:color var(--dur)}
+.star-input label:hover,
+.star-input label:hover ~ label,
+.star-input input:checked ~ label{color:var(--star)}
+.star-input input:focus-visible + label{outline:2px solid var(--brand);outline-offset:2px;border-radius:3px}
+
 .review__head{display:flex;align-items:center;gap:10px;margin-block-end:9px}
 .avatar{width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex-shrink:0}
 .review__verified{font-size:11px;font-weight:700;color:var(--cod);display:inline-flex;align-items:center;gap:3px}
@@ -823,6 +856,8 @@ h3{font-size:var(--fs-h3)}
   .pdp__thumbs{flex-direction:row;order:2}
   .pdp__thumb{width:60px;flex-shrink:0}
   .reviews__summary{grid-template-columns:1fr}
+  .reviews__list{grid-template-columns:1fr}
+  .review-form{padding:18px}
   /* popup becomes a bottom sheet */
   .modal{padding:0;align-items:flex-end}
   .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0;animation:modal-slide .25s ease-out}

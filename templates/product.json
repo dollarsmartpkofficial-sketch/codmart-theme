@@ -50,6 +50,15 @@
         "sticky_atc": true
       }
     },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "Customer reviews",
+        "reviews_per_page": 6,
+        "more_label": "Show more reviews"
+      }
+    },
     "related": {
       "type": "related-products",
       "settings": {
@@ -58,5 +67,5 @@
       }
     }
   },
-  "order": ["main", "related"]
+  "order": ["main", "reviews", "related"]
 }

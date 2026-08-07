@@ -187,6 +187,21 @@
   });
 
   /* ==========================================================================
+     Reviews — reveal the rest of the list on demand. They are all in the DOM
+     already (good for SEO), just hidden, so this is a class toggle rather
+     than a fetch.
+     ========================================================================== */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-reviews-more]');
+    if (!btn) return;
+    $$('[data-review-hidden]').forEach(function (el) {
+      el.hidden = false;
+      el.removeAttribute('data-review-hidden');
+    });
+    btn.remove();
+  });
+
+  /* ==========================================================================
      Product recommendations — fetched after load so they never block the
      product page itself.
      ========================================================================== */

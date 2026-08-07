@@ -1,0 +1,271 @@
+{
+  "general": {
+    "meta": {
+      "tags": "\"{{ tags }}\" ٹیگ کیا گیا",
+      "page": "صفحہ {{ page }}"
+    },
+    "search": {
+      "search": "تلاش",
+      "placeholder": "آپ کیا ڈھونڈ رہے ہیں؟",
+      "results_count": {
+        "one": "{{ count }} نتیجہ",
+        "other": "{{ count }} نتائج"
+      },
+      "no_results": "\"{{ terms }}\" کے لیے کوئی نتیجہ نہیں ملا۔ کچھ اور تلاش کریں۔",
+      "view_all": "تمام نتائج دیکھیں"
+    },
+    "pagination": {
+      "label": "صفحہ بندی",
+      "previous": "پچھلا",
+      "next": "اگلا",
+      "page": "صفحہ {{ number }}"
+    },
+    "breadcrumbs": {
+      "label": "راستہ",
+      "home": "ہوم"
+    },
+    "accessibility": {
+      "skip_to_content": "مواد پر جائیں",
+      "close": "بند کریں",
+      "menu": "مینو",
+      "previous_slide": "پچھلا",
+      "next_slide": "اگلا",
+      "loading": "لوڈ ہو رہا ہے"
+    },
+    "newsletter": {
+      "heading": "خصوصی آفرز سب سے پہلے",
+      "body": "سبسکرائب کریں اور نئی سیل کی خبر سب سے پہلے پائیں۔",
+      "placeholder": "آپ کا ای میل",
+      "button": "سبسکرائب",
+      "success": "شکریہ! آپ سبسکرائب ہو گئے ہیں۔",
+      "no_spam": "کوئی سپیم نہیں۔ جب چاہیں بند کر دیں۔"
+    },
+    "social": {
+      "share": "شیئر کریں",
+      "share_on_facebook": "فیس بک پر شیئر کریں",
+      "share_on_whatsapp": "واٹس ایپ پر شیئر کریں",
+      "copy_link": "لنک کاپی کریں",
+      "link_copied": "لنک کاپی ہو گیا"
+    }
+  },
+
+  "onboarding": {
+    "product_title": "نمونہ پروڈکٹ",
+    "category": "کیٹیگری",
+    "pick_collection": "اپنے پروڈکٹس دکھانے کے لیے اس سیکشن کی سیٹنگز میں کلیکشن منتخب کریں۔",
+    "pick_collections": "لنک کام کرنے کے لیے ان بلاکس میں کلیکشن شامل کریں۔"
+  },
+
+  "products": {
+    "product": {
+      "add_to_cart": "کارٹ میں ڈالیں",
+      "buy_now": "ابھی خریدیں",
+      "order_on_whatsapp": "واٹس ایپ پر آرڈر کریں",
+      "sold_out": "ختم ہو گیا",
+      "unavailable": "دستیاب نہیں",
+      "in_stock": "دستیاب ہے",
+      "quantity": "تعداد",
+      "increase_quantity": "تعداد بڑھائیں",
+      "decrease_quantity": "تعداد کم کریں",
+      "vendor": "برانڈ",
+      "sku": "ایس کے یو",
+      "description": "تفصیل",
+      "shipping": "ڈیلیوری",
+      "returns": "واپسی کی پالیسی",
+      "view_details": "تفصیل دیکھیں",
+      "choose_options": "آپشن منتخب کریں",
+      "variant_sold_out": "{{ option }} — ختم ہو گیا",
+      "low_stock": {
+        "one": "صرف {{ count }} باقی!",
+        "other": "صرف {{ count }} باقی!"
+      },
+      "hurry": "جلدی کریں",
+      "tax_included": "ٹیکس شامل ہے۔",
+      "shipping_at_checkout": "ڈیلیوری چارجز چیک آؤٹ پر لگیں گے۔",
+      "related": "یہ بھی پسند آ سکتا ہے",
+      "recently_viewed": "حال ہی میں دیکھے گئے"
+    },
+    "price": {
+      "regular_price": "اصل قیمت",
+      "sale_price": "سیل قیمت",
+      "from_price": "{{ price }} سے شروع",
+      "save": "{{ amount }} بچائیں",
+      "percent_off": "{{ percent }}% رعایت",
+      "free": "مفت"
+    },
+    "facets": {
+      "filters": "فلٹرز",
+      "sort_by": "ترتیب دیں",
+      "clear": "ہٹائیں",
+      "clear_all": "سب ہٹائیں",
+      "apply": "لاگو کریں",
+      "show_results": {
+        "one": "{{ count }} نتیجہ دکھائیں",
+        "other": "{{ count }} نتائج دکھائیں"
+      },
+      "product_count": {
+        "one": "{{ count }} پروڈکٹ",
+        "other": "{{ count }} پروڈکٹس"
+      },
+      "from": "سے",
+      "to": "تک",
+      "availability": "دستیابی",
+      "in_stock": "دستیاب",
+      "out_of_stock": "ختم",
+      "price": "قیمت",
+      "no_products": "ان فلٹرز سے کوئی پروڈکٹ نہیں ملا۔"
+    }
+  },
+
+  "cart": {
+    "title": "آپ کا کارٹ",
+    "empty": "آپ کا کارٹ خالی ہے",
+    "continue_shopping": "خریداری جاری رکھیں",
+    "item_count": {
+      "one": "{{ count }} چیز",
+      "other": "{{ count }} چیزیں"
+    },
+    "subtotal": "کل رقم",
+    "total": "ٹوٹل",
+    "discount": "رعایت",
+    "shipping": "ڈیلیوری چارجز",
+    "shipping_free": "مفت",
+    "checkout": "چیک آؤٹ",
+    "remove": "ہٹائیں",
+    "note": "آرڈر نوٹ",
+    "note_placeholder": "کوئی خاص ہدایت؟",
+    "free_shipping_progress": "مفت ڈیلیوری کے لیے {{ amount }} اور شامل کریں",
+    "free_shipping_reached": "مفت ڈیلیوری مل گئی!",
+    "view_cart": "کارٹ اپ ڈیٹ کریں",
+    "added": "کارٹ میں شامل ہو گیا"
+  },
+
+  "cod": {
+    "form": {
+      "heading": "کیش آن ڈیلیوری — ابھی آرڈر کریں",
+      "subheading": "فارم بھریں، 24 گھنٹے میں ڈیلیوری",
+      "trigger": "ابھی آرڈر کریں — کیش آن ڈیلیوری",
+      "trigger_sub": "صرف 4 خانے · 30 سیکنڈ",
+      "name": "پورا نام",
+      "name_placeholder": "آپ کا نام",
+      "phone": "موبائل نمبر",
+      "phone_placeholder": "03001234567",
+      "phone_hint": "واٹس ایپ نمبر بہتر رہے گا",
+      "city": "شہر",
+      "city_placeholder": "اپنا شہر منتخب کریں",
+      "address": "مکمل پتہ",
+      "address_placeholder": "مکان نمبر، گلی، علاقہ، قریبی نشانی",
+      "email": "ای میل",
+      "optional": "(اختیاری)",
+      "notes": "آرڈر نوٹ",
+      "submit": "آرڈر کنفرم کریں",
+      "note": "کوئی ایڈوانس پیمنٹ نہیں — پارسل ملنے پر ادائیگی کریں",
+      "summary": "آرڈر کی تفصیل",
+      "delivery": "ڈیلیوری چارجز",
+      "total": "ٹوٹل (کیش آن ڈیلیوری)",
+      "errors": {
+        "name": "براہِ کرم اپنا نام لکھیں",
+        "phone": "درست موبائل نمبر لکھیں",
+        "city": "اپنا شہر منتخب کریں",
+        "address": "اپنا پتہ لکھیں",
+        "email": "یہ ای میل درست نہیں لگتا"
+      },
+      "success": {
+        "heading": "شکریہ! آرڈر مل گیا",
+        "body": "ہماری ٹیم ایک گھنٹے میں کنفرم کرنے کے لیے کال کرے گی۔",
+        "track": "واٹس ایپ پر ٹریک کریں"
+      }
+    },
+    "badges": {
+      "free_shipping": "مفت ڈیلیوری",
+      "cod": "کیش آن ڈیلیوری",
+      "returns": "7 دن میں واپسی",
+      "authentic": "100% اصل پروڈکٹ"
+    }
+  },
+
+  "reviews": {
+    "title": "کسٹمر ریویوز",
+    "count": {
+      "zero": "ابھی کوئی ریویو نہیں",
+      "one": "{{ count }} ریویو",
+      "other": "{{ count }} ریویوز"
+    },
+    "rating": "5 میں سے {{ rating }}",
+    "based_on": "{{ count }} ریویوز کی بنیاد پر",
+    "write": "ریویو لکھیں",
+    "verified": "تصدیق شدہ خریداری",
+    "sort_recent": "نئے پہلے",
+    "sort_helpful": "سب سے مفید",
+    "sort_highest": "زیادہ ریٹنگ",
+    "sort_lowest": "کم ریٹنگ",
+    "filter_all": "تمام ریٹنگز",
+    "helpful": "مفید",
+    "empty": "اس پروڈکٹ پر پہلا ریویو آپ لکھیں",
+    "form": {
+      "rating": "آپ کی ریٹنگ",
+      "title": "ریویو کا عنوان",
+      "body": "آپ کا ریویو",
+      "name": "آپ کا نام",
+      "city": "آپ کا شہر",
+      "email": "آپ کا ای میل",
+      "submit": "ریویو بھیجیں",
+      "success": "شکریہ! آپ کا ریویو منظوری کے لیے بھیج دیا گیا ہے۔"
+    }
+  },
+
+  "customer": {
+    "account": { "title": "اکاؤنٹ", "details": "اکاؤنٹ کی تفصیل", "orders": "آرڈر کی تاریخ", "logout": "لاگ آؤٹ" },
+    "login": { "title": "لاگ اِن", "email": "ای میل", "password": "پاس ورڈ", "submit": "سائن اِن", "forgot": "پاس ورڈ بھول گئے؟", "create": "اکاؤنٹ بنائیں" },
+    "register": { "title": "اکاؤنٹ بنائیں", "first_name": "پہلا نام", "last_name": "آخری نام", "submit": "بنائیں" },
+    "orders": { "order_number": "آرڈر", "date": "تاریخ", "payment_status": "ادائیگی", "fulfillment_status": "حالت", "total": "ٹوٹل", "none": "آپ نے ابھی تک کوئی آرڈر نہیں کیا۔" },
+    "addresses": { "title": "پتے", "add": "پتہ شامل کریں", "edit": "تبدیل کریں", "delete": "حذف کریں", "default": "بنیادی پتہ" },
+    "recover_password": { "title": "پاس ورڈ ری سیٹ کریں", "subtext": "ہم آپ کو پاس ورڈ ری سیٹ کرنے کا ای میل بھیجیں گے۔", "submit": "بھیجیں" }
+  },
+
+  "blogs": {
+    "article": {
+      "read_more": "مزید پڑھیں",
+      "posted_on": "شائع ہوا",
+      "by": "بذریعہ",
+      "tags": "ٹیگز",
+      "back": "بلاگ پر واپس"
+    }
+  },
+
+  "contact": {
+    "form": {
+      "title": "رابطہ کریں",
+      "name": "نام",
+      "email": "ای میل",
+      "phone": "فون",
+      "message": "پیغام",
+      "send": "بھیجیں",
+      "success": "شکریہ! ہم جلد جواب دیں گے۔"
+    }
+  },
+
+  "404": {
+    "title": "صفحہ نہیں ملا",
+    "subtext": "آپ جو صفحہ ڈھونڈ رہے ہیں وہ موجود نہیں۔",
+    "link": "خریداری جاری رکھیں"
+  },
+
+  "gift_cards": {
+    "issued": {
+      "title": "گفٹ کارڈ",
+      "subtext": "یہ رہا آپ کا گفٹ کارڈ!",
+      "expires_on": "{{ expiry }} کو ختم ہو گا",
+      "copy_code": "کوڈ کاپی کریں",
+      "shop_link": "خریداری شروع کریں"
+    }
+  },
+
+  "password": {
+    "title": "جلد کھل رہا ہے",
+    "message": "پاس ورڈ سے اسٹور میں داخل ہوں",
+    "login_password": "پاس ورڈ",
+    "submit": "داخل ہوں",
+    "powered_by": "یہ اسٹور {{ shopify }} پر بنے گا"
+  }
+}

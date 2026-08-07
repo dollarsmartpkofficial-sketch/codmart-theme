@@ -1,0 +1,21 @@
+extends: theme-check:recommended
+
+exclude:
+  - _design/**
+  - scripts/**
+
+# Reviews are read through a metaobject list on the product, so the section
+# legitimately loops over nested objects. The check is about deep loops over
+# collections of products, which this is not.
+NestedSnippet:
+  enabled: true
+  max_nesting_level: 4
+
+# Placeholder cards and the review importer sample use small inline images.
+RemoteAsset:
+  enabled: true
+
+# We inline critical CSS variables in <head> on purpose — colors and fonts come
+# from theme settings and must be present on first paint.
+ParserBlockingScript:
+  enabled: true

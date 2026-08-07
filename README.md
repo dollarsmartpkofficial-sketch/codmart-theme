@@ -34,6 +34,69 @@ courier at their door.
 - Stored in Shopify metaobjects — no paid review app.
 - Reads the standard `reviews.rating` metafields, so Judge.me, Loox and Okendo
   keep working for merchants who already use them.
+- Spreadsheet importer for bulk loading existing reviews.
+
+---
+
+## Reviews
+
+Reviews are `product_review` metaobjects, linked to a product through a
+`custom.reviews` list metafield. Reading them off the product — rather than
+scanning every metaobject in the shop — keeps the product page fast however
+many reviews the store accumulates.
+
+The star summary on cards and in the header comes from `reviews.rating` and
+`reviews.rating_count`, the metafields Shopify defines as standard. Judge.me,
+Loox and Okendo write to the same place, so a merchant already using one of
+those keeps their stars with no migration.
+
+### Importing from a spreadsheet
+
+Export your reviews to CSV (in Excel: **Save as → CSV UTF-8**) with these
+columns — `product_handle`, `rating`, `author` and `body` are required, the
+rest optional:
+
+| product_handle | rating | author | city | title | body | review_date | verified |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| hot-air-brush | 5 | Ahmed Raza | Karachi | Great quality | Delivery took four days… | 2026-07-14 | yes |
+
+Then create an Admin API token — Shopify admin → **Settings → Apps and sales
+channels → Develop apps → Create an app**, with the scopes `read_products`,
+`write_products`, `read_metaobjects`, `write_metaobjects` — and run:
+
+```bash
+export SHOPIFY_STORE=your-store.myshopify.com
+export SHOPIFY_ADMIN_TOKEN=shpat_xxx
+
+node scripts/import-reviews.mjs reviews.csv --dry-run   # check the parse
+node scripts/import-reviews.mjs reviews.csv             # write it
+```
+
+The script creates the metaobject definition on first run, imports each row,
+links the reviews to their products, and recalculates the average and count.
+`scripts/reviews-sample.csv` shows the expected shape.
+
+Re-running adds rather than replaces, so import each spreadsheet once.
+
+### Collecting new reviews
+
+The "write a review" form posts through Shopify's contact form and emails the
+merchant, who approves it and adds the entry in admin. A theme has no write
+access to the store, so fully automatic publishing needs an app — the form is
+the honest version of what a theme can do on its own.
+
+---
+
+## Languages
+
+`en.default.json` and `ur.json` ship with the theme, and the layout picks
+`dir="rtl"` automatically for Arabic, Hebrew, Persian, Urdu, Pashto, Sindhi and
+Yiddish. Layout is written with logical properties throughout, so RTL mirrors
+without a second stylesheet.
+
+To add a language, copy `locales/en.default.json` to `locales/<code>.json` and
+translate the values. Schema labels live separately in
+`en.default.schema.json`.
 
 ---
 
@@ -88,11 +151,14 @@ without a second stylesheet.
 assets/      base.css, global.js, product.js, cod-form.js
 config/      settings_schema.json, settings_data.json
 layout/      theme.liquid, password.liquid
-locales/     en.default.json, en.default.schema.json
+locales/     en.default.json, ur.json, en.default.schema.json
+scripts/     import-reviews.mjs, reviews-sample.csv
 sections/    header, footer, homepage sections, main-* templates
-snippets/    product-card, cod-form, facets, price, rating, icon, …
+snippets/    product-card, cod-form, facets, price, rating, review-card, …
 templates/   all 14 required templates + customer account pages
 ```
+
+Run `shopify theme check` before pushing; `.theme-check.yml` holds the config.
 
 ---
 

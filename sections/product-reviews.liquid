@@ -1,0 +1,235 @@
+{%- comment -%}
+  Product reviews.
+
+  Reviews live in `product_review` metaobjects, linked to the product through
+  a `custom.reviews` list metafield. Reading them off the product rather than
+  scanning every metaobject in the shop keeps the page fast no matter how many
+  reviews the store accumulates.
+
+  The star summary comes from the standard `reviews.rating` metafields, which
+  Judge.me, Loox and Okendo also write to — so a merchant who already has one
+  of those apps keeps their stars without changing anything.
+{%- endcomment -%}
+
+{%- liquid
+  assign reviews = product.metafields.custom.reviews.value
+  assign rating_mf = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+
+  assign average = 0
+  if rating_mf != blank
+    assign average = rating_mf.rating | times: 1.0
+  endif
+
+  assign shown = section.settings.reviews_per_page
+-%}
+
+{%- if settings.reviews_enabled -%}
+  <section class="section wrap reviews" id="reviews">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+      {%- if settings.reviews_show_form -%}
+        <button type="button" class="btn btn--outline btn--sm" data-modal-open="ReviewForm">
+          {{ 'reviews.write' | t }}
+        </button>
+      {%- endif -%}
+    </div>
+
+    {%- if reviews.size > 0 -%}
+      {%- comment -%} Rating breakdown, counted from the linked reviews. {%- endcomment -%}
+      {%- liquid
+        assign c5 = 0
+        assign c4 = 0
+        assign c3 = 0
+        assign c2 = 0
+        assign c1 = 0
+        for r in reviews
+          case r.rating.value
+            when 5
+              assign c5 = c5 | plus: 1
+            when 4
+              assign c4 = c4 | plus: 1
+            when 3
+              assign c3 = c3 | plus: 1
+            when 2
+              assign c2 = c2 | plus: 1
+            else
+              assign c1 = c1 | plus: 1
+          endcase
+        endfor
+        assign total = reviews.size
+      -%}
+
+      <div class="reviews__summary">
+        <div class="reviews__score">
+          <b>{{ average | round: 1 }}</b>
+          <div class="rating__stars" role="img" aria-label="{{ 'reviews.rating' | t: rating: average }}">
+            {%- assign filled = average | round -%}
+            {%- for i in (1..5) -%}
+              {%- if i <= filled -%}
+                {% render 'icon', name: 'star', size: 17 %}
+              {%- else -%}
+                {% render 'icon', name: 'star-empty', size: 17 %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <span class="reviews__based">{{ 'reviews.based_on' | t: count: total }}</span>
+        </div>
+
+        <div class="reviews__bars">
+          {%- for star in (1..5) reversed -%}
+            {%- liquid
+              case star
+                when 5
+                  assign n = c5
+                when 4
+                  assign n = c4
+                when 3
+                  assign n = c3
+                when 2
+                  assign n = c2
+                else
+                  assign n = c1
+              endcase
+              assign pct = 0
+              if total > 0
+                assign pct = n | times: 100 | divided_by: total
+              endif
+            -%}
+            <div class="reviews__bar">
+              <span>{{ star }} {% render 'icon', name: 'star', size: 11 %}</span>
+              <span class="track"><i style="width:{{ pct }}%"></i></span>
+              <span class="reviews__bar-count">{{ n }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="reviews__list" data-reviews-list>
+        {%- for review in reviews -%}
+          <div class="reviews__item" {% if forloop.index > shown %}hidden data-review-hidden{% endif %}>
+            {% render 'review-card', review: review %}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if reviews.size > shown -%}
+        <div class="reviews__more">
+          <button type="button" class="btn btn--outline" data-reviews-more>
+            {{ section.settings.more_label }}
+          </button>
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      <div class="empty-state">
+        <p>{{ 'reviews.empty' | t }}</p>
+        {%- if settings.reviews_show_form -%}
+          <button type="button" class="btn btn--primary" data-modal-open="ReviewForm">
+            {{ 'reviews.write' | t }}
+          </button>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%}
+    The review form posts through Shopify's contact form, which emails the
+    merchant. A theme cannot write to the store, so the merchant approves the
+    review and adds it in admin — or imports a batch from a spreadsheet.
+  {%- endcomment -%}
+  {%- if settings.reviews_show_form -%}
+    <div class="modal" id="ReviewForm" aria-hidden="true" role="dialog" aria-modal="true"
+         aria-label="{{ 'reviews.write' | t }}">
+      <div class="modal__overlay" data-modal-close></div>
+      <div class="modal__card">
+        <div class="modal__grabber" aria-hidden="true"></div>
+        <button type="button" class="modal__close" data-modal-close
+                aria-label="{{ 'general.accessibility.close' | t }}">
+          {% render 'icon', name: 'close', size: 18 %}
+        </button>
+
+        <div class="review-form">
+          <h2>{{ 'reviews.write' | t }}</h2>
+          <p class="review-form__product">{{ product.title }}</p>
+
+          {% form 'contact', id: 'ReviewContactForm' %}
+            {%- if form.posted_successfully? -%}
+              <p class="form-success">{{ 'reviews.form.success' | t }}</p>
+            {%- elsif form.errors -%}
+              <p class="form-error">{{ form.errors | default_errors }}</p>
+            {%- endif -%}
+
+            <input type="hidden" name="contact[Review for]" value="{{ product.title }} ({{ product.handle }})">
+
+            <fieldset class="field">
+              <legend>{{ 'reviews.form.rating' | t }} <span class="req">*</span></legend>
+              <div class="star-input">
+                {%- for i in (1..5) reversed -%}
+                  <input class="visually-hidden" type="radio" id="ReviewStar-{{ i }}"
+                         name="contact[Rating]" value="{{ i }}" {% if i == 5 %}checked{% endif %} required>
+                  <label for="ReviewStar-{{ i }}" aria-label="{{ 'reviews.rating' | t: rating: i }}">
+                    {% render 'icon', name: 'star', size: 26 %}
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label for="ReviewName">{{ 'reviews.form.name' | t }} <span class="req">*</span></label>
+              <input id="ReviewName" type="text" name="contact[name]" autocomplete="name" required>
+            </div>
+
+            <div class="field">
+              <label for="ReviewCity">{{ 'reviews.form.city' | t }}</label>
+              <input id="ReviewCity" type="text" name="contact[City]" autocomplete="address-level2">
+            </div>
+
+            <div class="field">
+              <label for="ReviewEmail">{{ 'reviews.form.email' | t }} <span class="req">*</span></label>
+              <input id="ReviewEmail" type="email" name="contact[email]" autocomplete="email" required>
+            </div>
+
+            <div class="field">
+              <label for="ReviewTitle">{{ 'reviews.form.title' | t }}</label>
+              <input id="ReviewTitle" type="text" name="contact[Review title]">
+            </div>
+
+            <div class="field">
+              <label for="ReviewBody">{{ 'reviews.form.body' | t }} <span class="req">*</span></label>
+              <textarea id="ReviewBody" name="contact[body]" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--block btn--lg">
+              {{ 'reviews.form.submit' | t }}
+            </button>
+            <p class="cod-note">{{ section.settings.form_note }}</p>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product reviews",
+  "class": "reviews-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reviews are stored in Shopify metaobjects — no paid app. See the README for the one-time setup and the spreadsheet importer."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Customer reviews" },
+    { "type": "range", "id": "reviews_per_page", "min": 3, "max": 30, "step": 1, "label": "Reviews shown before “load more”", "default": 6 },
+    { "type": "text", "id": "more_label", "label": "Load more button", "default": "Show more reviews" },
+    { "type": "text", "id": "form_note", "label": "Note under the form", "default": "Your review will appear once we've checked it." }
+  ]
+}
+{% endschema %}

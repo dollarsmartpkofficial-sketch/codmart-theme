@@ -1,0 +1,68 @@
+{%- comment -%}
+  One review. Accepts: review (a `product_review` metaobject entry)
+
+  Fields are read defensively — a merchant importing from a spreadsheet may
+  leave city, title or photos empty, and the card should still look finished.
+{%- endcomment -%}
+
+{%- liquid
+  assign author = review.author.value | default: 'Customer'
+  assign stars = review.rating.value | default: 5 | at_most: 5 | at_least: 1
+  assign photos = review.images.value
+-%}
+
+<article class="review">
+  <header class="review__head">
+    <span class="avatar" aria-hidden="true">{{ author | slice: 0 | upcase }}</span>
+    <div class="review__who">
+      <b>{{ author }}</b>
+      <span class="review__meta">
+        {%- if settings.reviews_show_city and review.city.value != blank -%}
+          {{ review.city.value }}
+        {%- endif -%}
+        {%- if review.review_date.value -%}
+          {%- if settings.reviews_show_city and review.city.value != blank %} · {% endif -%}
+          {{ review.review_date.value | date: format: 'date' }}
+        {%- endif -%}
+      </span>
+    </div>
+
+    {%- if settings.reviews_verified_badge and review.verified.value -%}
+      <span class="review__verified">
+        {% render 'icon', name: 'check', size: 12 %} {{ 'reviews.verified' | t }}
+      </span>
+    {%- endif -%}
+  </header>
+
+  <div class="rating__stars" role="img" aria-label="{{ 'reviews.rating' | t: rating: stars }}">
+    {%- for i in (1..5) -%}
+      {%- if i <= stars -%}
+        {% render 'icon', name: 'star', size: 14 %}
+      {%- else -%}
+        {% render 'icon', name: 'star-empty', size: 14 %}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if review.title.value != blank -%}
+    <h3 class="review__title">{{ review.title.value }}</h3>
+  {%- endif -%}
+
+  {%- if review.body.value != blank -%}
+    <p class="review__body">{{ review.body.value }}</p>
+  {%- endif -%}
+
+  {%- if settings.reviews_show_photos and photos.size > 0 -%}
+    <div class="review__photos">
+      {%- for photo in photos limit: 4 -%}
+        <img
+          src="{{ photo | image_url: width: 200 }}"
+          alt=""
+          width="72"
+          height="72"
+          loading="lazy"
+        >
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</article>
