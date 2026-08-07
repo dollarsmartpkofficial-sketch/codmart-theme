@@ -83,7 +83,7 @@
           <span class="badge badge--sale">{{ 'products.price.percent_off' | t: percent: discount }}</span>
         {%- endif -%}
         {%- if show_low -%}
-          <span class="badge badge--low">{{ settings.low_stock_text | replace: '{{ count }}', inventory }}</span>
+          <span class="badge badge--low">{{ settings.low_stock_text | replace: '{count}', inventory }}</span>
         {%- endif -%}
       {%- endunless -%}
     </div>
@@ -111,7 +111,7 @@
     </div>
 
     {%- if show_low -%}
-      <span class="stock-low">{{ settings.low_stock_text | replace: '{{ count }}', inventory }}</span>
+      <span class="stock-low">{{ settings.low_stock_text | replace: '{count}', inventory }}</span>
       {%- assign pct = inventory | times: 100 | divided_by: settings.low_stock_threshold -%}
       <div class="stock-bar" role="presentation"><i style="width:{{ pct }}%"></i></div>
     {%- elsif settings.card_show_cod_tag and product.available -%}
