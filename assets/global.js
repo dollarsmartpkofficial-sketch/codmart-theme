@@ -128,7 +128,7 @@
      Add to cart (AJAX)
      ========================================================================== */
   document.addEventListener('submit', function (e) {
-    var form = e.target.closest('form[data-cart-form]');
+    var form = e.target.closest('form[action*="/cart/add"]');
     if (!form) return;
     e.preventDefault();
 
