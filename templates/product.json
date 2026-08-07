@@ -1,35 +1,109 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "blocks": {
-        "category": { "type": "category" },
-        "title": { "type": "title" },
-        "rating": { "type": "rating" },
-        "price": { "type": "price", "settings": { "show_discount_badge": true } },
-        "urgency": { "type": "urgency", "settings": { "nudge": "Hurry up" } },
-        "variant_picker": { "type": "variant_picker" },
+        "category": {
+          "type": "category",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_discount_badge": true
+          }
+        },
+        "urgency": {
+          "type": "urgency",
+          "settings": {
+            "nudge": "Hurry up"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
         "cod_form": {
           "type": "cod_form",
           "settings": {
+            "heading": "",
+            "subheading": "",
+            "trigger_label": "",
+            "trigger_sub": "",
+            "button_label": "",
+            "note": "No advance payment — pay when your package arrives",
+            "show_badges": true,
             "show_offers": true,
+            "offers_label": "Choose a bundle",
+            "offers_save_label": "Best value",
+            "unit_singular": "Piece",
+            "unit_plural": "Pieces",
+            "offer_default": 2,
             "offer_1_qty": 1,
             "offer_1_discount": 0,
+            "offer_1_flag": "",
             "offer_2_qty": 2,
             "offer_2_discount": 10,
             "offer_2_flag": "MOST POPULAR",
             "offer_3_qty": 3,
             "offer_3_discount": 16,
-            "offer_3_flag": "BEST VALUE",
-            "offer_default": 2,
-            "show_badges": true
+            "offer_3_flag": "BEST VALUE"
           }
         },
-        "quantity": { "type": "quantity" },
-        "buy_buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
-        "whatsapp": { "type": "whatsapp" },
-        "trust_badges": { "type": "trust_badges" },
-        "accordion": { "type": "accordion", "settings": { "include_description": true } }
+        "quantity": {
+          "type": "quantity",
+          "settings": {
+            "note": "Order today — delivered tomorrow"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        },
+        "whatsapp": {
+          "type": "whatsapp",
+          "settings": {}
+        },
+        "trust_badges": {
+          "type": "trust_badges",
+          "settings": {
+            "text_shipping": "Free delivery on bigger orders"
+          }
+        },
+        "accordion": {
+          "type": "accordion",
+          "settings": {
+            "include_description": true,
+            "row_1_title": "Shipping & delivery",
+            "row_1_content": "",
+            "row_1_page": "",
+            "row_2_title": "Return policy",
+            "row_2_content": "",
+            "row_2_page": "",
+            "row_3_title": "",
+            "row_3_content": "",
+            "row_3_page": ""
+          }
+        }
       },
       "block_order": [
         "category",
@@ -56,16 +130,23 @@
         "eyebrow": "Reviews",
         "heading": "Customer reviews",
         "reviews_per_page": 6,
-        "more_label": "Show more reviews"
+        "more_label": "Show more reviews",
+        "form_note": "Your review will appear once we've checked it."
       }
     },
     "related": {
       "type": "related-products",
       "settings": {
+        "eyebrow": "You may also like",
         "heading": "You may also like",
-        "columns_desktop": 5
+        "columns_desktop": 3,
+        "limit": 5
       }
     }
   },
-  "order": ["main", "reviews", "related"]
+  "order": [
+    "main",
+    "reviews",
+    "related"
+  ]
 }
