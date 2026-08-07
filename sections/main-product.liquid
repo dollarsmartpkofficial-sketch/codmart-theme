@@ -54,22 +54,43 @@
         {%- case block.type -%}
 
           {%- when 'category' -%}
-            {%- if category != blank -%}
-              <div class="pdp__cat" {{ block.shopify_attributes }}>{{ category }}</div>
+            {%- liquid
+              case block.settings.source
+                when 'vendor'
+                  assign cat_text = product.vendor
+                when 'collection'
+                  assign cat_text = product.collections.first.title
+                else
+                  assign cat_text = category
+              endcase
+            -%}
+            {%- if cat_text != blank -%}
+              <div class="pdp__cat" {{ block.shopify_attributes }}>{{ cat_text }}</div>
             {%- endif -%}
 
           {%- when 'title' -%}
-            <h1 {{ block.shopify_attributes }}>{{ product.title }}</h1>
+            <h1 class="pdp__title pdp__title--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+              {{ product.title }}
+            </h1>
 
           {%- when 'rating' -%}
             <div class="pdp__rate" {{ block.shopify_attributes }}>
-              {% render 'rating', product: product, size: 15, show_count: true %}
-              {%- if variant.available -%}
-                <span class="pdp__stock pdp__stock--in">
-                  {% render 'icon', name: 'check', size: 13 %} {{ 'products.product.in_stock' | t }}
-                </span>
-              {%- else -%}
-                <span class="pdp__stock pdp__stock--out">{{ 'products.product.sold_out' | t }}</span>
+              {%- if block.settings.show_stars -%}
+                {% render 'rating', product: product, size: block.settings.star_size, show_count: block.settings.show_count %}
+              {%- endif -%}
+
+              {%- if block.settings.show_stock -%}
+                {%- if variant.available -%}
+                  <span class="pdp__stock pdp__stock--in">
+                    {% render 'icon', name: 'check', size: 13 %} {{ 'products.product.in_stock' | t }}
+                  </span>
+                {%- else -%}
+                  <span class="pdp__stock pdp__stock--out">{{ 'products.product.sold_out' | t }}</span>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if block.settings.show_sku and variant.sku != blank -%}
+                <span class="pdp__sku">{{ 'products.product.sku' | t }}: {{ variant.sku }}</span>
               {%- endif -%}
             </div>
 
@@ -112,6 +133,7 @@
                         {%- assign input_id = 'opt-' | append: option.position | append: '-' | append: forloop.index -%}
                         <input
                           class="visually-hidden variant-input"
+                          data-unavailable-style="{{ block.settings.unavailable_style }}"
                           type="radio"
                           id="{{ input_id }}"
                           name="option{{ option.position }}"
@@ -206,9 +228,15 @@
                 assign wa_text = settings.whatsapp_message | append: ' ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
                 assign wa_href = wa_text | url_encode | prepend: '?text=' | prepend: wa_number | prepend: 'https://wa.me/'
               -%}
+              {%- liquid
+                assign wa_label = block.settings.label
+                if wa_label == blank
+                  assign wa_label = 'products.product.order_on_whatsapp' | t
+                endif
+              -%}
               <a class="btn btn--wa btn--block" href="{{ wa_href }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
                 {% render 'icon', name: 'whatsapp', size: 18 %}
-                {{ 'products.product.order_on_whatsapp' | t }}
+                {{ wa_label }}
               </a>
             {%- endif -%}
 
@@ -224,7 +252,12 @@
 
           {%- when 'description' -%}
             {%- if product.description != blank -%}
-              <div class="rte" {{ block.shopify_attributes }}>{{ product.description }}</div>
+              <div {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="pdp__section-heading">{{ block.settings.heading }}</h2>
+                {%- endif -%}
+                <div class="rte">{{ product.description }}</div>
+              </div>
             {%- endif -%}
 
           {%- when 'accordion' -%}
@@ -326,9 +359,55 @@
     { "type": "checkbox", "id": "sticky_atc", "label": "Sticky buy bar", "default": true, "info": "Follows the shopper down the page on mobile." }
   ],
   "blocks": [
-    { "type": "category", "name": "Category label", "limit": 1 },
-    { "type": "title", "name": "Title", "limit": 1 },
-    { "type": "rating", "name": "Rating & stock", "limit": 1 },
+    {
+      "type": "category",
+      "name": "Category label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Text source",
+          "options": [
+            { "value": "auto", "label": "Product type, or first collection" },
+            { "value": "collection", "label": "First collection" },
+            { "value": "vendor", "label": "Vendor" }
+          ],
+          "default": "auto"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "sm", "label": "Small" },
+            { "value": "md", "label": "Medium" },
+            { "value": "lg", "label": "Large" }
+          ],
+          "default": "md"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Rating & stock",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Stars only appear once a product has reviews." },
+        { "type": "checkbox", "id": "show_stars", "label": "Show stars", "default": true },
+        { "type": "range", "id": "star_size", "min": 12, "max": 26, "step": 1, "unit": "px", "label": "Star size", "default": 15 },
+        { "type": "checkbox", "id": "show_count", "label": "Show review count", "default": true },
+        { "type": "checkbox", "id": "show_stock", "label": "Show in stock / sold out", "default": true },
+        { "type": "checkbox", "id": "show_sku", "label": "Show SKU", "default": false }
+      ]
+    },
     {
       "type": "price",
       "name": "Price",
@@ -346,7 +425,24 @@
         { "type": "text", "id": "nudge", "label": "Nudge text", "default": "Hurry up" }
       ]
     },
-    { "type": "variant_picker", "name": "Variant picker", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "unavailable_style",
+          "label": "Unavailable combinations",
+          "options": [
+            { "value": "strike", "label": "Strike through" },
+            { "value": "fade", "label": "Fade only" },
+            { "value": "hide", "label": "Hide" }
+          ],
+          "default": "strike"
+        }
+      ]
+    },
     {
       "type": "quantity",
       "name": "Quantity",
@@ -398,7 +494,15 @@
         { "type": "text", "id": "offer_3_flag", "label": "Offer 3 — flag", "default": "BEST VALUE" }
       ]
     },
-    { "type": "whatsapp", "name": "WhatsApp button", "limit": 1 },
+    {
+      "type": "whatsapp",
+      "name": "WhatsApp button",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Set your number in “🚀 Start here”. The message is pre-filled with the product name and link." },
+        { "type": "text", "id": "label", "label": "Button text", "info": "Leave blank for the default." }
+      ]
+    },
     {
       "type": "trust_badges",
       "name": "Trust badges",
@@ -407,7 +511,15 @@
         { "type": "text", "id": "text_shipping", "label": "Shipping text", "default": "Free delivery on bigger orders" }
       ]
     },
-    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Shows the product description in full. To keep it collapsed, use the Accordion block instead." },
+        { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to show the text on its own." }
+      ]
+    },
     {
       "type": "accordion",
       "name": "Accordion",
