@@ -2,14 +2,14 @@
   Product card.
 
   Accepts:
-    product   — required
-    lazy      — false for the first row, so the LCP image isn't deferred
-    columns   — how many cards share a row, used to size the srcset
+    product   - required
+    lazy      - false for the first row, so the LCP image isn't deferred
+    columns   - how many cards share a row, used to size the srcset
 
   Every visible element is behind a theme setting, so a merchant can strip
   the card back to just image + title + price if they want.
 
-  Images are read through `preview_image` — a product's featured media can be
+  Images are read through `preview_image` - a product's featured media can be
   a video or 3D model, and only the preview is guaranteed to be an image.
 {%- endcomment -%}
 
@@ -56,17 +56,12 @@
     {%- if card_image -%}
       <img
         src="{{ card_image | image_url: width: img_width }}"
-        srcset="
-          {{ card_image | image_url: width: 300 }} 300w,
-          {{ card_image | image_url: width: 500 }} 500w,
-          {{ card_image | image_url: width: 700 }} 700w
-        "
+        srcset="{{ card_image | image_url: width: 300 }} 300w, {{ card_image | image_url: width: 500 }} 500w, {{ card_image | image_url: width: 700 }} 700w"
         sizes="(max-width: 640px) 45vw, (max-width: 1100px) 25vw, {{ vw }}vw"
         alt="{{ card_alt | escape }}"
         width="{{ card_image.width }}"
         height="{{ card_image.height }}"
         loading="{{ lazy_attr }}"
-        {% if lazy == false %}fetchpriority="high"{% endif %}
       >
 
       {%- if settings.card_show_second_image and second_image -%}
@@ -91,7 +86,7 @@
           <span class="badge badge--sale">{{ 'products.price.percent_off' | t: percent: discount }}</span>
         {%- endif -%}
         {%- if show_low -%}
-          <span class="badge badge--low">{{ settings.low_stock_text | replace: '{count}', inventory }}</span>
+          <span class="badge badge--low">{{ settings.low_stock_text | replace: '[count]', inventory }}</span>
         {%- endif -%}
       {%- endif -%}
     </div>
@@ -119,7 +114,7 @@
     </div>
 
     {%- if show_low -%}
-      <span class="stock-low">{{ settings.low_stock_text | replace: '{count}', inventory }}</span>
+      <span class="stock-low">{{ settings.low_stock_text | replace: '[count]', inventory }}</span>
       {%- assign pct = inventory | times: 100 | divided_by: settings.low_stock_threshold -%}
       <div class="stock-bar" role="presentation"><i style="width:{{ pct }}%"></i></div>
     {%- elsif settings.card_show_cod_tag and product.available -%}
