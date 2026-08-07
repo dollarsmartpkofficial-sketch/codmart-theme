@@ -18,7 +18,7 @@
     </div>
 
     {%- if coll.products.size > 0 -%}
-      <div class="product-grid" style="--cols:{{ cols }}">
+      <div class="product-grid" style="--cols-desktop:{{ cols }}">
         {%- for product in coll.products limit: limit -%}
           {% render 'product-card', product: product, columns: cols %}
         {%- endfor -%}
@@ -32,7 +32,7 @@
         <p class="editor-note">{{ 'onboarding.pick_collection' | t }}</p>
       {%- endif -%}
 
-      <div class="product-grid" style="--cols:{{ cols }}">
+      <div class="product-grid" style="--cols-desktop:{{ cols }}">
         {%- for i in (1..limit) -%}
           <article class="card">
             <div class="card__media card__media--square">

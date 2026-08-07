@@ -49,7 +49,7 @@
               </div>
             </div>
 
-            <div class="product-grid" style="--cols:{{ cols }}">
+            <div class="product-grid" style="--cols-desktop:{{ cols }}">
               {%- for item in search.results -%}
                 {%- if item.object_type == 'product' -%}
                   {% render 'product-card', product: item, columns: cols %}

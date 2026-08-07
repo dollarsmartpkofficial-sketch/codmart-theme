@@ -9,7 +9,7 @@
 <div class="wrap section">
   <h1 class="page-title">{{ section.settings.heading | default: 'All collections' }}</h1>
 
-  <div class="cats" style="--cols:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
+  <div class="cats" style="--cols-desktop:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
     {%- if use_blocks -%}
       {%- for block in section.blocks -%}
         {%- assign coll = collections[block.settings.collection] -%}

@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <ol class="steps" style="--cols:{{ section.blocks.size | at_most: 4 }}">
+    <ol class="steps" style="--cols-desktop:{{ section.blocks.size | at_most: 4 }}">
       {%- for block in section.blocks -%}
         <li class="step" {{ block.shopify_attributes }}>
           {%- if section.settings.show_numbers -%}

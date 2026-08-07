@@ -124,7 +124,7 @@
         {%- endif -%}
 
         {%- if collection.products.size > 0 -%}
-          <div class="product-grid" style="--cols:{{ cols }}">
+          <div class="product-grid" style="--cols-desktop:{{ cols }}">
             {%- for product in collection.products -%}
               {%- assign is_lazy = true -%}
               {%- if forloop.index <= cols -%}

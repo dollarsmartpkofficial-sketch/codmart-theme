@@ -23,7 +23,7 @@
       {%- endif -%}
     </div>
 
-    <div class="product-grid" style="--cols:{{ section.settings.columns_desktop }}">
+    <div class="product-grid" style="--cols-desktop:{{ section.settings.columns_desktop }}">
       {%- for product in recommendations.products -%}
         {% render 'product-card', product: product, columns: section.settings.columns_desktop %}
       {%- endfor -%}

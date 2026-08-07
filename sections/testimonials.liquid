@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="testimonials" style="--cols:{{ section.settings.columns }}">
+    <div class="testimonials" style="--cols-desktop:{{ section.settings.columns }}">
       {%- for block in section.blocks -%}
         <figure class="testimonial" {{ block.shopify_attributes }}>
           {%- if block.settings.rating > 0 -%}

@@ -27,7 +27,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    <div class="cats" style="--cols:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
+    <div class="cats" style="--cols-desktop:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
       {%- for block in section.blocks -%}
         {%- liquid
           assign coll = collections[block.settings.collection]

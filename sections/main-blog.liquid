@@ -12,7 +12,7 @@
 
   {%- paginate blog.articles by section.settings.per_page -%}
     {%- if blog.articles.size > 0 -%}
-      <div class="article-grid" style="--cols:{{ section.settings.columns }}">
+      <div class="article-grid" style="--cols-desktop:{{ section.settings.columns }}">
         {%- for article in blog.articles -%}
           <article class="card">
             {%- if article.image -%}
