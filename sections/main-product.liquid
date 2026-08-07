@@ -130,7 +130,7 @@
 
           {%- when 'buy_buttons' -%}
             <div class="buys" {{ block.shopify_attributes }}>
-              {% form 'product', product, id: 'ProductForm', data-cart-form: true %}
+              {% form 'product', product, id: 'ProductForm', data-cart-form: 'true' %}
                 <input type="hidden" name="id" value="{{ variant.id }}" data-variant-input>
 
                 <button

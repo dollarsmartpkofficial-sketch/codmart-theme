@@ -43,10 +43,8 @@
   assign img_width = 600 | divided_by: cols | times: 2 | at_least: 300
   assign vw = 100 | divided_by: cols
 
-  {%- comment -%}
-    Read images through `preview_image` — a product's featured media can be a
-    video or 3D model, and only the preview is guaranteed to be an image.
-  {%- endcomment -%}
+  # Read images through `preview_image` — a product's featured media can be a
+  # video or 3D model, and only the preview is guaranteed to be an image.
   assign card_image = product.featured_media.preview_image
   assign card_alt = product.featured_media.alt | default: product.title
   assign second_image = product.media[1].preview_image
@@ -133,7 +131,7 @@
       {%- elsif product.variants.size > 1 -%}
         <a class="btn btn--outline btn--sm" href="{{ product.url }}">{{ 'products.product.choose_options' | t }}</a>
       {%- else -%}
-        {% form 'product', product, data-cart-form: true %}
+        {% form 'product', product, data-cart-form: 'true' %}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           <input type="hidden" name="quantity" value="1">
           <button type="submit" class="btn btn--primary btn--sm btn--block">

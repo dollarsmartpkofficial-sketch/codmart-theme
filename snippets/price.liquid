@@ -25,11 +25,9 @@
     assign on_sale = true
   endif
 
-  {%- comment -%}
-    Format the amounts before handing them to `t`. Filters run left to right,
-    so `t: amount: saved | money` would apply `money` to the translated
-    sentence rather than to the number.
-  {%- endcomment -%}
+  # Format the amounts before handing them to `t`. Filters run left to right,
+  # so `t: amount: saved | money` would apply `money` to the translated
+  # sentence rather than to the number.
   assign saved = compare | minus: price
   assign saved_money = saved | money
   assign from_money = target.price_min | money
