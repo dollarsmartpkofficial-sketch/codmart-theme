@@ -242,7 +242,10 @@ h3{font-size:var(--fs-h3)}
 }
 
 .rating{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--muted)}
-.rating__stars{color:var(--star);font-size:12px;letter-spacing:-.05em}
+/* Icons are inline SVG, and the reset makes svg display:block — without a
+   flex context here the five stars stack vertically. */
+.rating__stars{display:inline-flex;align-items:center;gap:1px;color:var(--star);line-height:0}
+.rating__count{white-space:nowrap}
 .tag-cod{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--cod)}
 .stock-bar{height:4px;border-radius:var(--radius-pill);background:var(--soft);overflow:hidden}
 .stock-bar i{display:block;height:100%;background:var(--sale);border-radius:inherit}

@@ -9,6 +9,18 @@
   any variant option or metafield.
 {%- endcomment -%}
 
+{%- liquid
+  comment
+    A collection counts `products_count`; search counts `results_count`. Pass
+    the wrong one and `count` is nil, which leaves the pluralised translation
+    unresolved and prints its raw hash on the button.
+  endcomment
+  assign result_count = results.products_count
+  if result_count == blank
+    assign result_count = results.results_count | default: 0
+  endif
+-%}
+
 <form
   class="facets"
   id="FacetsForm"
@@ -98,7 +110,7 @@
 
   <div class="facets__actions">
     <button type="submit" class="btn btn--primary btn--block">
-      {{ 'products.facets.show_results' | t: count: results.products_count }}
+      {{ 'products.facets.show_results' | t: count: result_count }}
     </button>
     {%- if results.current_vendor or results.current_type or results.terms == blank -%}
       <a class="facets__clear" href="{{ results.url | default: request.path }}">{{ 'products.facets.clear_all' | t }}</a>
