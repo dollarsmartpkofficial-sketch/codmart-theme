@@ -19,6 +19,18 @@
 
   assign category = product.type | default: product.collections.first.title
   assign cod_mode = settings.cod_form_mode
+
+  comment
+    The quick order form only earns its keep above a certain price. On a
+    Rs.120 charger, four fields are more friction than the cart, so cheap
+    products fall back to the normal add-to-cart flow. The threshold is a
+    setting; 0 shows the form on everything.
+  endcomment
+  assign cod_min = settings.cod_min_price | times: 100
+  assign cod_available = false
+  if settings.cod_form_enabled and variant.price >= cod_min
+    assign cod_available = true
+  endif
 -%}
 
 <div class="wrap">
@@ -152,7 +164,7 @@
             </div>
 
           {%- when 'cod_form' -%}
-            {%- if settings.cod_form_enabled -%}
+            {%- if cod_available -%}
               <div data-cod-slot="{{ cod_mode }}" {{ block.shopify_attributes }}>
                 {%- if cod_mode == 'inline' -%}
                   {% render 'cod-form', product: product, block: block %}
@@ -282,7 +294,7 @@
         <span class="price" data-sticky-price>{{ variant.price | money }}</span>
       </div>
       <div class="sticky-atc__acts">
-        {%- if settings.cod_form_enabled and cod_mode != 'inline' -%}
+        {%- if cod_available and cod_mode != 'inline' -%}
           <button type="button" class="btn btn--cod" data-modal-open="CodModal">
             {% render 'icon', name: 'truck', size: 17 %}
             <span class="sticky-atc__label">{{ settings.cod_form_trigger }}</span>
@@ -301,7 +313,7 @@
   {{ product.variants | json }}
 </script>
 <script src="{{ 'product.js' | asset_url }}" defer></script>
-{%- if settings.cod_form_enabled -%}
+{%- if cod_available -%}
   <script src="{{ 'cod-form.js' | asset_url }}" defer></script>
 {%- endif -%}
 

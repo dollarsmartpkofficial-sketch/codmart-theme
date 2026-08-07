@@ -119,6 +119,8 @@
       "mode_popup": "Popup (recommended)",
       "mode_inline": "Inline on the product page",
       "mode_sticky": "Sticky bar at the bottom",
+      "min_price": "Only show the form above",
+      "min_price_info": "Amount only, no currency symbol. Cheaper products get the normal add-to-cart flow, where a four-field form is more friction than it's worth. Set to 0 to show it on everything.",
       "auto_open": "Open the popup automatically",
       "auto_open_info": "Opens as soon as the page loads. Can lift orders, but some shoppers find it pushy.",
       "form_heading": "Form heading",

@@ -137,6 +137,7 @@
     "settings": [
       { "type": "paragraph", "content": "t:settings.cod.info" },
       { "type": "header", "content": "t:settings.cod.form_header" },
+      { "type": "text", "id": "cod_min_price", "label": "t:settings.cod.min_price", "default": "1000", "info": "t:settings.cod.min_price_info" },
       { "type": "checkbox", "id": "cod_form_auto_open", "label": "t:settings.cod.auto_open", "default": false, "info": "t:settings.cod.auto_open_info" },
       { "type": "text", "id": "cod_form_heading", "label": "t:settings.cod.form_heading", "default": "Cash on Delivery — order now" },
       { "type": "text", "id": "cod_form_subheading", "label": "t:settings.cod.form_subheading", "default": "Fill the form, delivery in 24 hours" },
