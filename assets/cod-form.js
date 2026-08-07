@@ -11,7 +11,16 @@
   var form = document.querySelector('[data-cod-form]');
   if (!form) return;
 
-  var money = (window.theme && window.theme.formatMoney) || function (c) { return (c / 100).toFixed(2); };
+  /* Resolved per call, not once at load: section scripts and global.js are all
+     deferred, so load order depends on where each <script> sits in the page. */
+  function money(cents) {
+    var fn = window.theme && window.theme.formatMoney;
+    return fn ? fn(cents) : (cents / 100).toFixed(2);
+  }
+
+  function strings() {
+    return (window.theme && window.theme.strings) || {};
+  }
 
   var unitPrice = parseInt(form.dataset.variantPrice, 10) || 0;
   var variantId = form.dataset.variantId;
@@ -71,7 +80,7 @@
       el.shippingRow.classList.toggle('order-summary__row--free', t.shipping === 0);
       if (el.shippingValue) {
         el.shippingValue.textContent = t.shipping === 0
-          ? (window.theme.strings.shippingFree || 'FREE')
+          ? (strings().shippingFree || 'FREE')
           : money(t.shipping);
       }
     }

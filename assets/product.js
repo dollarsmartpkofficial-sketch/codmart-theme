@@ -7,8 +7,16 @@
   var info = document.querySelector('[data-product-info]');
   if (!info) return;
 
-  var money = (window.theme && window.theme.formatMoney) || function (c) { return (c / 100).toFixed(2); };
-  var strings = (window.theme && window.theme.strings) || {};
+  /* Resolved per call, not once at load: section scripts and global.js are all
+     deferred, so load order depends on where each <script> sits in the page. */
+  function money(cents) {
+    var fn = window.theme && window.theme.formatMoney;
+    return fn ? fn(cents) : (cents / 100).toFixed(2);
+  }
+
+  function strings() {
+    return (window.theme && window.theme.strings) || {};
+  }
 
   var variants = [];
   try {
@@ -81,13 +89,13 @@
 
     if (!variant) {
       if (addButton) { addButton.disabled = true; }
-      if (addLabel) addLabel.textContent = strings.unavailable || 'Unavailable';
+      if (addLabel) addLabel.textContent = strings().unavailable || 'Unavailable';
       return;
     }
 
     if (variantInput) variantInput.value = variant.id;
     if (addButton) addButton.disabled = !variant.available;
-    if (addLabel) addLabel.textContent = variant.available ? (strings.addToCart || 'Add to cart') : (strings.soldOut || 'Sold out');
+    if (addLabel) addLabel.textContent = variant.available ? (strings().addToCart || 'Add to cart') : (strings().soldOut || 'Sold out');
 
     renderPrice(variant);
     showMedia(variant);

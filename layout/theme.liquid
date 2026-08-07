@@ -46,6 +46,13 @@
 
   <script>document.documentElement.classList.replace('no-js','js');</script>
 
+  {%- comment -%}
+    global.js loads from the head so it runs before the deferred scripts that
+    sections add further down the page — deferred scripts execute in document
+    order, and those sections rely on `window.theme` already existing.
+  {%- endcomment -%}
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+
   {{ content_for_header }}
 </head>
 
@@ -64,8 +71,6 @@
   {%- if settings.whatsapp_enabled and settings.whatsapp_float and settings.whatsapp_number != blank -%}
     {% render 'whatsapp-float' %}
   {%- endif -%}
-
-  <script src="{{ 'global.js' | asset_url }}" defer></script>
 
   {%- comment -%} Cart data for JS, without an extra request. {%- endcomment -%}
   <script type="application/json" id="ThemeData">
