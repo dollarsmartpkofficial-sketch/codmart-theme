@@ -214,7 +214,7 @@
             "emoji": "🌵",
             "button_label": "Shop now",
             "link": "",
-            "button_style": "sale"
+            "button_style": "ghost"
           }
         }
       },
@@ -227,9 +227,9 @@
     "deals": {
       "type": "featured-products",
       "settings": {
-        "collection": "",
+        "collection": "home-essentials",
         "eyebrow": "Don't miss out",
-        "heading": "🔥 Hot deals",
+        "heading": "🔥 Home Essential",
         "text": "Order before the sale ends",
         "show_link": true,
         "link_label": "View all",
