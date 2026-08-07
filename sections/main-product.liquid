@@ -79,7 +79,7 @@
               {%- assign pct = inventory | times: 100 | divided_by: settings.low_stock_threshold -%}
               <div class="urgency" {{ block.shopify_attributes }}>
                 <div class="urgency__top">
-                  <span>{{ settings.low_stock_text | replace: '{count}', inventory }}</span>
+                  <span>{{ settings.low_stock_text | replace: '[count]', inventory }}</span>
                   <span>{{ block.settings.nudge }}</span>
                 </div>
                 <div class="stock-bar" role="presentation"><i style="width:{{ pct }}%"></i></div>

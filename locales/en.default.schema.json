@@ -91,7 +91,7 @@
       "threshold": "Show when stock is below",
       "threshold_info": "Uses real inventory. The warning stays hidden while stock is above this number.",
       "text": "Warning text",
-      "text_info": "Use {count} where the remaining quantity should appear."
+      "text_info": "Use [count] where the remaining quantity should appear."
     },
     "cod": {
       "name": "COD & WhatsApp",

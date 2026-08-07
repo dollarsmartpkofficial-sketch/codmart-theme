@@ -63,7 +63,7 @@
 
     "low_stock_enabled": true,
     "low_stock_threshold": 10,
-    "low_stock_text": "Only {count} left!",
+    "low_stock_text": "Only [count] left!",
 
     "reviews_enabled": true,
     "reviews_show_form": true,
