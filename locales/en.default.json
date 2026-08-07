@@ -49,6 +49,13 @@
     }
   },
 
+  "onboarding": {
+    "product_title": "Example product",
+    "category": "Category",
+    "pick_collection": "Pick a collection in this section's settings to show your own products here.",
+    "pick_collections": "Add collections to these blocks so the links work."
+  },
+
   "products": {
     "product": {
       "add_to_cart": "Add to cart",

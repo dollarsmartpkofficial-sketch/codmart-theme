@@ -162,7 +162,13 @@
                       {% render 'icon', name: 'truck', size: 20 %}
                       {{ block.settings.trigger_label | default: settings.cod_form_trigger }}
                     </button>
-                    <p class="order-now__sub">{{ block.settings.trigger_sub | default: 'cod.form.trigger_sub' | t }}</p>
+                    {%- liquid
+                      assign trigger_sub = block.settings.trigger_sub
+                      if trigger_sub == blank
+                        assign trigger_sub = 'cod.form.trigger_sub' | t
+                      endif
+                    -%}
+                    <p class="order-now__sub">{{ trigger_sub }}</p>
                   </div>
 
                   <div class="modal" id="CodModal" aria-hidden="true" role="dialog" aria-modal="true"

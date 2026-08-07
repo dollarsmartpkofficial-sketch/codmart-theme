@@ -1,8 +1,20 @@
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = '404.title' | t
+  endif
+
+  assign body = section.settings.text
+  if body == blank
+    assign body = '404.subtext' | t
+  endif
+-%}
+
 <div class="wrap section">
   <div class="empty-state error-404">
     <span class="error-404__emoji" aria-hidden="true">{{ section.settings.emoji }}</span>
-    <h1>{{ section.settings.heading | default: '404.title' | t }}</h1>
-    <p>{{ section.settings.text | default: '404.subtext' | t }}</p>
+    <h1>{{ heading }}</h1>
+    <p>{{ body }}</p>
 
     <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
       <label class="visually-hidden" for="Search404">{{ 'general.search.search' | t }}</label>

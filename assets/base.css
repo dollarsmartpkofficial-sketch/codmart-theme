@@ -639,6 +639,12 @@ h3{font-size:var(--fs-h3)}
 .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
 .card__excerpt{font-size:13px;color:var(--muted);line-height:1.6}
 .chip--on{background:var(--brand);color:#fff}
+/* Only rendered inside the theme editor — a nudge for the merchant. */
+.editor-note{
+  background:rgba(var(--sale-rgb),.1);border:1px dashed rgba(var(--sale-rgb),.5);
+  border-radius:var(--radius-sm);padding:10px 14px;margin-block-end:14px;
+  font-size:13.5px;font-weight:600;color:var(--ink);
+}
 
 /* ---------- cart ---------- */
 .cart__title{margin-block-end:20px}

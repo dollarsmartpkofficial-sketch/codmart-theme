@@ -24,14 +24,28 @@
         {%- endfor -%}
       </div>
     {%- else -%}
-      {%- comment -%} Placeholders so the section isn't empty in the editor. {%- endcomment -%}
+      {%- comment -%}
+        No collection picked yet. Show placeholders so the layout is visible,
+        plus a note that only the merchant sees inside the theme editor.
+      {%- endcomment -%}
+      {%- if request.design_mode -%}
+        <p class="editor-note">{{ 'onboarding.pick_collection' | t }}</p>
+      {%- endif -%}
+
       <div class="product-grid" style="--cols:{{ cols }}">
         {%- for i in (1..limit) -%}
           <article class="card">
-            <div class="card__media card__media--square">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            <div class="card__media card__media--square">
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
             <div class="card__body">
-              <h3 class="card__title">{{ 'onboarding.product_title' | t | default: 'Example product' }}</h3>
-              <div class="card__price"><span class="price">{{ 1999 | money }}</span></div>
+              <span class="card__cat">{{ 'onboarding.category' | t }}</span>
+              <h3 class="card__title">{{ 'onboarding.product_title' | t }}</h3>
+              <div class="card__price">
+                <span class="price">{{ 1999 | money }}</span>
+                <s class="price--old">{{ 2499 | money }}</s>
+              </div>
+              <span class="tag-cod">{% render 'icon', name: 'cash', size: 14 %} {{ 'cod.badges.cod' | t }}</span>
             </div>
           </article>
         {%- endfor -%}

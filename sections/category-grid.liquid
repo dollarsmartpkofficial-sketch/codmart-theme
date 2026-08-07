@@ -13,6 +13,20 @@
       </div>
     {%- endif -%}
 
+    {%- if request.design_mode -%}
+      {%- liquid
+        assign unlinked = 0
+        for block in section.blocks
+          if block.settings.collection == blank and block.settings.link == blank
+            assign unlinked = unlinked | plus: 1
+          endif
+        endfor
+      -%}
+      {%- if unlinked > 0 -%}
+        <p class="editor-note">{{ 'onboarding.pick_collections' | t }}</p>
+      {%- endif -%}
+    {%- endif -%}
+
     <div class="cats" style="--cols:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
       {%- for block in section.blocks -%}
         {%- liquid

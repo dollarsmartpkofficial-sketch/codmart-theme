@@ -18,6 +18,11 @@
   assign free_threshold = settings.free_shipping_threshold | times: 100
   assign ship_rate = settings.shipping_rate | times: 100
   assign variant = product.selected_or_first_available_variant
+
+  assign cod_note = block.settings.note
+  if cod_note == blank
+    assign cod_note = 'cod.form.note' | t
+  endif
 -%}
 
 <div
@@ -165,7 +170,7 @@
       {{ block.settings.button_label | default: settings.cod_form_button }}
     </button>
 
-    <p class="cod-note">{{ block.settings.note | default: 'cod.form.note' | t }}</p>
+    <p class="cod-note">{{ cod_note }}</p>
 
     {%- if block.settings.show_badges -%}
       <div class="cod-badges">
