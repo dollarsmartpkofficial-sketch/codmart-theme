@@ -1,0 +1,111 @@
+{%- comment -%}
+  Announcement bar.
+
+  With no blocks it falls back to the `announcement_text` answered during
+  setup, so a brand-new install is never empty. Add blocks to show several
+  messages — they rotate on mobile, sit side by side on desktop.
+{%- endcomment -%}
+
+{%- liquid
+  assign has_blocks = false
+  if section.blocks.size > 0
+    assign has_blocks = true
+  endif
+-%}
+
+{%- if has_blocks or settings.announcement_text != blank -%}
+  <div
+    class="announcement"
+    style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}"
+    {{ section.shopify_attributes }}
+  >
+    <div class="wrap announcement__inner">
+      {%- if has_blocks -%}
+        <div class="announcement__track" data-announcement-track data-rotate="{{ section.settings.rotate_speed }}">
+          {%- for block in section.blocks -%}
+            <div class="announcement__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+              {%- else -%}
+                {{ block.settings.text }}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="announcement__item">{{ settings.announcement_text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.show_phone and settings.support_phone != blank -%}
+        <a class="announcement__phone" href="tel:{{ settings.support_phone | remove: ' ' }}">
+          {% render 'icon', name: 'phone', size: 14 %}
+          {{ settings.support_phone }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "class": "announcement-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "With no messages added, the announcement text from “🚀 Start here” is shown."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#5A1414"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show support phone",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotate_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Rotate every",
+      "default": 4,
+      "info": "Applies on mobile, where messages take turns instead of sitting side by side."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Free delivery above Rs.3,500" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        { "type": "message", "settings": { "text": "🚚 Free delivery above Rs.3,500" } },
+        { "type": "message", "settings": { "text": "💵 Cash on Delivery available" } },
+        { "type": "message", "settings": { "text": "🔄 7-day easy returns" } }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

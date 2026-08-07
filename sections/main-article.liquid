@@ -1,0 +1,97 @@
+<article class="wrap section page-narrow">
+  <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="{{ blog.url }}">{{ blog.title }}</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">{{ article.title }}</span>
+  </nav>
+
+  <h1 class="page-title">{{ article.title }}</h1>
+
+  {%- if section.settings.show_meta -%}
+    <p class="article__meta">
+      {{ 'blogs.article.posted_on' | t }} {{ article.published_at | date: format: 'date' }}
+      {%- if article.author != blank %} · {{ 'blogs.article.by' | t }} {{ article.author }}{% endif -%}
+    </p>
+  {%- endif -%}
+
+  {%- if article.image and section.settings.show_image -%}
+    <img
+      class="article__hero"
+      src="{{ article.image | image_url: width: 1200 }}"
+      srcset="{{ article.image | image_url: width: 600 }} 600w, {{ article.image | image_url: width: 1200 }} 1200w"
+      sizes="(max-width: 860px) 100vw, 760px"
+      alt="{{ article.image.alt | escape }}"
+      width="{{ article.image.width }}"
+      height="{{ article.image.height }}"
+      fetchpriority="high"
+    >
+  {%- endif -%}
+
+  <div class="rte">{{ article.content }}</div>
+
+  {%- if article.tags.size > 0 and section.settings.show_tags -%}
+    <div class="active-filters">
+      {%- for tag in article.tags -%}
+        <a class="chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <a class="btn btn--outline" href="{{ blog.url }}">{{ 'blogs.article.back' | t }}</a>
+
+  {%- if blog.comments_enabled? and section.settings.show_comments -%}
+    <section class="article__comments">
+      <h2>{{ article.comments_count }} {{ 'reviews.title' | t }}</h2>
+
+      {%- for comment in article.comments -%}
+        <div class="review">
+          <div class="review__head">
+            <span class="avatar" aria-hidden="true">{{ comment.author | slice: 0 | upcase }}</span>
+            <div>
+              <b>{{ comment.author }}</b>
+              <span class="rating__count">{{ comment.created_at | date: format: 'date' }}</span>
+            </div>
+          </div>
+          <div class="rte">{{ comment.content }}</div>
+        </div>
+      {%- endfor -%}
+
+      {% form 'new_comment', article %}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success">{{ 'reviews.form.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="form-error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+
+        <div class="field">
+          <label for="CommentAuthor">{{ 'reviews.form.name' | t }}</label>
+          <input id="CommentAuthor" type="text" name="comment[author]" required value="{{ form.author }}">
+        </div>
+        <div class="field">
+          <label for="CommentEmail">{{ 'reviews.form.email' | t }}</label>
+          <input id="CommentEmail" type="email" name="comment[email]" required value="{{ form.email }}">
+        </div>
+        <div class="field">
+          <label for="CommentBody">{{ 'reviews.form.body' | t }}</label>
+          <textarea id="CommentBody" name="comment[body]" rows="5" required>{{ form.body }}</textarea>
+        </div>
+        <button type="submit" class="btn btn--primary">{{ 'reviews.form.submit' | t }}</button>
+      {% endform %}
+    </section>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "class": "article-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_meta", "label": "Show date and author", "default": true },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true },
+    { "type": "checkbox", "id": "show_comments", "label": "Show comments", "default": true }
+  ]
+}
+{% endschema %}

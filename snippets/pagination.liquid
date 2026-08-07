@@ -1,0 +1,33 @@
+{%- comment -%}
+  Pagination. Accepts: paginate
+
+  Numbered pages rather than infinite scroll — it keeps each page light,
+  which is what keeps the Lighthouse score up on big collections.
+{%- endcomment -%}
+
+<nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+  {%- if paginate.previous -%}
+    <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
+      {% render 'icon', name: 'chevron-left', size: 16 %}
+      <span class="visually-hidden">{{ 'general.pagination.previous' | t }}</span>
+    </a>
+  {%- endif -%}
+
+  {%- for part in paginate.parts -%}
+    {%- if part.is_link -%}
+      <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+    {%- elsif part.title == paginate.current_page -%}
+      <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</span>
+    {%- else -%}
+      {%- comment -%} The ellipsis between page ranges. {%- endcomment -%}
+      <span class="pagination__gap" aria-hidden="true">{{ part.title }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if paginate.next -%}
+    <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+      {% render 'icon', name: 'chevron-right', size: 16 %}
+      <span class="visually-hidden">{{ 'general.pagination.next' | t }}</span>
+    </a>
+  {%- endif -%}
+</nav>

@@ -1,0 +1,138 @@
+<div class="wrap section account-page">
+  <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+    <a href="{{ routes.account_url }}">{{ 'customer.account.title' | t }}</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">{{ 'customer.addresses.title' | t }}</span>
+  </nav>
+
+  <h1 class="page-title">{{ 'customer.addresses.title' | t }}</h1>
+
+  <details class="account-card">
+    <summary class="btn btn--primary">{{ 'customer.addresses.add' | t }}</summary>
+    {% form 'customer_address', customer.new_address %}
+      <div class="cod-form__fields">
+        <div class="field">
+          <label for="AddressFirstNew">{{ 'customer.register.first_name' | t }}</label>
+          <input id="AddressFirstNew" type="text" name="address[first_name]" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="AddressLastNew">{{ 'customer.register.last_name' | t }}</label>
+          <input id="AddressLastNew" type="text" name="address[last_name]" autocomplete="family-name">
+        </div>
+        <div class="field field--full">
+          <label for="AddressStreetNew">{{ 'cod.form.address' | t }}</label>
+          <input id="AddressStreetNew" type="text" name="address[address1]" autocomplete="address-line1">
+        </div>
+        <div class="field">
+          <label for="AddressCityNew">{{ 'cod.form.city' | t }}</label>
+          <input id="AddressCityNew" type="text" name="address[city]" autocomplete="address-level2">
+        </div>
+        <div class="field">
+          <label for="AddressZipNew">ZIP</label>
+          <input id="AddressZipNew" type="text" name="address[zip]" autocomplete="postal-code">
+        </div>
+        <div class="field">
+          <label for="AddressPhoneNew">{{ 'cod.form.phone' | t }}</label>
+          <input id="AddressPhoneNew" type="tel" name="address[phone]" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="AddressCountryNew">Country</label>
+          <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+        </div>
+      </div>
+
+      <label class="facets__opt">
+        {{ form.set_as_default_checkbox }}
+        <span>{{ 'customer.addresses.default' | t }}</span>
+      </label>
+
+      <button type="submit" class="btn btn--primary">{{ 'customer.addresses.add' | t }}</button>
+    {% endform %}
+  </details>
+
+  {%- paginate customer.addresses by 6 -%}
+    <div class="account-grid">
+      {%- for address in customer.addresses -%}
+        <div class="account-card">
+          {%- if address == customer.default_address -%}
+            <span class="chip">{{ 'customer.addresses.default' | t }}</span>
+          {%- endif -%}
+          {{ address | format_address }}
+
+          <details>
+            <summary class="btn btn--outline btn--sm">{{ 'customer.addresses.edit' | t }}</summary>
+            {% form 'customer_address', address %}
+              <div class="cod-form__fields">
+                <div class="field">
+                  <label for="AddressFirst-{{ address.id }}">{{ 'customer.register.first_name' | t }}</label>
+                  <input id="AddressFirst-{{ address.id }}" type="text" name="address[first_name]" value="{{ address.first_name }}">
+                </div>
+                <div class="field">
+                  <label for="AddressLast-{{ address.id }}">{{ 'customer.register.last_name' | t }}</label>
+                  <input id="AddressLast-{{ address.id }}" type="text" name="address[last_name]" value="{{ address.last_name }}">
+                </div>
+                <div class="field field--full">
+                  <label for="AddressStreet-{{ address.id }}">{{ 'cod.form.address' | t }}</label>
+                  <input id="AddressStreet-{{ address.id }}" type="text" name="address[address1]" value="{{ address.address1 }}">
+                </div>
+                <div class="field">
+                  <label for="AddressCity-{{ address.id }}">{{ 'cod.form.city' | t }}</label>
+                  <input id="AddressCity-{{ address.id }}" type="text" name="address[city]" value="{{ address.city }}">
+                </div>
+                <div class="field">
+                  <label for="AddressZip-{{ address.id }}">ZIP</label>
+                  <input id="AddressZip-{{ address.id }}" type="text" name="address[zip]" value="{{ address.zip }}">
+                </div>
+                <div class="field">
+                  <label for="AddressPhone-{{ address.id }}">{{ 'cod.form.phone' | t }}</label>
+                  <input id="AddressPhone-{{ address.id }}" type="tel" name="address[phone]" value="{{ address.phone }}">
+                </div>
+                <div class="field">
+                  <label for="AddressCountry-{{ address.id }}">Country</label>
+                  <select id="AddressCountry-{{ address.id }}" name="address[country]" data-default="{{ address.country }}">{{ country_option_tags }}</select>
+                </div>
+              </div>
+
+              <label class="facets__opt">
+                {{ form.set_as_default_checkbox }}
+                <span>{{ 'customer.addresses.default' | t }}</span>
+              </label>
+
+              <button type="submit" class="btn btn--primary btn--sm">{{ 'customer.addresses.edit' | t }}</button>
+            {% endform %}
+
+            <a
+              class="btn btn--outline btn--sm"
+              href="#"
+              data-address-delete="{{ address.url }}"
+              data-confirm="{{ 'customer.addresses.delete' | t }}?"
+            >{{ 'customer.addresses.delete' | t }}</a>
+          </details>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      {% render 'pagination', paginate: paginate %}
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+<script>
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('[data-address-delete]');
+    if (!link) return;
+    e.preventDefault();
+    if (!confirm(link.dataset.confirm)) return;
+    var form = document.createElement('form');
+    form.method = 'post';
+    form.action = link.dataset.addressDelete;
+    form.innerHTML = '<input type="hidden" name="_method" value="delete">';
+    document.body.appendChild(form);
+    form.submit();
+  });
+
+  document.querySelectorAll('select[data-default]').forEach(function (select) {
+    if (select.dataset.default) select.value = select.dataset.default;
+  });
+</script>

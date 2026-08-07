@@ -1,0 +1,155 @@
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+-%}
+
+<div class="wrap section">
+  <h1 class="cart__title">{{ 'cart.title' | t }}</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="empty-state">
+      <p>{{ 'cart.empty' | t }}</p>
+      <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
+    </div>
+  {%- else -%}
+
+    {%- if section.settings.show_free_shipping_bar and threshold > 0 -%}
+      {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
+      <div class="ship-bar">
+        <p>
+          {%- if remaining > 0 -%}
+            {{ 'cart.free_shipping_progress' | t: amount: remaining | money }}
+          {%- else -%}
+            🎉 {{ 'cart.free_shipping_reached' | t }}
+          {%- endif -%}
+        </p>
+        <div class="stock-bar"><i style="width:{{ pct }}%;background:var(--cod)"></i></div>
+      </div>
+    {%- endif -%}
+
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+      <div class="cart__items">
+        {%- for item in cart.items -%}
+          <div class="cart-item">
+            <a href="{{ item.url }}" class="cart-item__media" tabindex="-1" aria-hidden="true">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 160 }}" alt="" width="80" height="80" loading="lazy">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </a>
+
+            <div class="cart-item__info">
+              <a class="cart-item__title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <span class="cart-item__variant">{{ item.variant.title }}</span>
+              {%- endunless -%}
+              {%- if item.selling_plan_allocation -%}
+                <span class="cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+              {%- endif -%}
+              {%- for property in item.properties -%}
+                {%- unless property.last == blank -%}
+                  <span class="cart-item__variant">{{ property.first }}: {{ property.last }}</span>
+                {%- endunless -%}
+              {%- endfor -%}
+              <span class="price">{{ item.final_price | money }}</span>
+            </div>
+
+            <div class="cart-item__actions">
+              <div class="qty" data-qty>
+                <button type="button" data-qty-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">−</button>
+                <label class="visually-hidden" for="Qty-{{ forloop.index }}">{{ 'products.product.quantity' | t }}</label>
+                <input
+                  id="Qty-{{ forloop.index }}"
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  data-line="{{ forloop.index }}"
+                >
+                <button type="button" data-qty-plus aria-label="{{ 'products.product.increase_quantity' | t }}">+</button>
+              </div>
+
+              <span class="cart-item__total">{{ item.final_line_price | money }}</span>
+
+              <a class="cart-item__remove" href="{{ item.url_to_remove }}" aria-label="{{ 'cart.remove' | t }}: {{ item.product.title | escape }}">
+                {% render 'icon', name: 'close', size: 16 %}
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <aside class="cart__summary">
+        {%- if section.settings.show_note -%}
+          <div class="field">
+            <label for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea id="CartNote" name="note" rows="3" placeholder="{{ 'cart.note_placeholder' | t }}">{{ cart.note }}</textarea>
+          </div>
+        {%- endif -%}
+
+        <div class="order-summary">
+          <div class="order-summary__row">
+            <span>{{ 'cart.item_count' | t: count: cart.item_count }}</span>
+            <span>{{ cart.items_subtotal_price | money }}</span>
+          </div>
+
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <div class="order-summary__row">
+              <span>{{ discount.title }}</span>
+              <span>− {{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          {%- if threshold > 0 -%}
+            <div class="order-summary__row{% if remaining <= 0 %} order-summary__row--free{% endif %}">
+              <span>{{ 'cart.shipping' | t }}</span>
+              <span>
+                {%- if remaining <= 0 -%}
+                  {{ 'cart.shipping_free' | t }}
+                {%- else -%}
+                  {{ settings.shipping_rate | times: 100 | money }}
+                {%- endif -%}
+              </span>
+            </div>
+          {%- endif -%}
+
+          <div class="order-summary__total">
+            <span>{{ 'cart.total' | t }}</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+        </div>
+
+        <button type="submit" name="update" class="btn btn--outline btn--block">{{ 'cart.view_cart' | t }}</button>
+        <button type="submit" name="checkout" class="btn btn--primary btn--block btn--lg">{{ 'cart.checkout' | t }}</button>
+
+        {%- if additional_checkout_buttons and section.settings.show_dynamic_checkout -%}
+          <div class="cart__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+        {%- endif -%}
+
+        <p class="cod-note">{{ 'products.product.tax_included' | t }} {{ 'products.product.shipping_at_checkout' | t }}</p>
+
+        {%- if section.settings.show_badges -%}
+          <div class="cod-badges">
+            <span>{% render 'icon', name: 'cash', size: 14 %} {{ 'cod.badges.cod' | t }}</span>
+            <span>{% render 'icon', name: 'return', size: 14 %} {{ settings.return_days }}-day returns</span>
+            <span>{% render 'icon', name: 'shield', size: 14 %} {{ 'cod.badges.authentic' | t }}</span>
+          </div>
+        {%- endif -%}
+      </aside>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "class": "cart-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_free_shipping_bar", "label": "Show free delivery progress bar", "default": true },
+    { "type": "checkbox", "id": "show_note", "label": "Show order note", "default": true },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show extra checkout buttons", "default": true },
+    { "type": "checkbox", "id": "show_badges", "label": "Show trust badges", "default": true }
+  ]
+}
+{% endschema %}

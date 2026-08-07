@@ -1,0 +1,60 @@
+<div class="wrap section">
+  <h1 class="page-title">{{ blog.title }}</h1>
+
+  {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+    <div class="active-filters">
+      <a class="chip{% unless current_tags %} chip--on{% endunless %}" href="{{ blog.url }}">{{ 'products.facets.clear_all' | t }}</a>
+      {%- for tag in blog.all_tags -%}
+        <a class="chip{% if current_tags contains tag %} chip--on{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- paginate blog.articles by section.settings.per_page -%}
+    {%- if blog.articles.size > 0 -%}
+      <div class="article-grid" style="--cols:{{ section.settings.columns }}">
+        {%- for article in blog.articles -%}
+          <article class="card">
+            {%- if article.image -%}
+              <a class="card__media card__media--portrait" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+                <img
+                  src="{{ article.image | image_url: width: 600 }}"
+                  alt="{{ article.image.alt | escape }}"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  loading="{% if forloop.index <= 3 %}eager{% else %}lazy{% endif %}"
+                >
+              </a>
+            {%- endif -%}
+            <div class="card__body">
+              <span class="card__cat">{{ article.published_at | date: format: 'date' }}</span>
+              <h3 class="card__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+              {%- if article.excerpt_or_content != blank -%}
+                <p class="card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 20 }}</p>
+              {%- endif -%}
+              <a class="link-all" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- else -%}
+      <div class="empty-state"><p>{{ 'general.search.no_results' | t: terms: blog.title }}</p></div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "class": "blog-section",
+  "settings": [
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Articles per row", "default": 3 },
+    { "type": "range", "id": "per_page", "min": 3, "max": 24, "step": 3, "label": "Articles per page", "default": 12 },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tag filter", "default": true }
+  ]
+}
+{% endschema %}

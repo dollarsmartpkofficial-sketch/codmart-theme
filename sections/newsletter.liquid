@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="wrap">
+    <div class="newsletter" style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}">
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+
+      {% form 'customer', class: 'newsletter__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="NewsletterEmail">{{ 'general.newsletter.placeholder' | t }}</label>
+        <div class="newsletter__row">
+          <input
+            id="NewsletterEmail"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ 'general.newsletter.placeholder' | t }}"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="btn btn--sale">{{ section.settings.button_label }}</button>
+        </div>
+
+        {%- if form.posted_successfully? -%}
+          <p class="newsletter__success">{{ 'general.newsletter.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="newsletter__error">{{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.note != blank -%}
+          <small>{{ section.settings.note }}</small>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "newsletter-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get exclusive deals first 🎁" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Subscribe for early access to sales and new arrivals." },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Subscribe" },
+    { "type": "text", "id": "note", "label": "Note", "default": "No spam. Unsubscribe anytime." },
+    { "type": "color", "id": "background", "label": "Background", "default": "#741C1C" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+# Shopify CLI
+.shopify/
+*.log
+
+# Design working files — not part of the theme
+_design/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

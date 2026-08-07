@@ -1,0 +1,74 @@
+<div class="wrap section">
+  <div class="contact">
+    <div class="contact__intro">
+      <h1>{{ page.title | default: 'contact.form.title' | t }}</h1>
+      {%- if page.content != blank -%}
+        <div class="rte">{{ page.content }}</div>
+      {%- endif -%}
+
+      <ul class="contact__details">
+        {%- if settings.whatsapp_enabled and settings.whatsapp_number != blank -%}
+          <li>
+            <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}" target="_blank" rel="noopener">
+              {% render 'icon', name: 'whatsapp', size: 18 %} {{ settings.whatsapp_number }}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.support_phone != blank -%}
+          <li><a href="tel:{{ settings.support_phone | remove: ' ' }}">{% render 'icon', name: 'phone', size: 18 %} {{ settings.support_phone }}</a></li>
+        {%- endif -%}
+        {%- if settings.support_email != blank -%}
+          <li><a href="mailto:{{ settings.support_email }}">{% render 'icon', name: 'mail', size: 18 %} {{ settings.support_email }}</a></li>
+        {%- endif -%}
+        {%- if settings.support_hours != blank -%}
+          <li>{% render 'icon', name: 'clock', size: 18 %} {{ settings.support_hours }}</li>
+        {%- endif -%}
+        {%- if settings.store_address != blank -%}
+          <li>{% render 'icon', name: 'pin', size: 18 %} {{ settings.store_address | newline_to_br }}</li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div class="contact__form">
+      {% form 'contact' %}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success">{{ 'contact.form.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="form-error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+
+        <div class="field">
+          <label for="ContactName">{{ 'contact.form.name' | t }}</label>
+          <input id="ContactName" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactEmail">{{ 'contact.form.email' | t }} <span class="req">*</span></label>
+          <input id="ContactEmail" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactPhone">{{ 'contact.form.phone' | t }}</label>
+          <input id="ContactPhone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactMessage">{{ 'contact.form.message' | t }} <span class="req">*</span></label>
+          <textarea id="ContactMessage" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--lg">{{ 'contact.form.send' | t }}</button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "class": "contact-section",
+  "settings": [
+    { "type": "paragraph", "content": "Phone, email, hours and address come from “🚀 Start here”." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "style": "gradient",
+        "pill": "New products every week",
+        "heading": "Pakistan's best online shopping",
+        "text": "Quality products at fair prices. Cash on Delivery available — free shipping on bigger orders.",
+        "emoji": "🛍️",
+        "note": "Starting from Rs.120",
+        "button_label": "Shop now",
+        "button_2_label": "Track order",
+        "overlay": 45
+      }
+    },
+    "trust": {
+      "type": "trust-bar",
+      "blocks": {
+        "b1": { "type": "item", "settings": { "icon_type": "svg", "icon": "truck", "title": "Free shipping", "text": "On orders above Rs.3,500" } },
+        "b2": { "type": "item", "settings": { "icon_type": "svg", "icon": "cash", "title": "Cash on Delivery", "text": "EasyPaisa & JazzCash too" } },
+        "b3": { "type": "item", "settings": { "icon_type": "svg", "icon": "return", "title": "7-day returns", "text": "Hassle-free returns" } },
+        "b4": { "type": "item", "settings": { "icon_type": "svg", "icon": "shield", "title": "100% authentic", "text": "Guaranteed quality" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": { "background": "#FFFFFF" }
+    },
+    "categories": {
+      "type": "category-grid",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "emoji": "💪", "label": "Health & Beauty" } },
+        "c2": { "type": "category", "settings": { "emoji": "🍳", "label": "Kitchen" } },
+        "c3": { "type": "category", "settings": { "emoji": "📱", "label": "Electronics" } },
+        "c4": { "type": "category", "settings": { "emoji": "🏠", "label": "Home" } },
+        "c5": { "type": "category", "settings": { "emoji": "🧸", "label": "Kids" } },
+        "c6": { "type": "category", "settings": { "emoji": "🌀", "label": "Fans & Cooling" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "settings": { "columns": 6, "columns_mobile": 3, "icon_shape": "circle" }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Hand-picked",
+        "heading": "⭐ Featured products",
+        "text": "Handpicked top sellers just for you",
+        "columns": 5,
+        "limit": 5,
+        "background": "soft"
+      }
+    },
+    "promos": {
+      "type": "promo-banners",
+      "blocks": {
+        "p1": { "type": "promo", "settings": { "eyebrow": "Limited time", "heading": "Health & Beauty", "text": "Trimmers, rollers, hair removers & more", "emoji": "💄" } },
+        "p2": { "type": "promo", "settings": { "eyebrow": "Just arrived", "heading": "Kids Collection", "text": "Toys, LED cups and lots more", "emoji": "🌵", "color_from": "#1A1A2E", "color_to": "#3D0E0E", "button_style": "sale" } }
+      },
+      "block_order": ["p1", "p2"]
+    },
+    "deals": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Don't miss out",
+        "heading": "🔥 Hot deals",
+        "text": "Order before the sale ends",
+        "columns": 5,
+        "limit": 5,
+        "background": "page"
+      }
+    },
+    "steps": {
+      "type": "steps",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "emoji": "🛒", "title": "Pick a product", "text": "Choose what you like and add it to the cart" } },
+        "s2": { "type": "step", "settings": { "emoji": "📝", "title": "Enter your address", "text": "Name, number and delivery address — takes 2 minutes" } },
+        "s3": { "type": "step", "settings": { "emoji": "💵", "title": "Pay on delivery", "text": "Check your package, then pay the courier" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": { "background": "soft" }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "rating": 5, "name": "Ahmed Raza", "meta": "Karachi", "quote": "Great quality and fast delivery. COD made it easy to trust." } },
+        "t2": { "type": "testimonial", "settings": { "rating": 5, "name": "Sana Malik", "meta": "Lahore", "quote": "Product was exactly like the picture. Highly recommended!" } },
+        "t3": { "type": "testimonial", "settings": { "rating": 5, "name": "Usman Khan", "meta": "Islamabad", "quote": "Good price, good quality. Ordered three times already." } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": { "columns": 3 }
+    },
+    "cod-banner": {
+      "type": "rich-banner",
+      "settings": {
+        "emoji": "💵",
+        "heading": "Cash on Delivery available",
+        "text": "No online payment needed. Order now and pay when your package arrives at your doorstep."
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Get exclusive deals first 🎁",
+        "text": "Subscribe for early access to sales and new arrivals.",
+        "button_label": "Subscribe"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "categories",
+    "featured",
+    "promos",
+    "deals",
+    "steps",
+    "testimonials",
+    "cod-banner",
+    "newsletter"
+  ]
+}

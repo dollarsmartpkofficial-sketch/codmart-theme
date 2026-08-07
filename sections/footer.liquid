@@ -1,0 +1,234 @@
+{%- liquid
+  assign logo_text = settings.logo_text | default: shop.name
+  assign socials = ''
+  if settings.social_facebook != blank
+    assign socials = socials | append: 'facebook,'
+  endif
+  if settings.social_instagram != blank
+    assign socials = socials | append: 'instagram,'
+  endif
+  if settings.social_tiktok != blank
+    assign socials = socials | append: 'tiktok,'
+  endif
+  if settings.social_youtube != blank
+    assign socials = socials | append: 'youtube,'
+  endif
+  if settings.social_twitter != blank
+    assign socials = socials | append: 'twitter,'
+  endif
+  assign socials = socials | split: ','
+-%}
+
+<footer class="footer" style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}">
+  <div class="wrap">
+    <div class="footer__grid">
+      {%- for block in section.blocks -%}
+        <div class="footer__col footer__col--{{ block.type }}" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+
+            {%- when 'brand' -%}
+              <div class="footer__brand">
+                {%- if settings.logo_type == 'image' and settings.logo != blank -%}
+                  <img
+                    src="{{ settings.logo | image_url: width: 140 }}"
+                    alt="{{ shop.name | escape }}"
+                    width="140"
+                    height="{{ 140 | divided_by: settings.logo.aspect_ratio | round }}"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <span class="footer__logo">
+                    {%- if settings.logo_mark != blank -%}
+                      <span class="header__mark" aria-hidden="true">{{ settings.logo_mark }}</span>
+                    {%- endif -%}
+                    {{ logo_text }}
+                  </span>
+                {%- endif -%}
+              </div>
+
+              {%- if block.settings.text != blank -%}
+                <p>{{ block.settings.text }}</p>
+              {%- elsif settings.store_tagline != blank -%}
+                <p>{{ settings.store_tagline }}</p>
+              {%- endif -%}
+
+              {%- if socials.size > 0 and block.settings.show_socials -%}
+                <div class="socials">
+                  {%- for network in socials -%}
+                    {%- liquid
+                      case network
+                        when 'facebook'
+                          assign href = settings.social_facebook
+                        when 'instagram'
+                          assign href = settings.social_instagram
+                        when 'tiktok'
+                          assign href = settings.social_tiktok
+                        when 'youtube'
+                          assign href = settings.social_youtube
+                        when 'twitter'
+                          assign href = settings.social_twitter
+                      endcase
+                    -%}
+                    <a href="{{ href }}" target="_blank" rel="noopener" aria-label="{{ network | capitalize }}">
+                      {% render 'icon', name: network, size: 17 %}
+                    </a>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.show_payments and settings.payment_methods != blank -%}
+                <div class="payments">
+                  {%- assign methods = settings.payment_methods | newline_to_br | split: '<br />' -%}
+                  {%- for method in methods -%}
+                    {%- assign clean = method | strip -%}
+                    {%- if clean != blank -%}<span>{{ clean }}</span>{%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+            {%- when 'menu' -%}
+              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul>
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'contact' -%}
+              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              <ul class="footer__contact">
+                {%- if settings.whatsapp_enabled and settings.whatsapp_number != blank -%}
+                  <li>
+                    <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}" target="_blank" rel="noopener">
+                      {% render 'icon', name: 'whatsapp', size: 16 %} {{ settings.whatsapp_number }}
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.support_phone != blank -%}
+                  <li><a href="tel:{{ settings.support_phone | remove: ' ' }}">{% render 'icon', name: 'phone', size: 16 %} {{ settings.support_phone }}</a></li>
+                {%- endif -%}
+                {%- if settings.support_email != blank -%}
+                  <li><a href="mailto:{{ settings.support_email }}">{% render 'icon', name: 'mail', size: 16 %} {{ settings.support_email }}</a></li>
+                {%- endif -%}
+                {%- if settings.support_hours != blank -%}
+                  <li>{% render 'icon', name: 'clock', size: 16 %} {{ settings.support_hours }}</li>
+                {%- endif -%}
+                {%- if settings.store_address != blank -%}
+                  <li>{% render 'icon', name: 'pin', size: 16 %} {{ settings.store_address | newline_to_br }}</li>
+                {%- endif -%}
+              </ul>
+
+            {%- when 'newsletter' -%}
+              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+              {% form 'customer', class: 'footer__newsletter' %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <label class="visually-hidden" for="FooterEmail">{{ 'general.newsletter.placeholder' | t }}</label>
+                <div class="footer__newsletter-row">
+                  <input
+                    id="FooterEmail"
+                    type="email"
+                    name="contact[email]"
+                    placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                    required
+                    autocomplete="email"
+                  >
+                  <button type="submit" class="btn btn--sale">{{ 'general.newsletter.button' | t }}</button>
+                </div>
+                {%- if form.posted_successfully? -%}
+                  <p class="footer__success">{{ 'general.newsletter.success' | t }}</p>
+                {%- endif -%}
+                <small>{{ 'general.newsletter.no_spam' | t }}</small>
+              {% endform %}
+
+            {%- when 'text' -%}
+              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {{ block.settings.content }}
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      {{ section.settings.copyright | default: shop.name | prepend: '© ' | append: '. All rights reserved.' }}
+      {%- if section.settings.policy_menu != blank -%}
+        {%- for link in section.settings.policy_menu.links -%}
+          &nbsp;·&nbsp;<a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "footer-section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#B3B3B3" },
+    { "type": "text", "id": "copyright", "label": "Copyright line", "info": "Leave blank to use your store name and the current year." },
+    { "type": "link_list", "id": "policy_menu", "label": "Policy links", "info": "Privacy policy, terms of service, refund policy." }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "limit": 1,
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "About text", "info": "Leave blank to use the tagline from “🚀 Start here”." },
+        { "type": "checkbox", "id": "show_socials", "label": "Show social links", "default": true },
+        { "type": "checkbox", "id": "show_payments", "label": "Show payment badges", "default": true }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Pulls the phone, email, hours and address you entered in “🚀 Start here”." },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Contact" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Get exclusive deals first" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Subscribe for early access to sales and new arrivals." }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "richtext", "id": "content", "label": "Content" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "menu", "settings": { "heading": "Shop" } },
+        { "type": "menu", "settings": { "heading": "Help" } },
+        { "type": "contact" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

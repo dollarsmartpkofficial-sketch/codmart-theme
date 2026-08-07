@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "heading": "All collections",
+        "source": "all",
+        "columns": 6,
+        "columns_mobile": 3,
+        "icon_shape": "circle"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

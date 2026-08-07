@@ -1,0 +1,51 @@
+{%- comment -%}
+  Price block.
+
+  Accepts:
+    product      — required
+    show_save    — render the "Save Rs.X" pill (defaults to the card setting)
+    context      — 'card' (default) or 'pdp'
+
+  Handles price ranges ("From Rs.X") so cards for multi-variant products
+  don't lie about the price.
+{%- endcomment -%}
+
+{%- liquid
+  assign target = product
+  assign compare = target.compare_at_price
+  assign price = target.price
+
+  assign varies = false
+  if target.price_varies
+    assign varies = true
+  endif
+
+  assign on_sale = false
+  if compare > price
+    assign on_sale = true
+  endif
+
+  assign saved = compare | minus: price
+-%}
+
+<div class="price-block price-block--{{ context | default: 'card' }}">
+  {%- if varies and context != 'pdp' -%}
+    <span class="price">{{ 'products.price.from_price' | t: price: target.price_min | money }}</span>
+  {%- else -%}
+    <span class="price">
+      <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+      {{ price | money }}
+    </span>
+  {%- endif -%}
+
+  {%- if on_sale -%}
+    <s class="price--old">
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      {{ compare | money }}
+    </s>
+
+    {%- if show_save -%}
+      <span class="price--save">{{ 'products.price.save' | t: amount: saved | money }}</span>
+    {%- endif -%}
+  {%- endif -%}
+</div>

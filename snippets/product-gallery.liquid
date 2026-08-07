@@ -1,0 +1,53 @@
+{%- comment -%}
+  Product gallery. Accepts: product
+
+  The first image is eager + high priority — it is the LCP element on a
+  product page, and deferring it is the single easiest way to lose points.
+{%- endcomment -%}
+
+<div class="pdp__gallery" data-gallery>
+  {%- if product.media.size > 1 -%}
+    <div class="pdp__thumbs" role="list">
+      {%- for media in product.media limit: 8 -%}
+        <button
+          type="button"
+          class="pdp__thumb"
+          data-gallery-thumb
+          data-media-id="{{ media.id }}"
+          aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-label="{{ media.alt | default: product.title | escape }}"
+        >
+          <img
+            src="{{ media | image_url: width: 160 }}"
+            data-full="{{ media | image_url: width: 1200 }}"
+            alt=""
+            width="76"
+            height="76"
+            loading="lazy"
+          >
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="pdp__main" data-gallery-main>
+    {%- if product.featured_media -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 1200 }}"
+        srcset="
+          {{ product.featured_media | image_url: width: 600 }} 600w,
+          {{ product.featured_media | image_url: width: 900 }} 900w,
+          {{ product.featured_media | image_url: width: 1200 }} 1200w
+        "
+        sizes="(max-width: 860px) 100vw, 45vw"
+        alt="{{ product.featured_media.alt | escape }}"
+        width="{{ product.featured_media.width }}"
+        height="{{ product.featured_media.height }}"
+        fetchpriority="high"
+        loading="eager"
+      >
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+</div>

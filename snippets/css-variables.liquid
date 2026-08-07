@@ -1,0 +1,72 @@
+{%- liquid
+  assign body_font = settings.font_body
+  assign body_font_bold = body_font | font_modify: 'weight', '600'
+  assign body_font_bolder = body_font | font_modify: 'weight', '800'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+  assign heading_font = settings.font_heading
+  assign heading_font_bold = heading_font | font_modify: 'weight', '700'
+
+  assign body_scale = settings.font_body_scale | times: 0.01
+  assign heading_scale = settings.font_heading_scale | times: 0.01
+-%}
+{{ body_font | font_face: font_display: 'swap' }}
+{{ body_font_bold | font_face: font_display: 'swap' }}
+{{ body_font_bolder | font_face: font_display: 'swap' }}
+{{ body_font_italic | font_face: font_display: 'swap' }}
+{{ heading_font | font_face: font_display: 'swap' }}
+{{ heading_font_bold | font_face: font_display: 'swap' }}
+
+:root{
+  /* brand */
+  --brand: {{ settings.color_brand }};
+  --brand-dark: {{ settings.color_brand_dark }};
+  --brand-rgb: {{ settings.color_brand.red }},{{ settings.color_brand.green }},{{ settings.color_brand.blue }};
+  --brand-soft: rgba(var(--brand-rgb), .08);
+  --brand-soft-2: rgba(var(--brand-rgb), .16);
+  --sale: {{ settings.color_sale }};
+  --sale-rgb: {{ settings.color_sale.red }},{{ settings.color_sale.green }},{{ settings.color_sale.blue }};
+  --star: {{ settings.color_star }};
+
+  /* base */
+  --ink: {{ settings.color_text }};
+  --ink-rgb: {{ settings.color_text.red }},{{ settings.color_text.green }},{{ settings.color_text.blue }};
+  --muted: {{ settings.color_muted }};
+  --bg: {{ settings.color_background }};
+  --soft: {{ settings.color_soft }};
+  --line: {{ settings.color_border }};
+
+  /* cod / whatsapp */
+  --cod: {{ settings.color_cod }};
+  --cod-rgb: {{ settings.color_cod.red }},{{ settings.color_cod.green }},{{ settings.color_cod.blue }};
+  --wa: {{ settings.color_whatsapp }};
+
+  /* type */
+  --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+  --font-body-weight: {{ body_font.weight }};
+  --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+  --font-heading-weight: {{ heading_font.weight }};
+  --fs-base: {{ 15 | times: body_scale | round: 1 }}px;
+  --fs-sm: {{ 13.5 | times: body_scale | round: 1 }}px;
+  --fs-xs: {{ 12 | times: body_scale | round: 1 }}px;
+  --fs-h1: {{ 40 | times: heading_scale | round: 1 }}px;
+  --fs-h2: {{ 29 | times: heading_scale | round: 1 }}px;
+  --fs-h3: {{ 22 | times: heading_scale | round: 1 }}px;
+
+  /* layout */
+  --container: {{ settings.page_width }}px;
+  --radius: {{ settings.radius }}px;
+  --radius-sm: {{ settings.radius | times: 0.65 | round }}px;
+  --radius-pill: 999px;
+  --gap: 16px;
+
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,.12);
+
+  --dur: {% if settings.animations %}.18s{% else %}0s{% endif %};
+}
+
+{%- comment -%} Respect the visitor's reduced-motion preference. {%- endcomment -%}
+@media (prefers-reduced-motion: reduce){
+  :root{ --dur: 0s }
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
+}

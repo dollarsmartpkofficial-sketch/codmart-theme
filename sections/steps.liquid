@@ -1,0 +1,71 @@
+<section class="section{% if section.settings.background == 'soft' %} section--soft{% endif %}">
+  <div class="wrap">
+    <div class="section-head section-head--center">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+    </div>
+
+    <ol class="steps" style="--cols:{{ section.blocks.size | at_most: 4 }}">
+      {%- for block in section.blocks -%}
+        <li class="step" {{ block.shopify_attributes }}>
+          {%- if section.settings.show_numbers -%}
+            <span class="step__n" aria-hidden="true">{{ forloop.index }}</span>
+          {%- endif -%}
+          {%- if block.settings.image != blank -%}
+            <img class="step__img" src="{{ block.settings.image | image_url: width: 96 }}" alt="" width="48" height="48" loading="lazy">
+          {%- elsif block.settings.emoji != blank -%}
+            <span class="step__emoji" aria-hidden="true">{{ block.settings.emoji }}</span>
+          {%- endif -%}
+          <b>{{ block.settings.title }}</b>
+          {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How it works",
+  "class": "steps-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Simple & easy" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How does it work?" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Order in 3 easy steps" },
+    { "type": "checkbox", "id": "show_numbers", "label": "Show step numbers", "default": true },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [{ "value": "page", "label": "Page" }, { "value": "soft", "label": "Soft" }],
+      "default": "soft"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🛒" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Replaces the emoji." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Pick a product" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Choose what you like and add it to the cart" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it works",
+      "blocks": [
+        { "type": "step", "settings": { "emoji": "🛒", "title": "Pick a product", "text": "Choose what you like and add it to the cart" } },
+        { "type": "step", "settings": { "emoji": "📝", "title": "Enter your address", "text": "Name, number and delivery address — takes 2 minutes" } },
+        { "type": "step", "settings": { "emoji": "💵", "title": "Pay on delivery", "text": "Check your package, then pay the courier" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,264 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "search": "Search",
+      "placeholder": "What are you looking for?",
+      "results_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      },
+      "no_results": "No results found for \"{{ terms }}\". Try a different search.",
+      "view_all": "View all results"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    },
+    "breadcrumbs": {
+      "label": "Breadcrumbs",
+      "home": "Home"
+    },
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "menu": "Menu",
+      "previous_slide": "Previous",
+      "next_slide": "Next",
+      "loading": "Loading"
+    },
+    "newsletter": {
+      "heading": "Get exclusive deals first",
+      "body": "Subscribe for early access to sales and new arrivals.",
+      "placeholder": "your@email.com",
+      "button": "Subscribe",
+      "success": "Thanks for subscribing!",
+      "no_spam": "No spam. Unsubscribe anytime."
+    },
+    "social": {
+      "share": "Share",
+      "share_on_facebook": "Share on Facebook",
+      "share_on_whatsapp": "Share on WhatsApp",
+      "copy_link": "Copy link",
+      "link_copied": "Link copied"
+    }
+  },
+
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "buy_now": "Buy it now",
+      "order_on_whatsapp": "Order on WhatsApp",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "in_stock": "In stock",
+      "quantity": "Quantity",
+      "increase_quantity": "Increase quantity",
+      "decrease_quantity": "Decrease quantity",
+      "vendor": "Vendor",
+      "sku": "SKU",
+      "description": "Description",
+      "shipping": "Shipping & delivery",
+      "returns": "Return policy",
+      "view_details": "View details",
+      "choose_options": "Choose options",
+      "variant_sold_out": "{{ option }} — sold out",
+      "low_stock": {
+        "one": "Only {{ count }} left!",
+        "other": "Only {{ count }} left!"
+      },
+      "hurry": "Hurry up",
+      "tax_included": "Tax included.",
+      "shipping_at_checkout": "Shipping calculated at checkout.",
+      "related": "You may also like",
+      "recently_viewed": "Recently viewed"
+    },
+    "price": {
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "from_price": "From {{ price }}",
+      "save": "Save {{ amount }}",
+      "percent_off": "{{ percent }}% OFF",
+      "free": "Free"
+    },
+    "facets": {
+      "filters": "Filters",
+      "sort_by": "Sort by",
+      "clear": "Clear",
+      "clear_all": "Clear all",
+      "apply": "Apply",
+      "show_results": {
+        "one": "Show {{ count }} result",
+        "other": "Show {{ count }} results"
+      },
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "from": "From",
+      "to": "To",
+      "availability": "Availability",
+      "in_stock": "In stock",
+      "out_of_stock": "Out of stock",
+      "price": "Price",
+      "no_products": "No products match these filters."
+    }
+  },
+
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "continue_shopping": "Continue shopping",
+    "item_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    },
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "discount": "Discount",
+    "shipping": "Delivery charges",
+    "shipping_free": "FREE",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "note": "Order note",
+    "note_placeholder": "Any special instructions?",
+    "free_shipping_progress": "Add {{ amount }} more for free delivery",
+    "free_shipping_reached": "You've unlocked free delivery!",
+    "view_cart": "View cart",
+    "added": "Added to cart"
+  },
+
+  "cod": {
+    "form": {
+      "heading": "Cash on Delivery — order now",
+      "subheading": "Fill the form, delivery in 24 hours",
+      "trigger": "Order now — cash on delivery",
+      "trigger_sub": "Only 4 fields · 30 seconds",
+      "name": "Full name",
+      "name_placeholder": "Your name",
+      "phone": "Mobile number",
+      "phone_placeholder": "03001234567",
+      "phone_hint": "A WhatsApp number is better",
+      "city": "City",
+      "city_placeholder": "Select your city",
+      "address": "Full address",
+      "address_placeholder": "House #, street, area, landmark",
+      "email": "Email",
+      "optional": "(optional)",
+      "notes": "Order notes",
+      "submit": "Confirm order",
+      "note": "No advance payment — pay when your package arrives",
+      "summary": "Order summary",
+      "delivery": "Delivery charges",
+      "total": "Total (COD)",
+      "errors": {
+        "name": "Please enter your name",
+        "phone": "Please enter a valid mobile number",
+        "city": "Please select your city",
+        "address": "Please enter your address",
+        "email": "That email doesn't look right"
+      },
+      "success": {
+        "heading": "Thank you! Order received",
+        "body": "Our team will call you within an hour to confirm.",
+        "track": "Track on WhatsApp"
+      }
+    },
+    "badges": {
+      "free_shipping": "Free shipping",
+      "cod": "Cash on delivery",
+      "returns": "7-day returns",
+      "authentic": "100% authentic"
+    }
+  },
+
+  "reviews": {
+    "title": "Customer reviews",
+    "count": {
+      "zero": "No reviews yet",
+      "one": "{{ count }} review",
+      "other": "{{ count }} reviews"
+    },
+    "rating": "{{ rating }} out of 5",
+    "based_on": "Based on {{ count }} reviews",
+    "write": "Write a review",
+    "verified": "Verified purchase",
+    "sort_recent": "Most recent",
+    "sort_helpful": "Most helpful",
+    "sort_highest": "Highest rating",
+    "sort_lowest": "Lowest rating",
+    "filter_all": "All ratings",
+    "helpful": "Helpful",
+    "empty": "Be the first to review this product",
+    "form": {
+      "rating": "Your rating",
+      "title": "Review title",
+      "body": "Your review",
+      "name": "Your name",
+      "city": "Your city",
+      "email": "Your email",
+      "submit": "Submit review",
+      "success": "Thank you! Your review has been submitted for approval."
+    }
+  },
+
+  "customer": {
+    "account": { "title": "Account", "details": "Account details", "orders": "Order history", "logout": "Log out" },
+    "login": { "title": "Login", "email": "Email", "password": "Password", "submit": "Sign in", "forgot": "Forgot your password?", "create": "Create account" },
+    "register": { "title": "Create account", "first_name": "First name", "last_name": "Last name", "submit": "Create" },
+    "orders": { "order_number": "Order", "date": "Date", "payment_status": "Payment", "fulfillment_status": "Status", "total": "Total", "none": "You haven't placed any orders yet." },
+    "addresses": { "title": "Addresses", "add": "Add address", "edit": "Edit", "delete": "Delete", "default": "Default address" },
+    "recover_password": { "title": "Reset password", "subtext": "We'll send you an email to reset your password.", "submit": "Send" }
+  },
+
+  "blogs": {
+    "article": {
+      "read_more": "Read more",
+      "posted_on": "Posted on",
+      "by": "by",
+      "tags": "Tags",
+      "back": "Back to blog"
+    }
+  },
+
+  "contact": {
+    "form": {
+      "title": "Contact us",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send",
+      "success": "Thanks for reaching out. We'll reply soon."
+    }
+  },
+
+  "404": {
+    "title": "Page not found",
+    "subtext": "The page you're looking for doesn't exist.",
+    "link": "Continue shopping"
+  },
+
+  "gift_cards": {
+    "issued": {
+      "title": "Gift card",
+      "subtext": "Here's your gift card!",
+      "expires_on": "Expires on {{ expiry }}",
+      "copy_code": "Copy code",
+      "shop_link": "Start shopping"
+    }
+  },
+
+  "password": {
+    "title": "Opening soon",
+    "message": "Enter the store using a password",
+    "login_password": "Password",
+    "submit": "Enter",
+    "powered_by": "This shop will be powered by {{ shopify }}"
+  }
+}

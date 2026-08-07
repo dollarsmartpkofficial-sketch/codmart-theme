@@ -1,0 +1,92 @@
+{%- liquid
+  assign has_image = false
+  if section.settings.image != blank
+    assign has_image = true
+  endif
+-%}
+
+<section class="hero hero--{{ section.settings.style }}{% if has_image %} hero--has-image{% endif %}">
+  {%- if has_image -%}
+    <img
+      class="hero__bg"
+      src="{{ section.settings.image | image_url: width: 1800 }}"
+      srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 1800 }} 1800w"
+      sizes="100vw"
+      alt=""
+      width="{{ section.settings.image.width }}"
+      height="{{ section.settings.image.height }}"
+      fetchpriority="high"
+    >
+    <div class="hero__scrim" style="opacity:{{ section.settings.overlay | divided_by: 100.0 }}"></div>
+  {%- endif -%}
+
+  <div class="wrap hero__inner">
+    <div class="hero__text">
+      {%- if section.settings.pill != blank -%}
+        <span class="pill">{{ section.settings.pill }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="hero__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <p class="hero__body">{{ section.settings.text }}</p>
+      {%- endif -%}
+
+      <div class="hero__cta">
+        {%- if section.settings.button_label != blank -%}
+          <a class="btn btn--white btn--lg" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_2_label != blank -%}
+          <a class="btn btn--ghost btn--lg" href="{{ section.settings.button_2_link | default: settings.track_order_url }}">{{ section.settings.button_2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.emoji != blank and has_image == false -%}
+      <div class="hero__art">
+        <div class="hero__blob" aria-hidden="true">{{ section.settings.emoji }}</div>
+        {%- if section.settings.note != blank -%}
+          <div class="hero__note">{{ section.settings.note }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "hero-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "gradient", "label": "Brand gradient" },
+        { "value": "solid", "label": "Solid brand color" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "gradient"
+    },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Optional. Replaces the gradient and hides the emoji." },
+    { "type": "range", "id": "overlay", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image darkening", "default": 45 },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "pill", "label": "Small label above heading", "default": "New products every week" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pakistan's best online shopping" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Quality products at fair prices. Cash on Delivery available." },
+    { "type": "text", "id": "emoji", "label": "Emoji", "default": "🛍️", "info": "Shown when there is no background image." },
+    { "type": "text", "id": "note", "label": "Note under emoji", "default": "Starting from Rs.120" },
+
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "button_label", "label": "Button 1 text", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button 1 link" },
+    { "type": "text", "id": "button_2_label", "label": "Button 2 text", "default": "Track order" },
+    { "type": "url", "id": "button_2_link", "label": "Button 2 link", "info": "Leave blank to use the track-order page from “🚀 Start here”." }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

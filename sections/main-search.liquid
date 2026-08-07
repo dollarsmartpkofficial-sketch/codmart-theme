@@ -1,0 +1,88 @@
+{%- liquid
+  assign cols = section.settings.columns
+  assign sort_by = search.sort_by | default: 'relevance'
+-%}
+
+<div class="wrap section">
+  <div class="search-head">
+    <h1>{{ 'general.search.search' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="SearchPage">{{ 'general.search.search' | t }}</label>
+      <input id="SearchPage" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="btn btn--primary">{{ 'general.search.search' | t }}</button>
+    </form>
+  </div>
+
+  {%- if search.performed -%}
+    {%- if search.results_count == 0 -%}
+      <div class="empty-state">
+        <p>{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+        <a class="btn btn--outline" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
+      </div>
+    {%- else -%}
+      {%- paginate search.results by section.settings.per_page -%}
+        <div class="collection-body{% unless section.settings.show_filters %} collection-body--no-facets{% endunless %}">
+          {%- if section.settings.show_filters and search.filters.size > 0 -%}
+            {% render 'facets', results: search, sort_by: sort_by %}
+          {%- endif -%}
+
+          <div class="collection-main">
+            <div class="toolbar">
+              <span class="toolbar__count">{{ 'general.search.results_count' | t: count: search.results_count }}</span>
+              <div class="toolbar__right">
+                {%- if section.settings.show_filters and search.filters.size > 0 -%}
+                  <button type="button" class="select facets-toggle" data-facets-open>
+                    {% render 'icon', name: 'filter', size: 16 %} {{ 'products.facets.filters' | t }}
+                  </button>
+                {%- endif -%}
+                <form method="get" class="toolbar__sort">
+                  <input type="hidden" name="q" value="{{ search.terms | escape }}">
+                  <input type="hidden" name="options[prefix]" value="last">
+                  <label class="visually-hidden" for="SearchSort">{{ 'products.facets.sort_by' | t }}</label>
+                  <select id="SearchSort" name="sort_by" class="select" data-auto-submit>
+                    {%- for option in search.sort_options -%}
+                      <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+                    {%- endfor -%}
+                  </select>
+                </form>
+              </div>
+            </div>
+
+            <div class="product-grid" style="--cols:{{ cols }}">
+              {%- for item in search.results -%}
+                {%- if item.object_type == 'product' -%}
+                  {% render 'product-card', product: item, columns: cols %}
+                {%- else -%}
+                  <article class="card card--article">
+                    <div class="card__body">
+                      <span class="card__cat">{{ item.object_type | capitalize }}</span>
+                      <h3 class="card__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                      <p class="card__excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                    </div>
+                  </article>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            {%- if paginate.pages > 1 -%}
+              {% render 'pagination', paginate: paginate %}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endpaginate -%}
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search results",
+  "class": "search-section",
+  "settings": [
+    { "type": "range", "id": "columns", "min": 2, "max": 6, "step": 1, "label": "Results per row", "default": 4 },
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Results per page", "default": 24 },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters", "default": true }
+  ]
+}
+{% endschema %}

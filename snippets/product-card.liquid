@@ -1,0 +1,137 @@
+{%- comment -%}
+  Product card.
+
+  Accepts:
+    product   — required
+    lazy      — false for the first row, so the LCP image isn't deferred
+    columns   — how many cards share a row, used to size the srcset
+
+  Every visible element is behind a theme setting, so a merchant can strip
+  the card back to just image + title + price if they want.
+{%- endcomment -%}
+
+{%- liquid
+  assign ratio = settings.card_image_ratio
+  assign lazy_attr = 'lazy'
+  if lazy == false
+    assign lazy_attr = 'eager'
+  endif
+
+  assign compare = product.compare_at_price
+  assign on_sale = false
+  if compare > product.price
+    assign on_sale = true
+  endif
+  assign discount = 0
+  if on_sale
+    assign discount = compare | minus: product.price | times: 100.0 | divided_by: compare | round
+  endif
+
+  assign inventory = product.selected_or_first_available_variant.inventory_quantity
+  assign track_inventory = product.selected_or_first_available_variant.inventory_management
+  assign show_low = false
+  if settings.low_stock_enabled and product.available and track_inventory != blank and inventory > 0 and inventory <= settings.low_stock_threshold
+    assign show_low = true
+  endif
+
+  assign category = product.type
+  if category == blank
+    assign category = product.collections.first.title
+  endif
+
+  assign cols = columns | default: 4
+  assign img_width = 600 | divided_by: cols | times: 2 | at_least: 300
+-%}
+
+<article class="card">
+  <a class="card__media card__media--{{ ratio }}" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_media -%}
+      <img
+        src="{{ product.featured_media | image_url: width: img_width }}"
+        srcset="
+          {{ product.featured_media | image_url: width: 300 }} 300w,
+          {{ product.featured_media | image_url: width: 500 }} 500w,
+          {{ product.featured_media | image_url: width: 700 }} 700w
+        "
+        sizes="(max-width: 640px) 45vw, (max-width: 1100px) 25vw, {{ 100 | divided_by: cols }}vw"
+        alt="{{ product.featured_media.alt | escape }}"
+        width="{{ product.featured_media.width }}"
+        height="{{ product.featured_media.height }}"
+        loading="{{ lazy_attr }}"
+        {% if lazy == false %}fetchpriority="high"{% endif %}
+      >
+
+      {%- if settings.card_show_second_image and product.media[1] -%}
+        <img
+          class="card__img--alt"
+          src="{{ product.media[1] | image_url: width: img_width }}"
+          alt=""
+          width="{{ product.media[1].width }}"
+          height="{{ product.media[1].height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+
+    <div class="card__badges">
+      {%- unless product.available -%}
+        <span class="badge badge--sold">{{ 'products.product.sold_out' | t }}</span>
+      {%- else -%}
+        {%- if settings.card_show_discount_badge and discount > 0 -%}
+          <span class="badge badge--sale">{{ 'products.price.percent_off' | t: percent: discount }}</span>
+        {%- endif -%}
+        {%- if show_low -%}
+          <span class="badge badge--low">{{ settings.low_stock_text | replace: '{{ count }}', inventory }}</span>
+        {%- endif -%}
+      {%- endunless -%}
+    </div>
+  </a>
+
+  <div class="card__body">
+    {%- if settings.card_show_category and category != blank -%}
+      <span class="card__cat">{{ category }}</span>
+    {%- endif -%}
+
+    {%- if settings.card_show_vendor and product.vendor != blank -%}
+      <span class="card__cat">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {%- if settings.card_show_rating -%}
+      {% render 'rating', product: product, show_count: true %}
+    {%- endif -%}
+
+    <div class="card__price">
+      {% render 'price', product: product, show_save: settings.card_show_save %}
+    </div>
+
+    {%- if show_low -%}
+      <span class="stock-low">{{ settings.low_stock_text | replace: '{{ count }}', inventory }}</span>
+      {%- assign pct = inventory | times: 100 | divided_by: settings.low_stock_threshold -%}
+      <div class="stock-bar" role="presentation"><i style="width:{{ pct }}%"></i></div>
+    {%- elsif settings.card_show_cod_tag and product.available -%}
+      <span class="tag-cod">{% render 'icon', name: 'cash', size: 14 %} {{ 'cod.badges.cod' | t }}</span>
+    {%- endif -%}
+
+    {%- if settings.card_show_quick_add -%}
+      {%- if product.available == false -%}
+        <span class="btn btn--outline btn--sm" aria-disabled="true">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif product.variants.size > 1 -%}
+        <a class="btn btn--outline btn--sm" href="{{ product.url }}">{{ 'products.product.choose_options' | t }}</a>
+      {%- else -%}
+        {% form 'product', product, data-cart-form: true %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn--primary btn--sm btn--block">
+            {{ 'products.product.add_to_cart' | t }}
+          </button>
+        {% endform %}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</article>

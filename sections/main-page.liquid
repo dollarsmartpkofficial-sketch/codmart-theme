@@ -1,0 +1,25 @@
+<div class="wrap section page-narrow">
+  {%- if section.settings.show_breadcrumbs -%}
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span aria-current="page">{{ page.title }}</span>
+    </nav>
+  {%- endif -%}
+
+  <h1 class="page-title">{{ page.title }}</h1>
+
+  {%- if page.content != blank -%}
+    <div class="rte">{{ page.content }}</div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "class": "page-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,208 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "CODMart",
+    "theme_version": "1.0.0",
+    "theme_author": "Dollar Smart",
+    "theme_documentation_url": "https://dollarsmart.pk",
+    "theme_support_url": "https://dollarsmart.pk"
+  },
+
+  {
+    "name": "t:settings.setup.name",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.setup.intro" },
+
+      { "type": "header", "content": "t:settings.setup.step1" },
+      {
+        "type": "select",
+        "id": "logo_type",
+        "label": "t:settings.logo.type",
+        "options": [
+          { "value": "image", "label": "t:settings.logo.type_image" },
+          { "value": "text", "label": "t:settings.logo.type_text" }
+        ],
+        "default": "text"
+      },
+      { "type": "image_picker", "id": "logo", "label": "t:settings.logo.image" },
+      { "type": "range", "id": "logo_width", "min": 60, "max": 260, "step": 5, "unit": "px", "label": "t:settings.logo.width", "default": 130 },
+      { "type": "text", "id": "logo_text", "label": "t:settings.logo.text", "info": "t:settings.logo.text_info" },
+      { "type": "text", "id": "logo_mark", "label": "t:settings.logo.mark", "default": "D", "info": "t:settings.logo.mark_info" },
+      { "type": "text", "id": "store_tagline", "label": "t:settings.setup.tagline", "info": "t:settings.setup.tagline_info" },
+      { "type": "image_picker", "id": "favicon", "label": "t:settings.logo.favicon" },
+
+      { "type": "header", "content": "t:settings.setup.step2" },
+      { "type": "color", "id": "color_brand", "label": "t:settings.colors.brand", "default": "#741C1C" },
+      { "type": "color", "id": "color_brand_dark", "label": "t:settings.colors.brand_dark", "default": "#5A1414" },
+      { "type": "color", "id": "color_sale", "label": "t:settings.colors.sale", "default": "#FF9900" },
+
+      { "type": "header", "content": "t:settings.setup.step3" },
+      { "type": "text", "id": "free_shipping_threshold", "label": "t:settings.cod.free_threshold", "default": "3500", "info": "t:settings.cod.free_threshold_info" },
+      { "type": "text", "id": "shipping_rate", "label": "t:settings.cod.rate", "default": "200" },
+      { "type": "text", "id": "delivery_time", "label": "t:settings.setup.delivery_time", "default": "1–2 days" },
+      {
+        "type": "textarea",
+        "id": "cod_cities",
+        "label": "t:settings.cod.cities",
+        "default": "Karachi\nLahore\nIslamabad\nRawalpindi\nFaisalabad\nMultan\nPeshawar\nQuetta\nGujranwala\nSialkot\nHyderabad\nSukkur",
+        "info": "t:settings.cod.cities_info"
+      },
+
+      { "type": "header", "content": "t:settings.setup.step4" },
+      { "type": "text", "id": "whatsapp_number", "label": "t:settings.cod.whatsapp_number", "info": "t:settings.cod.whatsapp_number_info" },
+      { "type": "text", "id": "support_phone", "label": "t:settings.setup.support_phone" },
+      { "type": "text", "id": "support_email", "label": "t:settings.setup.support_email" },
+      { "type": "text", "id": "support_hours", "label": "t:settings.setup.support_hours", "default": "Mon–Sat, 10am–7pm" },
+      { "type": "textarea", "id": "store_address", "label": "t:settings.setup.address", "info": "t:settings.setup.address_info" },
+
+      { "type": "header", "content": "t:settings.setup.step5" },
+      { "type": "text", "id": "announcement_text", "label": "t:settings.setup.announcement", "default": "Free delivery above Rs.3,500 · Cash on Delivery · 7-day returns" },
+      { "type": "text", "id": "return_days", "label": "t:settings.setup.return_days", "default": "7" },
+      {
+        "type": "textarea",
+        "id": "payment_methods",
+        "label": "t:settings.setup.payments",
+        "default": "COD\nEasyPaisa\nJazzCash\nBank Transfer\nCredit Card",
+        "info": "t:settings.setup.payments_info"
+      },
+      { "type": "url", "id": "track_order_url", "label": "t:settings.setup.track_order" },
+
+      { "type": "header", "content": "t:settings.setup.step6" },
+      { "type": "checkbox", "id": "cod_form_enabled", "label": "t:settings.cod.form_enabled", "default": true },
+      {
+        "type": "select",
+        "id": "cod_form_mode",
+        "label": "t:settings.cod.form_mode",
+        "options": [
+          { "value": "popup", "label": "t:settings.cod.mode_popup" },
+          { "value": "inline", "label": "t:settings.cod.mode_inline" },
+          { "value": "sticky", "label": "t:settings.cod.mode_sticky" }
+        ],
+        "default": "popup"
+      },
+      { "type": "checkbox", "id": "whatsapp_enabled", "label": "t:settings.cod.whatsapp_enabled", "default": true },
+      { "type": "checkbox", "id": "low_stock_enabled", "label": "t:settings.stock.enabled", "default": true },
+      { "type": "checkbox", "id": "reviews_enabled", "label": "t:settings.reviews.enabled", "default": true },
+
+      { "type": "header", "content": "t:settings.setup.step7" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook" },
+      { "type": "text", "id": "social_instagram", "label": "Instagram" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube" },
+
+      { "type": "paragraph", "content": "t:settings.setup.done" }
+    ]
+  },
+
+  {
+    "name": "t:settings.colors.name",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.colors.info" },
+      { "type": "header", "content": "t:settings.colors.accent_header" },
+      { "type": "color", "id": "color_star", "label": "t:settings.colors.star", "default": "#F7C900" },
+      { "type": "color", "id": "color_cod", "label": "t:settings.colors.cod", "default": "#128C4B" },
+      { "type": "color", "id": "color_whatsapp", "label": "t:settings.colors.whatsapp", "default": "#25D366" },
+
+      { "type": "header", "content": "t:settings.colors.base_header" },
+      { "type": "color", "id": "color_text", "label": "t:settings.colors.text", "default": "#121212" },
+      { "type": "color", "id": "color_muted", "label": "t:settings.colors.muted", "default": "#6B6B6B" },
+      { "type": "color", "id": "color_background", "label": "t:settings.colors.background", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_soft", "label": "t:settings.colors.soft", "default": "#F3F3F3" },
+      { "type": "color", "id": "color_border", "label": "t:settings.colors.border", "default": "#E5E5E5" }
+    ]
+  },
+
+  {
+    "name": "t:settings.typography.name",
+    "settings": [
+      { "type": "font_picker", "id": "font_heading", "label": "t:settings.typography.heading", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "font_body", "label": "t:settings.typography.body", "default": "assistant_n4" },
+      { "type": "range", "id": "font_body_scale", "min": 90, "max": 120, "step": 5, "unit": "%", "label": "t:settings.typography.body_scale", "default": 100 },
+      { "type": "range", "id": "font_heading_scale", "min": 90, "max": 130, "step": 5, "unit": "%", "label": "t:settings.typography.heading_scale", "default": 100 }
+    ]
+  },
+
+  {
+    "name": "t:settings.layout.name",
+    "settings": [
+      { "type": "range", "id": "page_width", "min": 1100, "max": 1600, "step": 20, "unit": "px", "label": "t:settings.layout.page_width", "default": 1280 },
+      { "type": "range", "id": "radius", "min": 0, "max": 24, "step": 2, "unit": "px", "label": "t:settings.layout.radius", "default": 12 },
+      { "type": "checkbox", "id": "sticky_header", "label": "t:settings.layout.sticky_header", "default": true },
+      { "type": "checkbox", "id": "animations", "label": "t:settings.layout.animations", "default": true, "info": "t:settings.layout.animations_info" }
+    ]
+  },
+
+  {
+    "name": "t:settings.cod.name",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.cod.info" },
+      { "type": "header", "content": "t:settings.cod.form_header" },
+      { "type": "checkbox", "id": "cod_form_auto_open", "label": "t:settings.cod.auto_open", "default": false, "info": "t:settings.cod.auto_open_info" },
+      { "type": "text", "id": "cod_form_heading", "label": "t:settings.cod.form_heading", "default": "Cash on Delivery — order now" },
+      { "type": "text", "id": "cod_form_subheading", "label": "t:settings.cod.form_subheading", "default": "Fill the form, delivery in 24 hours" },
+      { "type": "text", "id": "cod_form_trigger", "label": "t:settings.cod.form_trigger", "default": "Order now — cash on delivery" },
+      { "type": "text", "id": "cod_form_button", "label": "t:settings.cod.form_button", "default": "Confirm order" },
+      { "type": "text", "id": "cod_form_success", "label": "t:settings.cod.form_success", "default": "Thank you! Order received" },
+
+      { "type": "header", "content": "t:settings.cod.fields_header" },
+      { "type": "checkbox", "id": "cod_field_email", "label": "t:settings.cod.field_email", "default": false },
+      { "type": "checkbox", "id": "cod_field_notes", "label": "t:settings.cod.field_notes", "default": false },
+
+      { "type": "header", "content": "t:settings.cod.whatsapp_header" },
+      { "type": "text", "id": "whatsapp_message", "label": "t:settings.cod.whatsapp_message", "default": "Assalam-o-Alaikum! Mujhe ye product chahiye:" },
+      { "type": "checkbox", "id": "whatsapp_float", "label": "t:settings.cod.whatsapp_float", "default": true }
+    ]
+  },
+
+  {
+    "name": "t:settings.product_card.name",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "t:settings.product_card.ratio",
+        "options": [
+          { "value": "square", "label": "t:settings.product_card.ratio_square" },
+          { "value": "portrait", "label": "t:settings.product_card.ratio_portrait" },
+          { "value": "natural", "label": "t:settings.product_card.ratio_natural" }
+        ],
+        "default": "square"
+      },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "t:settings.product_card.show_vendor", "default": false },
+      { "type": "checkbox", "id": "card_show_category", "label": "t:settings.product_card.show_category", "default": true },
+      { "type": "checkbox", "id": "card_show_rating", "label": "t:settings.product_card.show_rating", "default": true },
+      { "type": "checkbox", "id": "card_show_save", "label": "t:settings.product_card.show_save", "default": true },
+      { "type": "checkbox", "id": "card_show_discount_badge", "label": "t:settings.product_card.show_discount", "default": true },
+      { "type": "checkbox", "id": "card_show_cod_tag", "label": "t:settings.product_card.show_cod", "default": true },
+      { "type": "checkbox", "id": "card_show_quick_add", "label": "t:settings.product_card.quick_add", "default": true },
+      { "type": "checkbox", "id": "card_show_second_image", "label": "t:settings.product_card.second_image", "default": true }
+    ]
+  },
+
+  {
+    "name": "t:settings.stock.name",
+    "settings": [
+      { "type": "range", "id": "low_stock_threshold", "min": 1, "max": 50, "step": 1, "label": "t:settings.stock.threshold", "default": 10, "info": "t:settings.stock.threshold_info" },
+      { "type": "text", "id": "low_stock_text", "label": "t:settings.stock.text", "default": "Only {{ count }} left!", "info": "t:settings.stock.text_info" }
+    ]
+  },
+
+  {
+    "name": "t:settings.reviews.name",
+    "settings": [
+      { "type": "paragraph", "content": "t:settings.reviews.info" },
+      { "type": "checkbox", "id": "reviews_show_form", "label": "t:settings.reviews.show_form", "default": true },
+      { "type": "checkbox", "id": "reviews_show_photos", "label": "t:settings.reviews.show_photos", "default": true },
+      { "type": "checkbox", "id": "reviews_show_city", "label": "t:settings.reviews.show_city", "default": true },
+      { "type": "checkbox", "id": "reviews_verified_badge", "label": "t:settings.reviews.verified_badge", "default": true }
+    ]
+  },
+
+  {
+    "name": "t:settings.seo.name",
+    "settings": [
+      { "type": "image_picker", "id": "share_image", "label": "t:settings.seo.share_image", "info": "t:settings.seo.share_image_info" },
+      { "type": "text", "id": "social_twitter", "label": "X (Twitter)" }
+    ]
+  }
+]

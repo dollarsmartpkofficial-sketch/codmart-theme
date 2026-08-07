@@ -1,0 +1,107 @@
+{%- comment -%}
+  Storefront filters.
+
+  Accepts: results (collection or search object), sort_by
+
+  Filters are configured by the merchant in Shopify admin under
+  Products → Collections → Filters (Search & Discovery). Whatever they set
+  up there appears here — availability, price, vendor, product type, and
+  any variant option or metafield.
+{%- endcomment -%}
+
+<form
+  class="facets"
+  id="FacetsForm"
+  data-facets-form
+>
+  <div class="facets__head">
+    <span>{{ 'products.facets.filters' | t }}</span>
+    <button type="button" class="facets__close" data-facets-close aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icon', name: 'close', size: 20 %}
+    </button>
+  </div>
+
+  {%- comment -%} Keep the current sort when a filter is applied. {%- endcomment -%}
+  {%- if sort_by != blank -%}
+    <input type="hidden" name="sort_by" value="{{ sort_by }}">
+  {%- endif -%}
+  {%- if results.terms -%}
+    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    <input type="hidden" name="options[prefix]" value="last">
+  {%- endif -%}
+
+  {%- for filter in results.filters -%}
+    {%- liquid
+      assign has_active = false
+      if filter.active_values.size > 0
+        assign has_active = true
+      endif
+    -%}
+
+    <details class="facets__group" {% if has_active or forloop.index <= 3 %}open{% endif %}>
+      <summary>
+        {{ filter.label }}
+        {% render 'icon', name: 'chevron-down', size: 16 %}
+      </summary>
+
+      {%- case filter.type -%}
+        {%- when 'boolean' or 'list' -%}
+          <div class="facets__values">
+            {%- for value in filter.values -%}
+              <label class="facets__opt{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                <input
+                  type="checkbox"
+                  name="{{ value.param_name }}"
+                  value="{{ value.value }}"
+                  {% if value.active %}checked{% endif %}
+                  {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                >
+                <span>{{ value.label }}</span>
+                <span class="count">{{ value.count }}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+
+        {%- when 'price_range' -%}
+          <div class="facets__price">
+            <div class="field">
+              <label class="visually-hidden" for="Filter-{{ filter.label | escape }}-min">{{ 'products.facets.from' | t }}</label>
+              <input
+                id="Filter-{{ filter.label | escape }}-min"
+                type="number"
+                inputmode="numeric"
+                name="{{ filter.min_value.param_name }}"
+                {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                placeholder="{{ 'products.facets.from' | t }}"
+                min="0"
+                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              >
+            </div>
+            <span aria-hidden="true">–</span>
+            <div class="field">
+              <label class="visually-hidden" for="Filter-{{ filter.label | escape }}-max">{{ 'products.facets.to' | t }}</label>
+              <input
+                id="Filter-{{ filter.label | escape }}-max"
+                type="number"
+                inputmode="numeric"
+                name="{{ filter.max_value.param_name }}"
+                {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                placeholder="{{ 'products.facets.to' | t }}"
+                min="0"
+                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              >
+            </div>
+          </div>
+      {%- endcase -%}
+    </details>
+  {%- endfor -%}
+
+  <div class="facets__actions">
+    <button type="submit" class="btn btn--primary btn--block">
+      {{ 'products.facets.show_results' | t: count: results.products_count }}
+    </button>
+    {%- if results.current_vendor or results.current_type or results.terms == blank -%}
+      <a class="facets__clear" href="{{ results.url | default: request.path }}">{{ 'products.facets.clear_all' | t }}</a>
+    {%- endif -%}
+  </div>
+</form>

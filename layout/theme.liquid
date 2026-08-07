@@ -1,0 +1,92 @@
+<!doctype html>
+{%- liquid
+  assign rtl_locales = 'ar,he,fa,ur,ps,sd,yi' | split: ','
+  assign lang = request.locale.iso_code | split: '-' | first
+  assign dir = 'ltr'
+  if rtl_locales contains lang
+    assign dir = 'rtl'
+  endif
+-%}
+<html lang="{{ request.locale.iso_code }}" dir="{{ dir }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_brand }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- comment -%} Shopify's CDN serves fonts, images, scripts — warm the connection early. {%- endcomment -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- endif -%}
+
+  <title>
+    {{- page_title -}}
+    {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% render 'meta-tags' %}
+
+  {%- comment -%}
+    Theme variables are inlined so the first paint already has the right
+    colors and fonts — no flash of unstyled content.
+  {%- endcomment -%}
+  <style>{% render 'css-variables' %}</style>
+
+  <link rel="preload" as="style" href="{{ 'base.css' | asset_url }}">
+  <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+
+  <script>document.documentElement.classList.replace('no-js','js');</script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="template-{{ request.page_type | handle }}{% if settings.sticky_header %} sticky-header{% endif %}">
+
+  <a class="skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  {% sections 'header-group' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+
+  {%- if settings.whatsapp_enabled and settings.whatsapp_float and settings.whatsapp_number != blank -%}
+    {% render 'whatsapp-float' %}
+  {%- endif -%}
+
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+
+  {%- comment -%} Cart data for JS, without an extra request. {%- endcomment -%}
+  <script type="application/json" id="ThemeData">
+    {
+      "moneyFormat": {{ shop.money_format | json }},
+      "routes": {
+        "cart_add": "{{ routes.cart_add_url }}",
+        "cart_change": "{{ routes.cart_change_url }}",
+        "cart": "{{ routes.cart_url }}",
+        "predictive_search": "{{ routes.predictive_search_url }}"
+      },
+      "strings": {
+        "addedToCart": {{ 'cart.added' | t | json }},
+        "soldOut": {{ 'products.product.sold_out' | t | json }},
+        "unavailable": {{ 'products.product.unavailable' | t | json }},
+        "addToCart": {{ 'products.product.add_to_cart' | t | json }},
+        "shippingFree": {{ 'cart.shipping_free' | t | json }}
+      },
+      "freeShippingThreshold": {{ settings.free_shipping_threshold | default: 0 | times: 100 | json }},
+      "shippingRate": {{ settings.shipping_rate | default: 0 | times: 100 | json }}
+    }
+  </script>
+</body>
+</html>

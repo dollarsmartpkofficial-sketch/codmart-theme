@@ -1,0 +1,260 @@
+/* ==========================================================================
+   CODMart — global.js
+   No dependencies, no framework. Everything is delegated from `document`
+   so markup rendered later (cart drawer, quick add) works without rebinding.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var DATA = {};
+  try {
+    DATA = JSON.parse(document.getElementById('ThemeData').textContent);
+  } catch (e) {
+    DATA = { routes: {}, strings: {} };
+  }
+  window.theme = DATA;
+
+  /* ---------- money ---------- */
+  function formatMoney(cents) {
+    var format = DATA.moneyFormat || '{{amount}}';
+    var value = (cents / 100).toFixed(
+      /no_decimals/.test(format) ? 0 : 2
+    );
+    // thousands separators
+    var parts = value.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    value = parts.join('.');
+    return format.replace(/\{\{\s*\w+\s*\}\}/, value);
+  }
+  window.theme.formatMoney = formatMoney;
+
+  /* ---------- tiny helpers ---------- */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function trapFocus(container) {
+    var focusable = $$('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])', container);
+    if (!focusable.length) return function () {};
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    function onKey(e) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    container.addEventListener('keydown', onKey);
+    first.focus();
+    return function () { container.removeEventListener('keydown', onKey); };
+  }
+
+  /* ==========================================================================
+     Modals & drawers  —  [data-modal-open="id"] / [data-modal-close]
+     ========================================================================== */
+  var releaseFocus = null;
+  var lastTrigger = null;
+
+  function openModal(id) {
+    var modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    releaseFocus = trapFocus(modal);
+  }
+
+  function closeModal(modal) {
+    modal = modal || $('.modal.is-open');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (releaseFocus) { releaseFocus(); releaseFocus = null; }
+    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+  }
+  window.theme.openModal = openModal;
+  window.theme.closeModal = closeModal;
+
+  document.addEventListener('click', function (e) {
+    var opener = e.target.closest('[data-modal-open]');
+    if (opener) {
+      e.preventDefault();
+      lastTrigger = opener;
+      openModal(opener.getAttribute('data-modal-open'));
+      return;
+    }
+    if (e.target.closest('[data-modal-close]') || e.target.classList.contains('modal__overlay')) {
+      closeModal(e.target.closest('.modal'));
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ==========================================================================
+     Quantity steppers  —  [data-qty] wrapper with [data-qty-minus/plus]
+     ========================================================================== */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-qty-minus],[data-qty-plus]');
+    if (!btn) return;
+    var input = $('input', btn.closest('[data-qty]'));
+    if (!input) return;
+    var min = parseInt(input.min || '1', 10);
+    var max = input.max ? parseInt(input.max, 10) : Infinity;
+    var next = (parseInt(input.value, 10) || min) + (btn.hasAttribute('data-qty-plus') ? 1 : -1);
+    input.value = Math.min(max, Math.max(min, next));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  /* ==========================================================================
+     Facets (mobile filter drawer)
+     ========================================================================== */
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-facets-open]')) {
+      var f = $('.facets');
+      if (f) { f.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+    }
+    if (e.target.closest('[data-facets-close]')) {
+      var g = $('.facets');
+      if (g) { g.classList.remove('is-open'); document.body.style.overflow = ''; }
+    }
+  });
+
+  /* Sort dropdown submits its form without a separate button. */
+  document.addEventListener('change', function (e) {
+    if (e.target.matches('[data-auto-submit]')) e.target.form.submit();
+  });
+
+  /* ==========================================================================
+     Add to cart (AJAX)
+     ========================================================================== */
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest('form[data-cart-form]');
+    if (!form) return;
+    e.preventDefault();
+
+    var btn = $('[type="submit"]', form);
+    var original = btn ? btn.innerHTML : '';
+    if (btn) { btn.setAttribute('aria-disabled', 'true'); btn.innerHTML = '…'; }
+
+    fetch(DATA.routes.cart_add, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: new FormData(form)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.status) throw new Error(res.description || res.message);
+        document.dispatchEvent(new CustomEvent('cart:added', { detail: res }));
+        refreshCartCount();
+        if (btn) btn.innerHTML = DATA.strings.addedToCart || 'Added';
+        setTimeout(function () {
+          if (btn) { btn.innerHTML = original; btn.removeAttribute('aria-disabled'); }
+        }, 1600);
+      })
+      .catch(function (err) {
+        if (btn) { btn.innerHTML = original; btn.removeAttribute('aria-disabled'); }
+        console.error('[cart]', err);
+      });
+  });
+
+  function refreshCartCount() {
+    fetch(DATA.routes.cart + '.js', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        $$('[data-cart-count]').forEach(function (el) {
+          el.textContent = cart.item_count;
+          el.hidden = cart.item_count === 0;
+        });
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      });
+  }
+
+  /* ==========================================================================
+     Product gallery — thumbnail switching without a carousel library
+     ========================================================================== */
+  document.addEventListener('click', function (e) {
+    var thumb = e.target.closest('[data-gallery-thumb]');
+    if (!thumb) return;
+    var gallery = thumb.closest('[data-gallery]');
+    var main = $('[data-gallery-main] img', gallery);
+    var img = $('img', thumb);
+    if (!main || !img) return;
+    main.src = img.getAttribute('data-full') || img.src;
+    main.srcset = '';
+    main.alt = img.alt;
+    $$('[data-gallery-thumb]', gallery).forEach(function (t) { t.setAttribute('aria-current', 'false'); });
+    thumb.setAttribute('aria-current', 'true');
+  });
+
+  /* ==========================================================================
+     Product recommendations — fetched after load so they never block the
+     product page itself.
+     ========================================================================== */
+  (function () {
+    var holder = $('[data-recommendations]');
+    if (!holder) return;
+    fetch(holder.dataset.url)
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var fresh = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-recommendations]');
+        if (fresh) holder.innerHTML = fresh.innerHTML;
+      })
+      .catch(function () {});
+  })();
+
+  /* ==========================================================================
+     Announcement bar — messages sit side by side on desktop and take turns
+     on narrow screens, where there is no room for all of them.
+     ========================================================================== */
+  (function () {
+    var track = $('[data-announcement-track]');
+    if (!track) return;
+    var items = $$('.announcement__item', track);
+    if (items.length < 2) return;
+
+    var speed = (parseInt(track.getAttribute('data-rotate'), 10) || 4) * 1000;
+    var mq = window.matchMedia('(max-width: 767px)');
+    var timer = null;
+    var index = 0;
+
+    function show(i) {
+      items.forEach(function (el, n) { el.classList.toggle('is-active', n === i); });
+    }
+
+    function start() {
+      show(0);
+      index = 0;
+      timer = setInterval(function () {
+        index = (index + 1) % items.length;
+        show(index);
+      }, speed);
+    }
+
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+      items.forEach(function (el) { el.classList.remove('is-active'); });
+    }
+
+    function sync() {
+      stop();
+      if (mq.matches) start();
+    }
+
+    sync();
+    mq.addEventListener('change', sync);
+  })();
+
+  /* ==========================================================================
+     Header — shadow once the page has scrolled
+     ========================================================================== */
+  var lastY = 0;
+  var header = $('.header');
+  if (header && document.body.classList.contains('sticky-header')) {
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      header.classList.toggle('is-scrolled', y > 40);
+      lastY = y;
+    }, { passive: true });
+  }
+})();

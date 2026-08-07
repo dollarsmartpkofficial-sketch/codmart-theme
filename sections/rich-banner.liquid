@@ -1,0 +1,40 @@
+{%- comment -%}
+  A full-width message band — used on the homepage for the COD promise, but
+  it works for any single announcement (sale, shipping cut-off, notice).
+{%- endcomment -%}
+
+<section class="section">
+  <div class="wrap">
+    <div
+      class="rich-banner"
+      style="background:linear-gradient(135deg,{{ section.settings.color_from }},{{ section.settings.color_to }});color:{{ section.settings.text_color }}"
+    >
+      {%- if section.settings.emoji != blank -%}
+        <span class="rich-banner__emoji" aria-hidden="true">{{ section.settings.emoji }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="btn btn--white" href="{{ section.settings.link }}">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Message banner",
+  "class": "rich-banner-section",
+  "settings": [
+    { "type": "text", "id": "emoji", "label": "Emoji", "default": "💵" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Cash on Delivery available" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "No online payment needed. Order now and pay when your package arrives." },
+    { "type": "text", "id": "button_label", "label": "Button text" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "color", "id": "color_from", "label": "Gradient start", "default": "#128C4B" },
+    { "type": "color", "id": "color_to", "label": "Gradient end", "default": "#0D6B39" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "Message banner" }]
+}
+{% endschema %}

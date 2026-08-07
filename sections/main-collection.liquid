@@ -1,0 +1,201 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign per_page = section.settings.per_page
+  assign cols = section.settings.columns_desktop
+
+  assign emoji = collection.metafields.custom.emoji.value
+  assign banner_style = section.settings.banner_style
+-%}
+
+<div class="wrap">
+  {%- if section.settings.show_breadcrumbs -%}
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="{{ routes.all_products_collection_url }}">{{ 'general.search.view_all' | t }}</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span aria-current="page">{{ collection.title }}</span>
+    </nav>
+  {%- endif -%}
+
+  {%- if banner_style != 'none' -%}
+    <div class="collection-banner collection-banner--{{ banner_style }}">
+      {%- if banner_style == 'image' and collection.image -%}
+        <img
+          src="{{ collection.image | image_url: width: 1600 }}"
+          srcset="{{ collection.image | image_url: width: 800 }} 800w, {{ collection.image | image_url: width: 1600 }} 1600w"
+          sizes="100vw"
+          alt="{{ collection.image.alt | escape }}"
+          width="{{ collection.image.width }}"
+          height="{{ collection.image.height }}"
+          fetchpriority="high"
+        >
+        <div class="collection-banner__overlay"></div>
+      {%- endif -%}
+
+      <div class="collection-banner__content">
+        {%- if emoji != blank -%}
+          <div class="collection-banner__emoji" aria-hidden="true">{{ emoji }}</div>
+        {%- endif -%}
+        {%- if section.settings.eyebrow != blank -%}
+          <small>{{ section.settings.eyebrow }}</small>
+        {%- endif -%}
+        <h1>{{ collection.title }}</h1>
+        {%- if collection.description != blank and section.settings.show_description -%}
+          <div class="collection-banner__desc rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- paginate collection.products by per_page -%}
+    <div class="collection-body{% unless section.settings.show_filters %} collection-body--no-facets{% endunless %}">
+
+      {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+        {% render 'facets', results: collection, sort_by: sort_by %}
+      {%- endif -%}
+
+      <div class="collection-main">
+        <div class="toolbar">
+          <span class="toolbar__count">
+            {{ 'products.facets.product_count' | t: count: collection.products_count }}
+          </span>
+
+          <div class="toolbar__right">
+            {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+              <button type="button" class="select facets-toggle" data-facets-open>
+                {% render 'icon', name: 'filter', size: 16 %}
+                {{ 'products.facets.filters' | t }}
+              </button>
+            {%- endif -%}
+
+            {%- if section.settings.show_sort -%}
+              <form method="get" class="toolbar__sort">
+                {%- for f in collection.filters -%}
+                  {%- for v in f.active_values -%}
+                    <input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">
+                  {%- endfor -%}
+                {%- endfor -%}
+                <label class="visually-hidden" for="SortBy">{{ 'products.facets.sort_by' | t }}</label>
+                <select id="SortBy" name="sort_by" class="select" data-auto-submit>
+                  {%- for option in collection.sort_options -%}
+                    <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+                      {{ option.name }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </form>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- comment -%} Chips for whatever is currently filtered. {%- endcomment -%}
+        {%- assign active_count = 0 -%}
+        {%- for f in collection.filters -%}
+          {%- assign active_count = active_count | plus: f.active_values.size -%}
+        {%- endfor -%}
+
+        {%- if active_count > 0 -%}
+          <div class="active-filters">
+            {%- for f in collection.filters -%}
+              {%- for v in f.active_values -%}
+                <a class="chip" href="{{ v.url_to_remove }}">
+                  {{ f.label }}: {{ v.label }}
+                  {% render 'icon', name: 'close', size: 12 %}
+                </a>
+              {%- endfor -%}
+              {%- if f.type == 'price_range' and f.min_value.value or f.max_value.value -%}
+                <a class="chip" href="{{ f.url_to_remove }}">
+                  {{ f.label }}
+                  {% render 'icon', name: 'close', size: 12 %}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+            <a class="chip chip--clear" href="{{ collection.url }}">{{ 'products.facets.clear_all' | t }}</a>
+          </div>
+        {%- endif -%}
+
+        {%- if collection.products.size > 0 -%}
+          <div class="product-grid" style="--cols:{{ cols }}">
+            {%- for product in collection.products -%}
+              {%- assign is_lazy = true -%}
+              {%- if forloop.index <= cols -%}
+                {%- assign is_lazy = false -%}
+              {%- endif -%}
+              {% render 'product-card', product: product, lazy: is_lazy, columns: cols %}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- else -%}
+          <div class="empty-state">
+            <p>{{ 'products.facets.no_products' | t }}</p>
+            <a class="btn btn--outline" href="{{ collection.url }}">{{ 'products.facets.clear_all' | t }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "class": "collection-section",
+  "settings": [
+    { "type": "header", "content": "Banner" },
+    {
+      "type": "select",
+      "id": "banner_style",
+      "label": "Banner style",
+      "options": [
+        { "value": "gradient", "label": "Brand gradient" },
+        { "value": "image", "label": "Collection image" },
+        { "value": "plain", "label": "Plain heading" },
+        { "value": "none", "label": "No banner" }
+      ],
+      "default": "gradient"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Collection" },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    {
+      "type": "paragraph",
+      "content": "To show an emoji on the banner, add a `custom.emoji` metafield to the collection in Shopify admin."
+    },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+
+    { "type": "header", "content": "Products" },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Products per row (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "label": "Products per page",
+      "default": 24,
+      "info": "Fewer products per page means a faster first load."
+    },
+
+    { "type": "header", "content": "Filtering" },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "default": true,
+      "info": "Set up which filters appear in Shopify admin → Products → Collections → Filters."
+    },
+    { "type": "checkbox", "id": "show_sort", "label": "Show sort dropdown", "default": true }
+  ]
+}
+{% endschema %}

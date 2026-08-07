@@ -1,0 +1,81 @@
+<section class="trust-section" style="background:{{ section.settings.background }}">
+  <div class="wrap trust" style="--trust-cols:{{ section.blocks.size }}">
+    {%- for block in section.blocks -%}
+      <div class="trust__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.icon_type == 'image' and block.settings.image != blank -%}
+          <img class="trust__icon" src="{{ block.settings.image | image_url: width: 60 }}" alt="" width="30" height="30" loading="lazy">
+        {%- elsif block.settings.icon_type == 'svg' -%}
+          <span class="icon-wrap">{% render 'icon', name: block.settings.icon, size: 24 %}</span>
+        {%- else -%}
+          <span class="icon" aria-hidden="true">{{ block.settings.emoji }}</span>
+        {%- endif -%}
+
+        <div>
+          <b>{{ block.settings.title }}</b>
+          {%- if block.settings.text != blank -%}<span>{{ block.settings.text }}</span>{%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "class": "trust-bar-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon type",
+          "options": [
+            { "value": "emoji", "label": "Emoji" },
+            { "value": "svg", "label": "Built-in icon" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "svg"
+        },
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🚚" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Built-in icon",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "cash", "label": "Cash" },
+            { "value": "return", "label": "Returns" },
+            { "value": "shield", "label": "Guarantee" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "whatsapp", "label": "WhatsApp" },
+            { "value": "clock", "label": "Hours" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "truck"
+        },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free shipping" },
+        { "type": "text", "id": "text", "label": "Text", "default": "On bigger orders" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "title": "Free shipping", "text": "On orders above Rs.3,500" } },
+        { "type": "item", "settings": { "icon": "cash", "title": "Cash on Delivery", "text": "EasyPaisa & JazzCash too" } },
+        { "type": "item", "settings": { "icon": "return", "title": "7-day returns", "text": "Hassle-free returns" } },
+        { "type": "item", "settings": { "icon": "shield", "title": "100% authentic", "text": "Guaranteed quality" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

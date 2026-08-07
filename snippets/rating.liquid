@@ -1,0 +1,44 @@
+{%- comment -%}
+  Star rating.
+
+  Reads Shopify's standard `reviews.rating` / `reviews.rating_count`
+  metafields, which our built-in review system writes to — and which
+  Judge.me, Loox and Okendo also use. So the stars work whether the
+  merchant uses our reviews or keeps an app they already have.
+
+  Accepts: product (required), size, show_count
+{%- endcomment -%}
+
+{%- liquid
+  assign rating_mf = product.metafields.reviews.rating.value
+  assign count = product.metafields.reviews.rating_count.value | default: 0
+
+  assign has_rating = false
+  if rating_mf != blank and count > 0
+    assign has_rating = true
+  endif
+-%}
+
+{%- if has_rating -%}
+  {%- liquid
+    assign value = rating_mf.rating | times: 1.0
+    assign scale = rating_mf.scale_max | default: 5
+    assign filled = value | round
+    assign star_size = size | default: 12
+  -%}
+  <div class="rating" role="img" aria-label="{{ 'reviews.rating' | t: rating: value }}">
+    <span class="rating__stars" aria-hidden="true">
+      {%- for i in (1..scale) -%}
+        {%- if i <= filled -%}
+          {% render 'icon', name: 'star', size: star_size %}
+        {%- else -%}
+          {% render 'icon', name: 'star-empty', size: star_size %}
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+    <span aria-hidden="true">{{ value | round: 1 }}</span>
+    {%- if show_count -%}
+      <span class="rating__count" aria-hidden="true">({{ count }})</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

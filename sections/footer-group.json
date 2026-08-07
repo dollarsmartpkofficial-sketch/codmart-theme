@@ -1,0 +1,21 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": { "type": "brand", "settings": { "show_socials": true, "show_payments": true } },
+        "menu-shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer" } },
+        "menu-help": { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } },
+        "contact": { "type": "contact", "settings": { "heading": "Contact" } }
+      },
+      "block_order": ["brand", "menu-shop", "menu-help", "contact"],
+      "settings": {
+        "background": "#1A1A1A",
+        "text_color": "#B3B3B3"
+      }
+    }
+  },
+  "order": ["footer"]
+}

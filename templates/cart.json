@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "show_free_shipping_bar": true,
+        "show_note": true,
+        "show_dynamic_checkout": true,
+        "show_badges": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

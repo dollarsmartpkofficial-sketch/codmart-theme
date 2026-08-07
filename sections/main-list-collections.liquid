@@ -1,0 +1,91 @@
+{%- liquid
+  if section.settings.source == 'selected' and section.blocks.size > 0
+    assign use_blocks = true
+  else
+    assign use_blocks = false
+  endif
+-%}
+
+<div class="wrap section">
+  <h1 class="page-title">{{ section.settings.heading | default: 'All collections' }}</h1>
+
+  <div class="cats" style="--cols:{{ section.settings.columns }};--cols-mobile:{{ section.settings.columns_mobile }}">
+    {%- if use_blocks -%}
+      {%- for block in section.blocks -%}
+        {%- assign coll = collections[block.settings.collection] -%}
+        <a class="cat cat--{{ section.settings.icon_shape }}" href="{{ coll.url }}" {{ block.shopify_attributes }}>
+          <span class="cat__icon">
+            {%- if block.settings.emoji != blank -%}
+              <span aria-hidden="true">{{ block.settings.emoji }}</span>
+            {%- elsif coll.image -%}
+              <img src="{{ coll.image | image_url: width: 120 }}" alt="" width="56" height="56" loading="lazy">
+            {%- endif -%}
+          </span>
+          <b>{{ block.settings.label | default: coll.title }}</b>
+          <span>{{ 'products.facets.product_count' | t: count: coll.all_products_count }}</span>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for coll in collections -%}
+        <a class="cat cat--{{ section.settings.icon_shape }}" href="{{ coll.url }}">
+          <span class="cat__icon">
+            {%- assign emoji = coll.metafields.custom.emoji.value -%}
+            {%- if emoji != blank -%}
+              <span aria-hidden="true">{{ emoji }}</span>
+            {%- elsif coll.image -%}
+              <img src="{{ coll.image | image_url: width: 120 }}" alt="" width="56" height="56" loading="lazy">
+            {%- else -%}
+              <span aria-hidden="true">🛍️</span>
+            {%- endif -%}
+          </span>
+          <b>{{ coll.title }}</b>
+          <span>{{ 'products.facets.product_count' | t: count: coll.all_products_count }}</span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "class": "collections-list-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "All collections" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Collections to show",
+      "options": [
+        { "value": "all", "label": "All collections" },
+        { "value": "selected", "label": "Selected collections" }
+      ],
+      "default": "all"
+    },
+    { "type": "range", "id": "columns", "min": 3, "max": 8, "step": 1, "label": "Columns (desktop)", "default": 6 },
+    { "type": "range", "id": "columns_mobile", "min": 2, "max": 4, "step": 1, "label": "Columns (mobile)", "default": 3 },
+    {
+      "type": "select",
+      "id": "icon_shape",
+      "label": "Icon shape",
+      "options": [
+        { "value": "circle", "label": "Circle" },
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "circle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "text", "id": "emoji", "label": "Emoji" }
+      ]
+    }
+  ]
+}
+{% endschema %}

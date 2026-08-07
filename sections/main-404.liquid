@@ -1,0 +1,27 @@
+<div class="wrap section">
+  <div class="empty-state error-404">
+    <span class="error-404__emoji" aria-hidden="true">{{ section.settings.emoji }}</span>
+    <h1>{{ section.settings.heading | default: '404.title' | t }}</h1>
+    <p>{{ section.settings.text | default: '404.subtext' | t }}</p>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="Search404">{{ 'general.search.search' | t }}</label>
+      <input id="Search404" type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}">
+      <button type="submit" class="btn btn--primary">{{ 'general.search.search' | t }}</button>
+    </form>
+
+    <a class="btn btn--outline" href="{{ routes.all_products_collection_url }}">{{ '404.link' | t }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404 page",
+  "class": "error-section",
+  "settings": [
+    { "type": "text", "id": "emoji", "label": "Emoji", "default": "🔍" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "text", "label": "Text" }
+  ]
+}
+{% endschema %}

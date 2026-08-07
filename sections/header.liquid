@@ -1,0 +1,192 @@
+{%- liquid
+  assign logo_text = settings.logo_text | default: shop.name
+-%}
+
+<header class="header" style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}">
+  <div class="wrap header__main">
+
+    <button
+      class="header__burger"
+      type="button"
+      data-modal-open="MobileMenu"
+      aria-label="{{ 'general.accessibility.menu' | t }}"
+    >
+      {% render 'icon', name: 'menu', size: 24 %}
+    </button>
+
+    {%- if request.page_type == 'index' -%}
+      <h1 class="header__logo-wrap">
+    {%- else -%}
+      <div class="header__logo-wrap">
+    {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__logo">
+        {%- if settings.logo_type == 'image' and settings.logo != blank -%}
+          {%- assign logo_w = settings.logo_width -%}
+          <img
+            src="{{ settings.logo | image_url: width: logo_w }}"
+            srcset="{{ settings.logo | image_url: width: logo_w }} 1x, {{ settings.logo | image_url: width: logo_w | times: 2 }} 2x"
+            alt="{{ shop.name | escape }}"
+            width="{{ logo_w }}"
+            height="{{ logo_w | divided_by: settings.logo.aspect_ratio | round }}"
+            style="width:{{ logo_w }}px"
+            fetchpriority="high"
+          >
+        {%- else -%}
+          {%- if settings.logo_mark != blank -%}
+            <span class="header__mark" aria-hidden="true">{{ settings.logo_mark }}</span>
+          {%- endif -%}
+          {{ logo_text }}
+        {%- endif -%}
+      </a>
+    {%- if request.page_type == 'index' -%}
+      </h1>
+    {%- else -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_search -%}
+      <form action="{{ routes.search_url }}" method="get" role="search" class="header__search">
+        <label class="visually-hidden" for="HeaderSearch">{{ 'general.search.search' | t }}</label>
+        <input
+          id="HeaderSearch"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ section.settings.search_placeholder | default: 'general.search.placeholder' | t }}"
+          autocomplete="off"
+        >
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="submit">
+          <span class="header__search-label">{{ 'general.search.search' | t }}</span>
+          <span class="header__search-icon">{% render 'icon', name: 'search', size: 18 %}</span>
+        </button>
+      </form>
+    {%- endif -%}
+
+    <div class="header__actions">
+      {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="header__action">
+          <span class="icon">{% render 'icon', name: 'user' %}</span>
+          <span class="header__action-label">{{ 'customer.account.title' | t }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.show_wishlist -%}
+        <a href="{{ section.settings.wishlist_url | default: routes.root_url }}" class="header__action">
+          <span class="icon">{% render 'icon', name: 'heart' %}</span>
+          <span class="header__action-label">{{ section.settings.wishlist_label }}</span>
+        </a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="header__action" data-cart-link>
+        <span class="icon">{% render 'icon', name: 'cart' %}</span>
+        <span class="header__count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+        <span class="header__action-label">{{ 'cart.title' | t }}</span>
+      </a>
+    </div>
+  </div>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="header__nav" style="background:{{ section.settings.nav_background }}" aria-label="{{ 'general.accessibility.menu' | t }}">
+      <div class="wrap">
+        <ul>
+          {%- for link in section.settings.menu.links -%}
+            {%- if link.links.size > 0 -%}
+              <li class="has-children">
+                <details>
+                  <summary>
+                    {{ link.title }}
+                    {% render 'icon', name: 'chevron-down', size: 14 %}
+                  </summary>
+                  <ul class="submenu">
+                    {%- for child in link.links -%}
+                      <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              </li>
+            {%- else -%}
+              <li>
+                <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </nav>
+  {%- endif -%}
+</header>
+
+{%- comment -%} Mobile navigation drawer {%- endcomment -%}
+<div class="modal modal--drawer" id="MobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ 'general.accessibility.menu' | t }}">
+  <div class="modal__overlay" data-modal-close></div>
+  <div class="modal__card drawer__card">
+    <div class="drawer__head">
+      <span class="drawer__title">{{ 'general.accessibility.menu' | t }}</span>
+      <button type="button" class="drawer__close" data-modal-close aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'icon', name: 'close', size: 22 %}
+      </button>
+    </div>
+
+    <ul class="drawer__nav">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <details>
+              <summary>{{ link.title }} {% render 'icon', name: 'chevron-down', size: 16 %}</summary>
+              <ul>
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <div class="drawer__foot">
+      {%- if settings.support_phone != blank -%}
+        <a href="tel:{{ settings.support_phone | remove: ' ' }}">{% render 'icon', name: 'phone', size: 16 %} {{ settings.support_phone }}</a>
+      {%- endif -%}
+      {%- if settings.whatsapp_enabled and settings.whatsapp_number != blank -%}
+        <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}" target="_blank" rel="noopener">
+          {% render 'icon', name: 'whatsapp', size: 16 %} WhatsApp
+        </a>
+      {%- endif -%}
+      {%- if settings.track_order_url != blank -%}
+        <a href="{{ settings.track_order_url }}">{% render 'icon', name: 'truck', size: 16 %} {{ section.settings.track_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header-section",
+  "settings": [
+    { "type": "header", "content": "Navigation" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#741C1C" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "nav_background", "label": "Menu bar background", "default": "#5A1414" },
+
+    { "type": "header", "content": "Search" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search bar", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "What are you looking for?" },
+
+    { "type": "header", "content": "Actions" },
+    { "type": "checkbox", "id": "show_account", "label": "Show account link", "default": true },
+    { "type": "checkbox", "id": "show_wishlist", "label": "Show wishlist link", "default": false },
+    { "type": "text", "id": "wishlist_label", "label": "Wishlist label", "default": "Wishlist" },
+    { "type": "url", "id": "wishlist_url", "label": "Wishlist link" },
+    { "type": "text", "id": "track_label", "label": "Track order label", "default": "Track order" }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}
