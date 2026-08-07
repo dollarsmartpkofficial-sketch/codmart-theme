@@ -173,9 +173,9 @@
     "featured": {
       "type": "featured-products",
       "settings": {
-        "collection": "",
+        "collection": "electronic-items",
         "eyebrow": "Hand-picked",
-        "heading": "⭐ Featured products",
+        "heading": "⭐ Electronics",
         "text": "Handpicked top sellers just for you",
         "show_link": true,
         "link_label": "View all",
