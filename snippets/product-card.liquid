@@ -41,33 +41,42 @@
 
   assign cols = columns | default: 4
   assign img_width = 600 | divided_by: cols | times: 2 | at_least: 300
+  assign vw = 100 | divided_by: cols
+
+  {%- comment -%}
+    Read images through `preview_image` — a product's featured media can be a
+    video or 3D model, and only the preview is guaranteed to be an image.
+  {%- endcomment -%}
+  assign card_image = product.featured_media.preview_image
+  assign card_alt = product.featured_media.alt | default: product.title
+  assign second_image = product.media[1].preview_image
 -%}
 
 <article class="card">
   <a class="card__media card__media--{{ ratio }}" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
-    {%- if product.featured_media -%}
+    {%- if card_image -%}
       <img
-        src="{{ product.featured_media | image_url: width: img_width }}"
+        src="{{ card_image | image_url: width: img_width }}"
         srcset="
-          {{ product.featured_media | image_url: width: 300 }} 300w,
-          {{ product.featured_media | image_url: width: 500 }} 500w,
-          {{ product.featured_media | image_url: width: 700 }} 700w
+          {{ card_image | image_url: width: 300 }} 300w,
+          {{ card_image | image_url: width: 500 }} 500w,
+          {{ card_image | image_url: width: 700 }} 700w
         "
-        sizes="(max-width: 640px) 45vw, (max-width: 1100px) 25vw, {{ 100 | divided_by: cols }}vw"
-        alt="{{ product.featured_media.alt | escape }}"
-        width="{{ product.featured_media.width }}"
-        height="{{ product.featured_media.height }}"
+        sizes="(max-width: 640px) 45vw, (max-width: 1100px) 25vw, {{ vw }}vw"
+        alt="{{ card_alt | escape }}"
+        width="{{ card_image.width }}"
+        height="{{ card_image.height }}"
         loading="{{ lazy_attr }}"
         {% if lazy == false %}fetchpriority="high"{% endif %}
       >
 
-      {%- if settings.card_show_second_image and product.media[1] -%}
+      {%- if settings.card_show_second_image and second_image -%}
         <img
           class="card__img--alt"
-          src="{{ product.media[1] | image_url: width: img_width }}"
+          src="{{ second_image | image_url: width: img_width }}"
           alt=""
-          width="{{ product.media[1].width }}"
-          height="{{ product.media[1].height }}"
+          width="{{ second_image.width }}"
+          height="{{ second_image.height }}"
           loading="lazy"
         >
       {%- endif -%}

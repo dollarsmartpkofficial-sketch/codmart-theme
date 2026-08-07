@@ -1,14 +1,24 @@
 {%- comment -%}
   Product gallery. Accepts: product
 
-  The first image is eager + high priority — it is the LCP element on a
-  product page, and deferring it is the single easiest way to lose points.
+  Media is read through `preview_image` rather than passed to `image_url`
+  directly — a product can hold video and 3D models, and only the preview
+  image is guaranteed to be an image.
+
+  The first image is eager + high priority: it is the LCP element on a product
+  page, and deferring it is the easiest way to lose points.
 {%- endcomment -%}
+
+{%- liquid
+  assign featured = product.featured_media.preview_image
+  assign featured_alt = product.featured_media.alt | default: product.title
+-%}
 
 <div class="pdp__gallery" data-gallery>
   {%- if product.media.size > 1 -%}
-    <div class="pdp__thumbs" role="list">
+    <div class="pdp__thumbs">
       {%- for media in product.media limit: 8 -%}
+        {%- assign preview = media.preview_image -%}
         <button
           type="button"
           class="pdp__thumb"
@@ -18,31 +28,36 @@
           aria-label="{{ media.alt | default: product.title | escape }}"
         >
           <img
-            src="{{ media | image_url: width: 160 }}"
-            data-full="{{ media | image_url: width: 1200 }}"
+            src="{{ preview | image_url: width: 160 }}"
+            data-full="{{ preview | image_url: width: 1200 }}"
             alt=""
             width="76"
             height="76"
             loading="lazy"
           >
+          {%- if media.media_type != 'image' -%}
+            <span class="pdp__thumb-badge" aria-hidden="true">
+              {% render 'icon', name: 'player-play', size: 14 %}
+            </span>
+          {%- endif -%}
         </button>
       {%- endfor -%}
     </div>
   {%- endif -%}
 
   <div class="pdp__main" data-gallery-main>
-    {%- if product.featured_media -%}
+    {%- if featured -%}
       <img
-        src="{{ product.featured_media | image_url: width: 1200 }}"
+        src="{{ featured | image_url: width: 1200 }}"
         srcset="
-          {{ product.featured_media | image_url: width: 600 }} 600w,
-          {{ product.featured_media | image_url: width: 900 }} 900w,
-          {{ product.featured_media | image_url: width: 1200 }} 1200w
+          {{ featured | image_url: width: 600 }} 600w,
+          {{ featured | image_url: width: 900 }} 900w,
+          {{ featured | image_url: width: 1200 }} 1200w
         "
         sizes="(max-width: 860px) 100vw, 45vw"
-        alt="{{ product.featured_media.alt | escape }}"
-        width="{{ product.featured_media.width }}"
-        height="{{ product.featured_media.height }}"
+        alt="{{ featured_alt | escape }}"
+        width="{{ featured.width }}"
+        height="{{ featured.height }}"
         fetchpriority="high"
         loading="eager"
       >

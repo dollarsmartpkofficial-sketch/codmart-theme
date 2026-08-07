@@ -26,10 +26,17 @@
     {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__logo">
         {%- if settings.logo_type == 'image' and settings.logo != blank -%}
-          {%- assign logo_w = settings.logo_width -%}
+          {%- liquid
+            assign logo_w = settings.logo_width
+            comment
+              Double the width before it reaches image_url — image_url returns
+              a string, so chaining `times` onto it multiplies the URL.
+            endcomment
+            assign logo_w2 = logo_w | times: 2
+          -%}
           <img
             src="{{ settings.logo | image_url: width: logo_w }}"
-            srcset="{{ settings.logo | image_url: width: logo_w }} 1x, {{ settings.logo | image_url: width: logo_w | times: 2 }} 2x"
+            srcset="{{ settings.logo | image_url: width: logo_w }} 1x, {{ settings.logo | image_url: width: logo_w2 }} 2x"
             alt="{{ shop.name | escape }}"
             width="{{ logo_w }}"
             height="{{ logo_w | divided_by: settings.logo.aspect_ratio | round }}"

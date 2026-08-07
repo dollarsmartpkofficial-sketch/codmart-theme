@@ -274,8 +274,8 @@
 {%- if section.settings.sticky_atc -%}
   <div class="sticky-atc" data-sticky-atc hidden>
     <div class="wrap sticky-atc__in">
-      {%- if product.featured_media -%}
-        <img src="{{ product.featured_media | image_url: width: 100 }}" alt="" width="50" height="50" loading="lazy">
+      {%- if product.featured_media.preview_image -%}
+        <img src="{{ product.featured_media.preview_image | image_url: width: 100 }}" alt="" width="50" height="50" loading="lazy">
       {%- endif -%}
       <div class="sticky-atc__info">
         <b>{{ product.title }}</b>

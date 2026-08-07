@@ -104,11 +104,19 @@
                   {% render 'icon', name: 'close', size: 12 %}
                 </a>
               {%- endfor -%}
-              {%- if f.type == 'price_range' and f.min_value.value or f.max_value.value -%}
-                <a class="chip" href="{{ f.url_to_remove }}">
-                  {{ f.label }}
-                  {% render 'icon', name: 'close', size: 12 %}
-                </a>
+
+              {%- comment -%}
+                A price range has no active_values, so it needs its own chip.
+                Liquid resolves `and`/`or` right to left, so the two checks are
+                nested rather than written as one condition.
+              {%- endcomment -%}
+              {%- if f.type == 'price_range' -%}
+                {%- if f.min_value.value or f.max_value.value -%}
+                  <a class="chip" href="{{ f.url_to_remove }}">
+                    {{ f.label }}
+                    {% render 'icon', name: 'close', size: 12 %}
+                  </a>
+                {%- endif -%}
               {%- endif -%}
             {%- endfor -%}
             <a class="chip chip--clear" href="{{ collection.url }}">{{ 'products.facets.clear_all' | t }}</a>
