@@ -48,8 +48,12 @@
     </div>
 
     <div class="cart-note__actions">
-      <a class="btn btn--primary btn--block btn--lg" href="{{ routes.cart_url }}">
+      {%- comment -%} It says Checkout, so it goes to checkout. {%- endcomment -%}
+      <a class="btn btn--primary btn--block btn--lg" href="/checkout">
         {{ 'cart.checkout' | t }}
+      </a>
+      <a class="cart-note__cart-link" href="{{ routes.cart_url }}">
+        {{ 'cart.view_cart' | t }}
       </a>
       <button type="button" class="btn btn--outline btn--block" data-modal-close>
         {{ 'cart.continue_shopping' | t }}

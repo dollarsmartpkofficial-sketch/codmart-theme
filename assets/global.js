@@ -70,7 +70,9 @@
     var modal = document.getElementById(id);
     if (!modal) return;
     modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
+    /* The markup ships inert so a closed dialog full of links is not in the
+       tab order. Opening has to lift it, or nothing inside can be clicked. */
+    modal.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
     releaseFocus = trapFocus(modal);
   }
@@ -79,7 +81,7 @@
     modal = modal || $('.modal.is-open');
     if (!modal) return;
     modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('inert', '');
     document.body.style.overflow = '';
     if (releaseFocus) { releaseFocus(); releaseFocus = null; }
     if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }

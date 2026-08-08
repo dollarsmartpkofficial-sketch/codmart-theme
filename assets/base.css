@@ -1072,3 +1072,6 @@ main > .wrap:last-child{padding-block-end:48px}
 /* 44px is the smallest comfortable touch target; the burger was 32 tall. */
 .header__burger{min-width:44px;min-height:44px;display:grid;place-items:center}
 .announcement__phone{padding-block:4px}
+
+.cart-note__cart-link{display:block;text-align:center;font-size:13px;font-weight:700;color:var(--muted);text-decoration:underline;padding-block:4px}
+.cart-note__cart-link:hover{color:var(--brand)}
