@@ -133,7 +133,11 @@
       "whatsapp_number": "WhatsApp number",
       "whatsapp_number_info": "Country code, no + or spaces. Example: 923001234567",
       "whatsapp_message": "Pre-filled message",
-      "whatsapp_float": "Show floating WhatsApp button"
+      "whatsapp_float": "Show floating WhatsApp button",
+      "city_field": "City field",
+      "city_text": "Text box (with suggestions)",
+      "city_dropdown": "Dropdown (choose from the list)",
+      "city_field_info": "A text box lets shoppers type any town while still suggesting your cities. A dropdown restricts them to the list."
     },
     "reviews": {
       "name": "Product reviews",
@@ -144,7 +148,9 @@
       "show_city": "Show reviewer city",
       "verified_badge": "Show “verified purchase” badge"
     },
-    "social": { "name": "Social media" },
+    "social": {
+      "name": "Social media"
+    },
     "seo": {
       "name": "SEO & sharing",
       "share_image": "Social sharing image",

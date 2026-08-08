@@ -113,13 +113,40 @@
 
       <div class="field">
         <label for="CodCity-{{ product.id }}">{{ 'cod.form.city' | t }} <span class="req">*</span></label>
-        <select id="CodCity-{{ product.id }}" name="city" required>
-          <option value="">{{ 'cod.form.city_placeholder' | t }}</option>
-          {%- for city in cities -%}
-            {%- assign c = city | strip -%}
-            {%- if c != blank -%}<option value="{{ c | escape }}">{{ c }}</option>{%- endif -%}
-          {%- endfor -%}
-        </select>
+
+        {%- if settings.cod_city_field == 'dropdown' -%}
+          <select id="CodCity-{{ product.id }}" name="city" required>
+            <option value="">{{ 'cod.form.city_placeholder' | t }}</option>
+            {%- for city in cities -%}
+              {%- assign c = city | strip -%}
+              {%- if c != blank -%}<option value="{{ c | escape }}">{{ c }}</option>{%- endif -%}
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          {%- comment -%}
+            A text box, but still backed by the city list as suggestions — the
+            shopper can type any town without hunting a long dropdown, and the
+            common ones are one tap away.
+          {%- endcomment -%}
+          <input
+            id="CodCity-{{ product.id }}"
+            type="text"
+            name="city"
+            list="CodCities-{{ product.id }}"
+            autocomplete="address-level2"
+            placeholder="{{ 'cod.form.city_typed_placeholder' | t }}"
+            required
+          >
+          {%- if cities.size > 0 -%}
+            <datalist id="CodCities-{{ product.id }}">
+              {%- for city in cities -%}
+                {%- assign c = city | strip -%}
+                {%- if c != blank -%}<option value="{{ c | escape }}"></option>{%- endif -%}
+              {%- endfor -%}
+            </datalist>
+          {%- endif -%}
+        {%- endif -%}
+
         <span class="error" hidden>{{ 'cod.form.errors.city' | t }}</span>
       </div>
 

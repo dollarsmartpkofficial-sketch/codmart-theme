@@ -170,7 +170,8 @@
         "heading": "Thank you! Order received",
         "body": "Our team will call you within an hour to confirm.",
         "track": "Track on WhatsApp"
-      }
+      },
+      "city_typed_placeholder": "Your city"
     },
     "badges": {
       "free_shipping": "Free shipping",
