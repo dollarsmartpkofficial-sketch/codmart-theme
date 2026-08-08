@@ -145,6 +145,9 @@ h3{font-size:var(--fs-h3)}
   min-width:17px;height:17px;border-radius:var(--radius-pill);
   display:grid;place-items:center;padding-inline:4px;
 }
+/* `display:grid` above outranks the UA rule behind the hidden attribute, so
+   an empty cart still showed a badge reading 0. */
+.header__count[hidden]{display:none}
 .header__burger{display:none;font-size:22px;padding:4px 8px}
 
 .header__nav{background:var(--brand-dark)}
