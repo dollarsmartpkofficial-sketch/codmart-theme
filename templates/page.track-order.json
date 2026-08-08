@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "order-tracking",
+      "blocks": {
+        "leopards": { "type": "courier", "settings": { "name": "Leopards", "url": "https://leopardscourier.com/tracking" } },
+        "tcs": { "type": "courier", "settings": { "name": "TCS", "url": "https://www.tcsexpress.com/track/" } },
+        "postex": { "type": "courier", "settings": { "name": "PostEx", "url": "https://postex.pk/tracking" } }
+      },
+      "block_order": ["leopards", "tcs", "postex"],
+      "settings": {
+        "emoji": "📦",
+        "heading": "Track your order",
+        "show_order_field": true,
+        "show_phone_field": true,
+        "show_help": true
+      }
+    }
+  },
+  "order": ["main"]
+}

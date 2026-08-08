@@ -1,0 +1,193 @@
+{%- comment -%}
+  Order tracking.
+
+  A theme cannot look an order up — reading order data needs Admin API access,
+  which themes are not given, and rightly so: otherwise anyone could type an
+  order number and read a stranger's phone number and address.
+
+  So this hands off to WhatsApp instead. The shopper types what they know, and
+  the message is composed for them; the merchant's team replies with the
+  status. In COD markets that is the conversation that was going to happen
+  anyway — this just removes the typing.
+
+  Courier links are there for shoppers who already have a tracking number.
+{%- endcomment -%}
+
+{%- liquid
+  assign wa_number = section.settings.whatsapp_number | default: settings.whatsapp_number
+  assign wa_number = wa_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+
+<div class="wrap section page-narrow">
+  <div class="tracking">
+    <div class="tracking__head">
+      {%- if section.settings.emoji != blank -%}
+        <span class="tracking__emoji" aria-hidden="true">{{ section.settings.emoji }}</span>
+      {%- endif -%}
+      <h1>{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p>{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if wa_number != blank -%}
+      <div
+        class="tracking__form"
+        data-order-tracking
+        data-number="{{ wa_number }}"
+        data-template="{{ section.settings.message | escape }}"
+      >
+        {%- if section.settings.show_order_field -%}
+          <div class="field">
+            <label for="TrackOrder">{{ section.settings.order_label }}</label>
+            <input id="TrackOrder" type="text" name="order" inputmode="text"
+                   placeholder="{{ section.settings.order_placeholder }}" autocomplete="off">
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_phone_field -%}
+          <div class="field">
+            <label for="TrackPhone">{{ section.settings.phone_label }}</label>
+            <input id="TrackPhone" type="tel" name="phone" inputmode="tel"
+                   placeholder="{{ section.settings.phone_placeholder }}" autocomplete="tel">
+          </div>
+        {%- endif -%}
+
+        <p class="tracking__error" data-tracking-error hidden role="alert">
+          {{ section.settings.error_text }}
+        </p>
+
+        <button type="button" class="btn btn--wa btn--block btn--lg" data-tracking-submit>
+          {% render 'icon', name: 'whatsapp', size: 18 %}
+          {{ section.settings.button_label }}
+        </button>
+
+        {%- if section.settings.note != blank -%}
+          <p class="cod-note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="editor-note">{{ 'tracking.no_number' | t }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="tracking__couriers">
+        <h2>{{ section.settings.couriers_heading }}</h2>
+        {%- if section.settings.couriers_text != blank -%}
+          <p>{{ section.settings.couriers_text }}</p>
+        {%- endif -%}
+        <div class="tracking__courier-list">
+          {%- for block in section.blocks -%}
+            <a
+              class="tracking__courier"
+              href="{{ block.settings.url }}"
+              target="_blank"
+              rel="noopener"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.logo != blank -%}
+                <img src="{{ block.settings.logo | image_url: width: 120 }}" alt="" width="60" height="24" loading="lazy">
+              {%- else -%}
+                <span>{{ block.settings.name }}</span>
+              {%- endif -%}
+              {% render 'icon', name: 'chevron-right', size: 14 %}
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_help -%}
+      <div class="tracking__help">
+        <h2>{{ section.settings.help_heading }}</h2>
+        <ul>
+          {%- if section.settings.help_text != blank -%}
+            <li>{{ section.settings.help_text }}</li>
+          {%- endif -%}
+          {%- if settings.support_phone != blank -%}
+            <li>
+              {% render 'icon', name: 'phone', size: 16 %}
+              <a href="tel:{{ settings.support_phone | remove: ' ' }}">{{ settings.support_phone }}</a>
+            </li>
+          {%- endif -%}
+          {%- if settings.support_email != blank -%}
+            <li>
+              {% render 'icon', name: 'mail', size: 16 %}
+              <a href="mailto:{{ settings.support_email }}">{{ settings.support_email }}</a>
+            </li>
+          {%- endif -%}
+          {%- if settings.support_hours != blank -%}
+            <li>{% render 'icon', name: 'clock', size: 16 %} {{ settings.support_hours }}</li>
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Order tracking",
+  "class": "tracking-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The shopper enters what they know and the details are packed into a WhatsApp message for your team to answer. A theme cannot read order data itself — that needs an app."
+    },
+    { "type": "text", "id": "emoji", "label": "Emoji", "default": "📦" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Track your order" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Enter your order number or the mobile number you ordered with, and we'll check it for you right away." },
+
+    { "type": "header", "content": "Form" },
+    { "type": "checkbox", "id": "show_order_field", "label": "Ask for order number", "default": true },
+    { "type": "text", "id": "order_label", "label": "Order number label", "default": "Order number" },
+    { "type": "text", "id": "order_placeholder", "label": "Order number placeholder", "default": "#1234" },
+    { "type": "checkbox", "id": "show_phone_field", "label": "Ask for mobile number", "default": true },
+    { "type": "text", "id": "phone_label", "label": "Mobile label", "default": "Mobile number" },
+    { "type": "text", "id": "phone_placeholder", "label": "Mobile placeholder", "default": "03001234567" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Track on WhatsApp" },
+    { "type": "text", "id": "error_text", "label": "Error text", "default": "Please enter your order number or mobile number." },
+    { "type": "text", "id": "note", "label": "Note under button", "default": "We usually reply within an hour during working hours." },
+
+    { "type": "header", "content": "WhatsApp" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Leave blank to use the number from “🚀 Start here”." },
+    {
+      "type": "textarea",
+      "id": "message",
+      "label": "Message template",
+      "default": "Assalam-o-Alaikum! I'd like to track my order.\nOrder: [order]\nMobile: [phone]",
+      "info": "Use [order] and [phone] where those values should appear. Empty fields are dropped."
+    },
+
+    { "type": "header", "content": "Courier links" },
+    { "type": "text", "id": "couriers_heading", "label": "Heading", "default": "Already have a tracking number?" },
+    { "type": "text", "id": "couriers_text", "label": "Text", "default": "Check it directly on your courier's website." },
+
+    { "type": "header", "content": "Other ways to reach you" },
+    { "type": "checkbox", "id": "show_help", "label": "Show contact details", "default": true },
+    { "type": "text", "id": "help_heading", "label": "Heading", "default": "Still need help?" },
+    { "type": "text", "id": "help_text", "label": "Text", "default": "Your confirmation email also has a tracking link." }
+  ],
+  "blocks": [
+    {
+      "type": "courier",
+      "name": "Courier",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Leopards" },
+        { "type": "url", "id": "url", "label": "Tracking page" },
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Optional. Replaces the name." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Order tracking",
+      "blocks": [
+        { "type": "courier", "settings": { "name": "Leopards" } },
+        { "type": "courier", "settings": { "name": "TCS" } },
+        { "type": "courier", "settings": { "name": "PostEx" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -187,6 +187,52 @@
   });
 
   /* ==========================================================================
+     Order tracking — pack what the shopper typed into a WhatsApp message.
+     ========================================================================== */
+  (function () {
+    var box = $('[data-order-tracking]');
+    if (!box) return;
+
+    var btn = $('[data-tracking-submit]', box);
+    var error = $('[data-tracking-error]', box);
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+      var order = ($('[name="order"]', box) || {}).value || '';
+      var phone = ($('[name="phone"]', box) || {}).value || '';
+      order = order.trim();
+      phone = phone.trim();
+
+      /* One of the two is enough — plenty of shoppers only remember one. */
+      if (!order && !phone) {
+        if (error) error.hidden = false;
+        var first = $('input', box);
+        if (first) first.focus();
+        return;
+      }
+      if (error) error.hidden = true;
+
+      var message = (box.dataset.template || '')
+        .replace('[order]', order)
+        .replace('[phone]', phone)
+        /* Drop the label of whichever field was left empty. */
+        .split('\n')
+        .filter(function (line) { return !/^[^:]{1,20}:\s*$/.test(line.trim()); })
+        .join('\n');
+
+      window.open(
+        'https://wa.me/' + box.dataset.number + '?text=' + encodeURIComponent(message),
+        '_blank',
+        'noopener'
+      );
+    });
+
+    box.addEventListener('input', function () {
+      if (error) error.hidden = true;
+    });
+  })();
+
+  /* ==========================================================================
      Reviews — reveal the rest of the list on demand. They are all in the DOM
      already (good for SEO), just hidden, so this is a class toggle rather
      than a fetch.

@@ -48,14 +48,12 @@
       "link_copied": "Link copied"
     }
   },
-
   "onboarding": {
     "product_title": "Example product",
     "category": "Category",
     "pick_collection": "Pick a collection in this section's settings to show your own products here.",
     "pick_collections": "Add collections to these blocks so the links work."
   },
-
   "products": {
     "product": {
       "add_to_cart": "Add to cart",
@@ -116,7 +114,6 @@
       "no_products": "No products match these filters."
     }
   },
-
   "cart": {
     "title": "Your cart",
     "empty": "Your cart is empty",
@@ -139,7 +136,6 @@
     "view_cart": "View cart",
     "added": "Added to cart"
   },
-
   "cod": {
     "form": {
       "heading": "Cash on Delivery — order now",
@@ -183,7 +179,6 @@
       "authentic": "100% authentic"
     }
   },
-
   "reviews": {
     "title": "Customer reviews",
     "count": {
@@ -213,16 +208,48 @@
       "success": "Thank you! Your review has been submitted for approval."
     }
   },
-
   "customer": {
-    "account": { "title": "Account", "details": "Account details", "orders": "Order history", "logout": "Log out" },
-    "login": { "title": "Login", "email": "Email", "password": "Password", "submit": "Sign in", "forgot": "Forgot your password?", "create": "Create account" },
-    "register": { "title": "Create account", "first_name": "First name", "last_name": "Last name", "submit": "Create" },
-    "orders": { "order_number": "Order", "date": "Date", "payment_status": "Payment", "fulfillment_status": "Status", "total": "Total", "none": "You haven't placed any orders yet." },
-    "addresses": { "title": "Addresses", "add": "Add address", "edit": "Edit", "delete": "Delete", "default": "Default address" },
-    "recover_password": { "title": "Reset password", "subtext": "We'll send you an email to reset your password.", "submit": "Send" }
+    "account": {
+      "title": "Account",
+      "details": "Account details",
+      "orders": "Order history",
+      "logout": "Log out"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "create": "Create account"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "submit": "Create"
+    },
+    "orders": {
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Status",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add": "Add address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "default": "Default address"
+    },
+    "recover_password": {
+      "title": "Reset password",
+      "subtext": "We'll send you an email to reset your password.",
+      "submit": "Send"
+    }
   },
-
   "blogs": {
     "article": {
       "read_more": "Read more",
@@ -232,7 +259,6 @@
       "back": "Back to blog"
     }
   },
-
   "contact": {
     "form": {
       "title": "Contact us",
@@ -244,13 +270,11 @@
       "success": "Thanks for reaching out. We'll reply soon."
     }
   },
-
   "404": {
     "title": "Page not found",
     "subtext": "The page you're looking for doesn't exist.",
     "link": "Continue shopping"
   },
-
   "gift_cards": {
     "issued": {
       "title": "Gift card",
@@ -260,12 +284,14 @@
       "shop_link": "Start shopping"
     }
   },
-
   "password": {
     "title": "Opening soon",
     "message": "Enter the store using a password",
     "login_password": "Password",
     "submit": "Enter",
     "powered_by": "This shop will be powered by {{ shopify }}"
+  },
+  "tracking": {
+    "no_number": "Add a WhatsApp number in “🚀 Start here” so this form has somewhere to send people."
   }
 }
