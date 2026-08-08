@@ -22,7 +22,7 @@
         "spin_speed": 18,
         "note": "Starting from Rs.125",
         "button_label": "Shop now",
-        "button_link": "shopify://collections",
+        "button_link": "shopify://collections/all",
         "button_2_label": "Track order",
         "button_2_link": ""
       }
@@ -258,6 +258,20 @@
         "limit": 5
       }
     },
+    "cat-onedollar": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "one-dollar-item-1",
+        "eyebrow": "Starting at Rs.250",
+        "heading": "💵 One Dollar",
+        "text": "Everything at one price",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
+        "columns": 5,
+        "limit": 5
+      }
+    },
     "promos": {
       "type": "promo-banners",
       "blocks": {
@@ -308,6 +322,48 @@
         "show_link": true,
         "link_label": "View all",
         "background": "soft",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-kitchen": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "kitchen-accessories",
+        "eyebrow": "Most popular",
+        "heading": "🍳 Kitchen",
+        "text": "Tools that earn their drawer space",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-health": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "health-and-beauty-products",
+        "eyebrow": "Look after yourself",
+        "heading": "💪 Health & Beauty",
+        "text": "Trimmers, rollers, skincare & more",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "soft",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-gadgets": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "gadgets-nbsp",
+        "eyebrow": "Trending now",
+        "heading": "⚡ Gadgets",
+        "text": "Small things that make life easier",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
         "columns": 5,
         "limit": 5
       }
@@ -419,62 +475,6 @@
         "note": "No spam. Unsubscribe anytime.",
         "background": "#741c1c",
         "text_color": "#ffffff"
-      }
-    },
-    "cat-onedollar": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "one-dollar-item-1",
-        "eyebrow": "Starting at Rs.250",
-        "heading": "💵 One Dollar",
-        "text": "Everything at one price",
-        "show_link": true,
-        "link_label": "View all",
-        "background": "page",
-        "columns": 5,
-        "limit": 5
-      }
-    },
-    "cat-kitchen": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "kitchen-accessories",
-        "eyebrow": "Most popular",
-        "heading": "🍳 Kitchen",
-        "text": "Tools that earn their drawer space",
-        "show_link": true,
-        "link_label": "View all",
-        "background": "page",
-        "columns": 5,
-        "limit": 5
-      }
-    },
-    "cat-health": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "health-and-beauty-products",
-        "eyebrow": "Look after yourself",
-        "heading": "💪 Health & Beauty",
-        "text": "Trimmers, rollers, skincare & more",
-        "show_link": true,
-        "link_label": "View all",
-        "background": "soft",
-        "columns": 5,
-        "limit": 5
-      }
-    },
-    "cat-gadgets": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "gadgets-nbsp",
-        "eyebrow": "Trending now",
-        "heading": "⚡ Gadgets",
-        "text": "Small things that make life easier",
-        "show_link": true,
-        "link_label": "View all",
-        "background": "page",
-        "columns": 5,
-        "limit": 5
       }
     }
   },
