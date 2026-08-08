@@ -46,7 +46,7 @@
             "heading": "",
             "subheading": "",
             "trigger_label": "",
-            "trigger_sub": "",
+            "trigger_sub": "Ghar par pay karein",
             "button_label": "",
             "note": "No advance payment — pay when your package arrives",
             "show_badges": true,
@@ -64,7 +64,8 @@
             "offer_2_flag": "MOST POPULAR",
             "offer_3_qty": 3,
             "offer_3_discount": 16,
-            "offer_3_flag": "BEST VALUE"
+            "offer_3_flag": "BEST VALUE",
+            "show_trigger_sub": true
           }
         },
         "quantity": {
