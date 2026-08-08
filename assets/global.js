@@ -158,10 +158,23 @@
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (res.status) throw new Error(res.description || res.message);
-        /* The image on the page is more reliable than the one in the response. */
-        var near = form.closest('.card, [data-product-info]') || document;
-        var shot = near.querySelector('.card__media img, [data-gallery-main] img');
-        res.__image = (res.image || res.featured_image) || (shot ? shot.currentSrc || shot.src : '');
+        /* The image on the page is more reliable than the one in the response,
+           which some apps strip. `featured_image` arrives as an object, not a
+           string, so pull the url out rather than stringifying it into
+           "[object Object]". */
+        function urlOf(v) {
+          if (typeof v === 'string') return v;
+          if (v && typeof v.url === 'string') return v.url;
+          if (v && typeof v.src === 'string') return v.src;
+          return '';
+        }
+        /* On a product page the gallery is a sibling of the form's container,
+           not inside it, so fall back to the page before giving up. */
+        var card = form.closest('.card');
+        var shot = (card && card.querySelector('.card__media img')) ||
+                   document.querySelector('[data-gallery-main] img');
+        res.__image = urlOf(res.image) || urlOf(res.featured_image) ||
+                      (shot ? shot.currentSrc || shot.src : '');
         document.dispatchEvent(new CustomEvent('cart:added', { detail: res }));
         refreshCartCount();
         if (btn) btn.innerHTML = DATA.strings.addedToCart || 'Added';
@@ -186,7 +199,7 @@
     if (!note || !item) return;
 
     var img = $('[data-note-image]', note);
-    var src = item.__image || item.image || '';
+    var src = item.__image || (typeof item.image === 'string' ? item.image : '');
     if (img && src) {
       /* The card's src already carries a width for its own size; strip it so
          the thumbnail asks for 128 rather than downloading the 500 twice. */
