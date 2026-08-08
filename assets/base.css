@@ -276,10 +276,20 @@ h3{font-size:var(--fs-h3)}
 .hero--has-image .hero__cta{justify-content:center}
 .hero__art{display:grid;place-items:center}
 .hero__blob{
+  position:relative;
   width:230px;height:230px;border-radius:50%;font-size:96px;
-  background:rgba(255,255,255,.12);border:2px dashed rgba(255,255,255,.3);
+  background:rgba(255,255,255,.12);
   display:grid;place-items:center;
 }
+/* The dashed ring is a pseudo-element so it can spin on its own — rotating
+   the blob itself would take the emoji with it and leave it upside down. */
+.hero__blob::before{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:2px dashed rgba(255,255,255,.35);
+  animation:hero-spin var(--spin,18s) linear infinite;
+}
+@keyframes hero-spin{to{transform:rotate(360deg)}}
+body:not(.animations-on) .hero__blob::before{animation:none}
 .hero__note{margin-block-start:14px;font-size:13px;color:rgba(255,255,255,.75)}
 
 /* ---------- category grid ---------- */

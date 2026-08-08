@@ -46,7 +46,11 @@
 
     {%- if section.settings.emoji != blank and has_image == false -%}
       <div class="hero__art">
-        <div class="hero__blob" aria-hidden="true">{{ section.settings.emoji }}</div>
+        <div
+          class="hero__blob"
+          aria-hidden="true"
+          style="--spin:{{ section.settings.spin_speed }}s"
+        >{{ section.settings.emoji }}</div>
         {%- if section.settings.note != blank -%}
           <div class="hero__note">{{ section.settings.note }}</div>
         {%- endif -%}
@@ -79,6 +83,17 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Pakistan's best online shopping" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Quality products at fair prices. Cash on Delivery available." },
     { "type": "text", "id": "emoji", "label": "Emoji", "default": "🛍️", "info": "Shown when there is no background image." },
+    {
+      "type": "range",
+      "id": "spin_speed",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "s",
+      "label": "Ring rotation speed",
+      "default": 18,
+      "info": "How long one full turn takes. Higher is slower. Set to 0 to stop it."
+    },
     { "type": "text", "id": "note", "label": "Note under emoji", "default": "Starting from Rs.120" },
 
     { "type": "header", "content": "Buttons" },

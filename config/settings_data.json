@@ -9,10 +9,9 @@
  */
 {
   "current": {
-    "logo_type": "text",
-    "logo_width": 130,
+    "logo_type": "image",
+    "logo_width": 180,
     "logo_mark": "D",
-
     "color_brand": "#741C1C",
     "color_brand_dark": "#5A1414",
     "color_sale": "#FF9900",
@@ -24,27 +23,22 @@
     "color_background": "#FFFFFF",
     "color_soft": "#F3F3F3",
     "color_border": "#E5E5E5",
-
     "font_heading": "assistant_n4",
     "font_body": "assistant_n4",
     "font_body_scale": 100,
     "font_heading_scale": 100,
-
     "page_width": 1280,
     "radius": 12,
     "sticky_header": true,
     "animations": true,
-
     "free_shipping_threshold": "3500",
     "shipping_rate": "200",
     "delivery_time": "1–2 days",
     "cod_cities": "Karachi\nLahore\nIslamabad\nRawalpindi\nFaisalabad\nMultan\nPeshawar\nQuetta\nGujranwala\nSialkot\nHyderabad\nSukkur",
     "support_hours": "Mon–Sat, 10am–7pm",
-
     "announcement_text": "Free delivery above Rs.3,500 · Cash on Delivery · 7-day returns",
     "return_days": "7",
     "payment_methods": "COD\nEasyPaisa\nJazzCash\nBank Transfer\nCredit Card",
-
     "cod_form_enabled": true,
     "cod_form_mode": "popup",
     "cod_form_auto_open": false,
@@ -55,11 +49,9 @@
     "cod_form_success": "Thank you! Order received",
     "cod_field_email": false,
     "cod_field_notes": false,
-
     "whatsapp_enabled": true,
     "whatsapp_message": "Assalam-o-Alaikum! Mujhe ye product chahiye:",
     "whatsapp_float": true,
-
     "card_image_ratio": "square",
     "card_show_vendor": false,
     "card_show_category": true,
@@ -69,16 +61,22 @@
     "card_show_cod_tag": true,
     "card_show_quick_add": true,
     "card_show_second_image": true,
-
     "low_stock_enabled": true,
     "low_stock_threshold": 10,
     "low_stock_text": "Only [count] left!",
-
     "reviews_enabled": true,
     "reviews_show_form": true,
     "reviews_show_photos": true,
     "reviews_show_city": true,
-    "reviews_verified_badge": true
+    "reviews_verified_badge": true,
+    "logo": "shopify://shop_images/Mart.png",
+    "favicon": "shopify://shop_images/android-chrome-192x192.png",
+    "store_tagline": "High-quality trending products at unbeatable prices — everything from Rs.250, with fast delivery across Karachi.",
+    "support_phone": "0313-3330208",
+    "social_facebook": "https://www.facebook.com/Dollarsmartpk",
+    "social_instagram": "https://www.instagram.com/dollarsmart.pkofficial/",
+    "social_youtube": "https://www.youtube.com/@dollarsmartpk",
+    "social_tiktok": "https://www.tiktok.com/@dollarsmartpk"
   },
   "platform_customizations": {}
 }

@@ -42,6 +42,14 @@
     assign category = product.collections.first.title
   endif
 
+  comment
+    The label is merchant-editable, so the quantity is substituted in. Accept
+    either placeholder style — the theme editor has been seen to rewrite
+    braces, and a label that silently stops substituting is worse than one
+    that accepts both.
+  endcomment
+  assign low_stock_label = settings.low_stock_text | replace: '{count}', inventory | replace: '[count]', inventory
+
   assign cols = columns | default: 4
   assign img_width = 600 | divided_by: cols | times: 2 | at_least: 300
   assign vw = 100 | divided_by: cols
@@ -86,7 +94,7 @@
           <span class="badge badge--sale">{{ 'products.price.percent_off' | t: percent: discount }}</span>
         {%- endif -%}
         {%- if show_low -%}
-          <span class="badge badge--low">{{ settings.low_stock_text | replace: '[count]', inventory }}</span>
+          <span class="badge badge--low">{{ low_stock_label }}</span>
         {%- endif -%}
       {%- endif -%}
     </div>
@@ -114,7 +122,7 @@
     </div>
 
     {%- if show_low -%}
-      <span class="stock-low">{{ settings.low_stock_text | replace: '[count]', inventory }}</span>
+      <span class="stock-low">{{ low_stock_label }}</span>
       {%- assign pct = inventory | times: 100 | divided_by: settings.low_stock_threshold -%}
       <div class="stock-bar" role="presentation"><i style="width:{{ pct }}%"></i></div>
     {%- elsif settings.card_show_cod_tag and product.available -%}
