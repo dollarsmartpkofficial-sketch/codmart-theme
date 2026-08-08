@@ -187,6 +187,38 @@
   });
 
   /* ==========================================================================
+     Hero — take turns between the emoji in the ring.
+     ========================================================================== */
+  (function () {
+    var blob = $('[data-hero-emoji]');
+    if (!blob) return;
+
+    var faces = $$('.hero__emoji', blob);
+    if (faces.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!document.body.classList.contains('animations-on')) return;
+
+    var wait = (parseInt(blob.dataset.interval, 10) || 3) * 1000;
+    var i = 0;
+    var timer;
+
+    function step() {
+      faces[i].classList.remove('is-active');
+      i = (i + 1) % faces.length;
+      faces[i].classList.add('is-active');
+    }
+
+    function start() { timer = setInterval(step, wait); }
+    function stop() { clearInterval(timer); }
+
+    start();
+    /* Nothing to animate while the tab is in the background. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+  })();
+
+  /* ==========================================================================
      Order tracking — pack what the shopper typed into a WhatsApp message.
      ========================================================================== */
   (function () {

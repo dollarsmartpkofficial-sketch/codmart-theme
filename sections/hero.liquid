@@ -57,11 +57,26 @@
 
     {%- if section.settings.emoji != blank and has_image == false -%}
       <div class="hero__art">
+        {%- comment -%}
+          The emoji setting takes a space-separated list. Each one is rendered
+          and JS cross-fades between them, so the ring has something changing
+          inside it rather than one frozen icon.
+        {%- endcomment -%}
+        {%- assign emojis = section.settings.emoji | strip | split: ' ' -%}
         <div
           class="hero__blob"
           aria-hidden="true"
+          data-hero-emoji
+          data-interval="{{ section.settings.emoji_interval }}"
           style="--spin:{{ section.settings.spin_speed }}s"
-        >{{ section.settings.emoji }}</div>
+        >
+          {%- for e in emojis -%}
+            {%- assign clean = e | strip -%}
+            {%- if clean != blank -%}
+              <span class="hero__emoji{% if forloop.first %} is-active{% endif %}">{{ clean }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
         {%- if section.settings.note != blank -%}
           <div class="hero__note">{{ section.settings.note }}</div>
         {%- endif -%}
@@ -93,7 +108,23 @@
     { "type": "text", "id": "pill", "label": "Small label above heading", "default": "New products every week" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Pakistan's best online shopping" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Quality products at fair prices. Cash on Delivery available." },
-    { "type": "text", "id": "emoji", "label": "Emoji", "default": "🛍️", "info": "Shown when there is no background image." },
+    {
+      "type": "text",
+      "id": "emoji",
+      "label": "Emoji",
+      "default": "🛍️ 💪 🍳 📱 🏠 🧸",
+      "info": "Shown when there is no background image. Separate several with a space and they take turns."
+    },
+    {
+      "type": "range",
+      "id": "emoji_interval",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Seconds per emoji",
+      "default": 3
+    },
     {
       "type": "range",
       "id": "spin_speed",
