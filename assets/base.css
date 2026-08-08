@@ -1079,3 +1079,18 @@ main > .wrap:last-child{padding-block-end:48px}
 
 .cart-note__cart-link{display:block;text-align:center;font-size:13px;font-weight:700;color:var(--muted);text-decoration:underline;padding-block:4px}
 .cart-note__cart-link:hover{color:var(--brand)}
+
+/* ---------- hero on small screens ---------- */
+/* At 490px the hero stood 522px tall — most of a phone screen spent before a
+   shopper sees a single product. Trim the padding and the ring so the trust
+   bar and the first products come into view sooner. */
+@media (max-width:640px){
+  .hero__inner{padding-block:26px;gap:18px}
+  .hero__blob{width:112px;height:112px;font-size:46px}
+  .hero__blob::before{inset:-5px}
+  .hero__heading{font-size:clamp(23px,6.4vw,30px);margin-block-end:10px}
+  .hero__body{font-size:14.5px;margin-block-end:18px}
+  .pill{margin-block-end:12px;padding:5px 12px;font-size:12px}
+  .hero__note{margin-block-start:10px;font-size:12px}
+  .hero__cta .btn--lg{padding:13px 22px;font-size:15px}
+}
