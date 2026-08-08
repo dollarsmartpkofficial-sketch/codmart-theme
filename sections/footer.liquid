@@ -95,7 +95,7 @@
               {%- endif -%}
 
             {%- when 'menu' -%}
-              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading }}</h2>{%- endif -%}
               {%- if block.settings.menu != blank -%}
                 <ul>
                   {%- for link in block.settings.menu.links -%}
@@ -105,7 +105,7 @@
               {%- endif -%}
 
             {%- when 'contact' -%}
-              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading }}</h2>{%- endif -%}
               <ul class="footer__contact">
                 {%- if settings.whatsapp_enabled and settings.whatsapp_number != blank -%}
                   <li>
@@ -129,7 +129,7 @@
               </ul>
 
             {%- when 'newsletter' -%}
-              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading }}</h2>{%- endif -%}
               {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
               {% form 'customer', class: 'footer__newsletter' %}
                 <input type="hidden" name="contact[tags]" value="newsletter">
@@ -152,7 +152,7 @@
               {% endform %}
 
             {%- when 'text' -%}
-              {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading }}</h2>{%- endif -%}
               {{ block.settings.content }}
           {%- endcase -%}
         </div>

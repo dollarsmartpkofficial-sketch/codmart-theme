@@ -173,7 +173,7 @@
     review and adds it in admin — or imports a batch from a spreadsheet.
   {%- endcomment -%}
   {%- if settings.reviews_show_form -%}
-    <div class="modal" id="ReviewForm" aria-hidden="true" role="dialog" aria-modal="true"
+    <div class="modal" id="ReviewForm" inert role="dialog" aria-modal="true"
          aria-label="{{ 'reviews.write' | t }}">
       <div class="modal__overlay" data-modal-close></div>
       <div class="modal__card">
