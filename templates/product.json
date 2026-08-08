@@ -70,7 +70,7 @@
         "quantity": {
           "type": "quantity",
           "settings": {
-            "note": "Order today — delivered tomorrow"
+            "note": "Expected delivery in 5-7 business days"
           }
         },
         "buy_buttons": {
@@ -140,7 +140,7 @@
         "eyebrow": "You may also like",
         "heading": "You may also like",
         "columns_desktop": 3,
-        "limit": 5
+        "limit": 3
       }
     }
   },
