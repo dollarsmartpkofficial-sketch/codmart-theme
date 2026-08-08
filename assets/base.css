@@ -806,11 +806,31 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 /* ---------- whatsapp float ---------- */
 .wa-float{
   position:fixed;inset-inline-end:18px;bottom:18px;z-index:120;
-  width:54px;height:54px;border-radius:50%;background:var(--wa);color:#fff;
-  display:grid;place-items:center;font-size:26px;
+  height:54px;min-width:54px;border-radius:var(--radius-pill);
+  background:var(--wa);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;gap:0;
+  padding-inline:13px;
   box-shadow:0 6px 20px rgba(0,0,0,.25);
+  transition:gap var(--dur),padding var(--dur),filter var(--dur);
 }
 .wa-float:hover{filter:brightness(1.05)}
+/* The label stays collapsed until hover — a bare circle is quiet enough to
+   live on every page, and the words explain it the moment anyone reaches. */
+.wa-float__label{
+  max-width:0;overflow:hidden;white-space:nowrap;
+  font-weight:700;font-size:14px;
+  transition:max-width var(--dur);
+}
+@media (hover:hover){
+  .wa-float:hover,.wa-float:focus-visible{gap:9px;padding-inline:18px}
+  .wa-float:hover .wa-float__label,
+  .wa-float:focus-visible .wa-float__label{max-width:220px}
+}
+/* The sticky buy bar owns the bottom of a product page — sit above it. */
+.template-product .wa-float{bottom:82px}
+@media (min-width:861px){
+  .template-product .wa-float{bottom:18px}
+}
 
 /* ---------- utilities ---------- */
 .hidden{display:none!important}

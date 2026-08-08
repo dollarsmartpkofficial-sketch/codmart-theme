@@ -80,12 +80,6 @@
             "show_dynamic_checkout": true
           }
         },
-        "whatsapp": {
-          "type": "whatsapp",
-          "settings": {
-            "style": "compact"
-          }
-        },
         "trust_badges": {
           "type": "trust_badges",
           "settings": {
@@ -118,7 +112,6 @@
         "cod_form",
         "quantity",
         "buy_buttons",
-        "whatsapp",
         "trust_badges",
         "accordion"
       ],
