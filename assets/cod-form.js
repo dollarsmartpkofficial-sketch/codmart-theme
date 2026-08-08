@@ -157,8 +157,15 @@
     add('checkout[shipping_address][last_name]', last);
     add('checkout[shipping_address][address1]', value('address'));
     add('checkout[shipping_address][city]', value('city'));
-    add('checkout[shipping_address][phone]', value('phone'));
+    add('checkout[shipping_address][country]', box.dataset.country || '');
     add('checkout[email]', value('email'));
+
+    /* Shopify documents the address fields but not the phone. Send it under
+       both spellings — whichever the checkout recognises wins, and the other
+       is ignored. Without it the shopper retypes a number they just gave us,
+       and the delivery method blocks until they do. */
+    add('checkout[shipping_address][phone]', value('phone'));
+    add('checkout[phone]', value('phone'));
 
     // Tags the order so the merchant can see it came from this form.
     add('attributes[Order Source]', 'COD Quick Form');

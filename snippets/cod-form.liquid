@@ -34,6 +34,7 @@
   data-ship-rate="{{ ship_rate }}"
   data-variant-id="{{ variant.id }}"
   data-variant-price="{{ variant.price }}"
+  data-country="{{ shop.address.country_upper | default: localization.country.iso_code }}"
 >
   <div class="cod-form__head">
     {% render 'icon', name: 'truck', size: 22 %}
