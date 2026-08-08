@@ -22,7 +22,7 @@
         "spin_speed": 18,
         "note": "Starting from Rs.125",
         "button_label": "Shop now",
-        "button_link": "",
+        "button_link": "shopify://collections",
         "button_2_label": "Track order",
         "button_2_link": ""
       }
