@@ -157,6 +157,55 @@
       });
   });
 
+  /* ==========================================================================
+     Added-to-cart confirmation. Keeps the shopper on the page they were
+     browsing — being bounced to /cart after every add is how a five-item
+     basket turns into a one-item one.
+     ========================================================================== */
+  document.addEventListener('cart:added', function (e) {
+    var note = document.getElementById('CartNotification');
+    var item = e.detail;
+    if (!note || !item) return;
+
+    var img = $('[data-note-image]', note);
+    if (img && item.image) {
+      img.src = item.image.replace(/(\.[a-z]+)(\?|$)/i, '_128x$1$2');
+      img.alt = item.product_title || '';
+      img.hidden = false;
+    } else if (img) {
+      img.hidden = true;
+    }
+
+    var title = $('[data-note-title]', note);
+    if (title) title.textContent = item.product_title || item.title || '';
+
+    var variant = $('[data-note-variant]', note);
+    if (variant) {
+      var name = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
+      variant.textContent = name;
+      variant.hidden = !name;
+    }
+
+    var price = $('[data-note-price]', note);
+    if (price) price.textContent = formatMoney(item.final_line_price != null ? item.final_line_price : item.price);
+
+    /* Totals come from the cart, not the line just added. */
+    fetch(DATA.routes.cart + '.js', { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        var count = $('[data-note-count]', note);
+        var sub = $('[data-note-subtotal]', note);
+        if (count) {
+          var word = cart.item_count === 1 ? 'item' : 'items';
+          count.textContent = cart.item_count + ' ' + word + ' in cart';
+        }
+        if (sub) sub.textContent = formatMoney(cart.total_price);
+      })
+      .catch(function () {});
+
+    openModal('CartNotification');
+  });
+
   function refreshCartCount() {
     fetch(DATA.routes.cart + '.js', { headers: { 'Accept': 'application/json' } })
       .then(function (r) { return r.json(); })

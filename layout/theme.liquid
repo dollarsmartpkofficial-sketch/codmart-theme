@@ -68,6 +68,8 @@
 
   {% sections 'footer-group' %}
 
+  {% render 'cart-notification' %}
+
   {%- if settings.whatsapp_enabled and settings.whatsapp_float and settings.whatsapp_number != blank -%}
     {% render 'whatsapp-float' %}
   {%- endif -%}

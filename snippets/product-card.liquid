@@ -135,7 +135,7 @@
       {%- elsif product.variants.size > 1 -%}
         <a class="btn btn--outline btn--sm" href="{{ product.url }}">{{ 'products.product.choose_options' | t }}</a>
       {%- else -%}
-        {% form 'product', product %}
+        {% form 'product', product, data-cart-form: 'true' %}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           <input type="hidden" name="quantity" value="1">
           <button type="submit" class="btn btn--primary btn--sm btn--block">

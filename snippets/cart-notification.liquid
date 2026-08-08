@@ -1,0 +1,60 @@
+{%- comment -%}
+  Added-to-cart confirmation.
+
+  Rendered once per page and filled in by JS from the /cart/add response, so
+  the shopper stays where they were instead of being thrown onto the cart page
+  after every add.
+{%- endcomment -%}
+
+<div
+  class="modal cart-note"
+  id="CartNotification"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart.added' | t }}"
+>
+  <div class="modal__overlay" data-modal-close></div>
+
+  <div class="modal__card cart-note__card">
+    <div class="modal__grabber" aria-hidden="true"></div>
+
+    <div class="cart-note__head">
+      <span class="cart-note__tick" aria-hidden="true">
+        {% render 'icon', name: 'check', size: 16 %}
+      </span>
+      <b>{{ 'cart.added' | t }}</b>
+      <button
+        type="button"
+        class="cart-note__close"
+        data-modal-close
+        aria-label="{{ 'general.accessibility.close' | t }}"
+      >
+        {% render 'icon', name: 'close', size: 18 %}
+      </button>
+    </div>
+
+    <div class="cart-note__item">
+      <img data-note-image src="" alt="" width="64" height="64" hidden>
+      <div class="cart-note__info">
+        <b data-note-title></b>
+        <span data-note-variant class="cart-note__variant"></span>
+        <span data-note-price class="price"></span>
+      </div>
+    </div>
+
+    <div class="cart-note__totals">
+      <span data-note-count></span>
+      <span data-note-subtotal class="price"></span>
+    </div>
+
+    <div class="cart-note__actions">
+      <a class="btn btn--primary btn--block btn--lg" href="{{ routes.cart_url }}">
+        {{ 'cart.checkout' | t }}
+      </a>
+      <button type="button" class="btn btn--outline btn--block" data-modal-close>
+        {{ 'cart.continue_shopping' | t }}
+      </button>
+    </div>
+  </div>
+</div>
