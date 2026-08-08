@@ -933,3 +933,32 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 /* A quieter WhatsApp button for merchants who want it present but not shouting. */
 .btn--wa-outline{border-color:var(--wa);color:var(--wa);background:var(--bg)}
 .btn--wa-outline:hover{background:var(--wa);color:#fff}
+
+/* ---------- product buy stack ---------- */
+/* Full-width buttons share one height so the stack reads as a column rather
+   than a pile of different-sized slabs. */
+.buys{gap:10px}
+.buys > .btn,
+.buys form > .btn,
+.buys .shopify-payment-button__button{min-height:52px}
+
+/* A compact button in a stretch column would sit hard against the start edge,
+   orphaned under the full-width ones. Centre it and let it breathe. */
+.buys .btn--sm,
+.buys .btn--wa.btn--sm{
+  align-self:center;
+  min-height:0;
+  padding:10px 20px;
+  margin-block-start:2px;
+}
+
+/* Shopify styles the dynamic checkout button itself; match it to the theme. */
+.buys .shopify-payment-button__button--unbranded{
+  background:var(--brand)!important;
+  border-radius:var(--radius-sm)!important;
+  font-weight:700!important;
+  font-size:14.5px!important;
+}
+.buys .shopify-payment-button__button--unbranded:hover:not([disabled]){
+  background:var(--brand-dark)!important;
+}
