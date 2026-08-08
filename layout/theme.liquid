@@ -43,7 +43,10 @@
   {%- endif -%}
 
   {% render 'meta-tags' %}
-  {% render 'structured-data' %}
+  {%- comment -%}
+    structured-data is rendered once Shopify has the snippet; see the commit
+    that re-enables it.
+  {%- endcomment -%}
 
   {%- comment -%}
     Theme variables are inlined so the first paint already has the right
