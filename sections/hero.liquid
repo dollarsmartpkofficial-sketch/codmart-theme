@@ -38,8 +38,19 @@
         {%- if section.settings.button_label != blank -%}
           <a class="btn btn--white btn--lg" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
         {%- endif -%}
-        {%- if section.settings.button_2_label != blank -%}
-          <a class="btn btn--ghost btn--lg" href="{{ section.settings.button_2_link | default: settings.track_order_url }}">{{ section.settings.button_2_label }}</a>
+        {%- comment -%}
+          The second button falls back to the track-order page from setup. If
+          neither is set there is nowhere to send anyone, so the button is left
+          out rather than rendered as a link to nothing.
+        {%- endcomment -%}
+        {%- liquid
+          assign button_2_href = section.settings.button_2_link
+          if button_2_href == blank
+            assign button_2_href = settings.track_order_url
+          endif
+        -%}
+        {%- if section.settings.button_2_label != blank and button_2_href != blank -%}
+          <a class="btn btn--ghost btn--lg" href="{{ button_2_href }}">{{ section.settings.button_2_label }}</a>
         {%- endif -%}
       </div>
     </div>
