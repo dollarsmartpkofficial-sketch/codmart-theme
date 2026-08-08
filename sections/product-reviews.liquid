@@ -22,6 +22,24 @@
   endif
 
   assign shown = section.settings.reviews_per_page
+
+  comment
+    Two independent things: the star summary comes from the reviews.rating
+    metafields, and the review text comes from linked metaobjects. A store
+    migrating from a review app has the first without the second — stars from
+    the app, no metaobjects yet. Showing "be the first to review" under a 4.8
+    average reads as broken, so the summary stands on its own when that is all
+    there is.
+  endcomment
+  assign has_reviews = false
+  if reviews.size > 0
+    assign has_reviews = true
+  endif
+
+  assign has_rating = false
+  if rating_count > 0
+    assign has_rating = true
+  endif
 -%}
 
 {%- if settings.reviews_enabled -%}
@@ -40,7 +58,7 @@
       {%- endif -%}
     </div>
 
-    {%- if reviews.size > 0 -%}
+    {%- if has_reviews or has_rating -%}
       {%- comment -%} Rating breakdown, counted from the linked reviews. {%- endcomment -%}
       {%- liquid
         assign c5 = 0
@@ -63,6 +81,9 @@
           endcase
         endfor
         assign total = reviews.size
+        if total == 0
+          assign total = rating_count
+        endif
       -%}
 
       <div class="reviews__summary">
@@ -81,6 +102,11 @@
           <span class="reviews__based">{{ 'reviews.based_on' | t: count: total }}</span>
         </div>
 
+        {%- comment -%}
+          The breakdown needs individual reviews to count. With only an
+          aggregate from a review app there is nothing to break down.
+        {%- endcomment -%}
+        {%- if has_reviews -%}
         <div class="reviews__bars">
           {%- for star in (1..5) reversed -%}
             {%- liquid
@@ -108,22 +134,25 @@
             </div>
           {%- endfor -%}
         </div>
+        {%- endif -%}
       </div>
 
-      <div class="reviews__list" data-reviews-list>
-        {%- for review in reviews -%}
-          <div class="reviews__item" {% if forloop.index > shown %}hidden data-review-hidden{% endif %}>
-            {% render 'review-card', review: review %}
-          </div>
-        {%- endfor -%}
-      </div>
-
-      {%- if reviews.size > shown -%}
-        <div class="reviews__more">
-          <button type="button" class="btn btn--outline" data-reviews-more>
-            {{ section.settings.more_label }}
-          </button>
+      {%- if has_reviews -%}
+        <div class="reviews__list" data-reviews-list>
+          {%- for review in reviews -%}
+            <div class="reviews__item" {% if forloop.index > shown %}hidden data-review-hidden{% endif %}>
+              {% render 'review-card', review: review %}
+            </div>
+          {%- endfor -%}
         </div>
+
+        {%- if reviews.size > shown -%}
+          <div class="reviews__more">
+            <button type="button" class="btn btn--outline" data-reviews-more>
+              {{ section.settings.more_label }}
+            </button>
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
     {%- else -%}
