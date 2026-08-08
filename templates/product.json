@@ -82,7 +82,9 @@
         },
         "whatsapp": {
           "type": "whatsapp",
-          "settings": {}
+          "settings": {
+            "style": "compact"
+          }
         },
         "trust_badges": {
           "type": "trust_badges",

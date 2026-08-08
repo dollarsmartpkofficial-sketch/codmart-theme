@@ -241,8 +241,23 @@
                   assign wa_label = 'products.product.order_on_whatsapp' | t
                 endif
               -%}
-              <a class="btn btn--wa btn--block" href="{{ wa_href }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
-                {% render 'icon', name: 'whatsapp', size: 18 %}
+              {%- liquid
+                assign wa_class = 'btn btn--wa'
+                case block.settings.style
+                  when 'compact'
+                    assign wa_class = wa_class | append: ' btn--sm'
+                  when 'outline'
+                    assign wa_class = 'btn btn--wa-outline btn--block'
+                  else
+                    assign wa_class = wa_class | append: ' btn--block'
+                endcase
+                assign wa_icon = 18
+                if block.settings.style == 'compact'
+                  assign wa_icon = 16
+                endif
+              -%}
+              <a class="{{ wa_class }}" href="{{ wa_href }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+                {% render 'icon', name: 'whatsapp', size: wa_icon %}
                 {{ wa_label }}
               </a>
             {%- endif -%}
@@ -508,6 +523,17 @@
       "limit": 1,
       "settings": [
         { "type": "paragraph", "content": "Set your number in “🚀 Start here”. The message is pre-filled with the product name and link." },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button style",
+          "options": [
+            { "value": "compact", "label": "Small" },
+            { "value": "block", "label": "Full width" },
+            { "value": "outline", "label": "Full width, outline" }
+          ],
+          "default": "compact"
+        },
         { "type": "text", "id": "label", "label": "Button text", "info": "Leave blank for the default." }
       ]
     },

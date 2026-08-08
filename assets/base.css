@@ -929,3 +929,7 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .tracking__help ul{display:flex;flex-direction:column;gap:9px;font-size:14px}
 .tracking__help li{display:flex;align-items:center;gap:9px}
 .tracking__help a:hover{color:var(--brand)}
+
+/* A quieter WhatsApp button for merchants who want it present but not shouting. */
+.btn--wa-outline{border-color:var(--wa);color:var(--wa);background:var(--bg)}
+.btn--wa-outline:hover{background:var(--wa);color:#fff}
