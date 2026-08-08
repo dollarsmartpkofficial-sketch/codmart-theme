@@ -165,7 +165,7 @@
           "type": "category",
           "settings": {
             "collection": "storage-organization",
-            "label": "Storage",
+            "label": "Storage Organizer",
             "link": "",
             "icon_type": "emoji",
             "emoji": "📦",
