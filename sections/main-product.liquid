@@ -17,7 +17,17 @@
     assign show_low = true
   endif
 
-  assign category = product.type | default: product.collections.first.title
+  comment
+    `default:` evaluates its argument eagerly, so writing
+    `product.type | default: product.collections.first.title` looked up every
+    collection the product belongs to on every page view — even when the type
+    was set and the fallback was never used. product.collections is one of the
+    slowest things a template can touch.
+  endcomment
+  assign category = product.type
+  if category == blank
+    assign category = product.collections.first.title
+  endif
   assign cod_mode = settings.cod_form_mode
 
   comment
