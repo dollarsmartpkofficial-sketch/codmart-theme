@@ -91,7 +91,7 @@
             "label": "One Dollar",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "💵",
+            "emoji": "🪙",
             "show_count": true
           }
         },
@@ -146,7 +146,7 @@
             "label": "Home Decor",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "🖼️",
+            "emoji": "🪴",
             "show_count": true
           }
         },
@@ -212,7 +212,7 @@
             "label": "Cleaning",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "🧹",
+            "emoji": "🧼",
             "show_count": true
           }
         }
