@@ -1053,8 +1053,12 @@ main > .wrap:last-child{padding-block-end:48px}
 /* An empty reviews block stacked section padding on top of empty-state
    padding on top of the heading margin — well over 200px of nothing around
    one line of text. */
-.reviews .empty-state{padding:20px 20px 8px}
-.reviews .empty-state p{margin-block-end:4px}
+.reviews .empty-state{padding:4px 20px 0;gap:10px}
+.reviews .empty-state p{margin-block-end:0}
+/* One line of text and a button do not need a full section's worth of air
+   above and below. Tighten the whole block while the section is empty. */
+.reviews:has(.empty-state){padding-block:24px}
+.reviews:has(.empty-state) .section-head{margin-block-end:8px}
 
 /* Orange on white measures 2.1:1 — below the 4.5 needed for body text. The
    bar stays brand orange; only the words are darkened enough to read. */
