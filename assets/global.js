@@ -188,7 +188,10 @@
     var img = $('[data-note-image]', note);
     var src = item.__image || item.image || '';
     if (img && src) {
-      img.src = src.indexOf('?') > -1 ? src + '&width=128' : src + '?width=128';
+      /* The card's src already carries a width for its own size; strip it so
+         the thumbnail asks for 128 rather than downloading the 500 twice. */
+      var clean = src.replace(/([?&])width=\d+&?/g, '$1').replace(/[?&]$/, '');
+      img.src = clean.indexOf('?') > -1 ? clean + '&width=160' : clean + '?width=160';
       img.alt = item.product_title || '';
       img.hidden = false;
     } else if (img) {
@@ -200,9 +203,12 @@
 
     var variant = $('[data-note-variant]', note);
     if (variant) {
-      var name = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
-      variant.textContent = name;
-      variant.hidden = !name;
+      var bits = [];
+      if (item.variant_title && item.variant_title !== 'Default Title') bits.push(item.variant_title);
+      /* The price below is the whole line, so say how many it covers. */
+      if (item.quantity > 1) bits.push('Qty ' + item.quantity);
+      variant.textContent = bits.join(' · ');
+      variant.hidden = bits.length === 0;
     }
 
     var price = $('[data-note-price]', note);
