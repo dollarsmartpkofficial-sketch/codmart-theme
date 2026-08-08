@@ -18,6 +18,8 @@
         "heading": "Pakistan's best online shopping",
         "text": "Quality products at fair prices. Cash on Delivery available — free shipping on bigger orders.",
         "emoji": "🛍️",
+        "emoji_interval": 3,
+        "spin_speed": 18,
         "note": "Starting from Rs.125",
         "button_label": "Shop now",
         "button_link": "",
@@ -35,7 +37,7 @@
             "emoji": "🚚",
             "icon": "truck",
             "title": "Free shipping",
-            "text": "On orders above Rs.3,500"
+            "text": "On orders above Rs.5,000"
           }
         },
         "b2": {
