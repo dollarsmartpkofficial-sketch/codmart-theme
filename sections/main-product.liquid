@@ -26,6 +26,14 @@
     products fall back to the normal add-to-cart flow. The threshold is a
     setting; 0 shows the form on everything.
   endcomment
+  comment
+    The label is merchant-editable, so the quantity is substituted in. Accept
+    either placeholder style — the theme editor has been seen to rewrite
+    braces, and a label that silently stops substituting is worse than one
+    that accepts both.
+  endcomment
+  assign low_stock_label = settings.low_stock_text | replace: '{count}', inventory | replace: '[count]', inventory
+
   assign cod_min = settings.cod_min_price | times: 100
   assign cod_available = false
   if settings.cod_form_enabled and variant.price >= cod_min
