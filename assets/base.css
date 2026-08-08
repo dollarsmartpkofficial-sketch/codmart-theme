@@ -451,7 +451,7 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .collection-banner__desc{opacity:.88;max-width:560px;margin-inline:auto;font-size:14.5px}
 .collection-banner--plain .collection-banner__desc{margin-inline:0}
 
-.collection-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px;align-items:start;padding-block-start:22px}
+.collection-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px;align-items:start;padding-block:22px 48px}
 .collection-body--no-facets{grid-template-columns:minmax(0,1fr)}
 .collection-main{min-width:0}
 .toolbar__right{display:flex;gap:8px;align-items:center}
@@ -1009,3 +1009,8 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   font-size:13.5px;font-weight:700;color:currentColor;
   text-decoration:underline;text-underline-offset:3px;
 }
+
+/* Nothing should end flush against the footer. Section-based pages get this
+   from .section's padding; the ones built around a bare .wrap did not. */
+main > .wrap:last-child{padding-block-end:48px}
+.pagination{margin-block-end:8px}
