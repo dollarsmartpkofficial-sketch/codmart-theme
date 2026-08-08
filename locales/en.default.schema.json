@@ -45,7 +45,9 @@
       "text_info": "Leave blank to use your store name",
       "mark": "Logo mark",
       "mark_info": "A letter or emoji shown next to the text logo. Leave blank to hide.",
-      "favicon": "Favicon"
+      "favicon": "Favicon",
+      "image_alt": "Logo for dark backgrounds",
+      "image_alt_info": "Used in the header, which sits on your brand colour. A logo drawn for a white page shows as a white slab there."
     },
     "colors": {
       "name": "Colors",

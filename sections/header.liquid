@@ -25,7 +25,15 @@
       <div class="header__logo-wrap">
     {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__logo">
-        {%- if settings.logo_type == 'image' and settings.logo != blank -%}
+        {%- liquid
+          comment
+            The header sits on the brand colour, so a logo drawn for a white
+            page shows up as a white slab. Use the dark-background version
+            when the merchant has one.
+          endcomment
+          assign header_logo = settings.logo_alt | default: settings.logo
+        -%}
+        {%- if settings.logo_type == 'image' and header_logo != blank -%}
           {%- liquid
             assign logo_w = settings.logo_width
             comment
@@ -35,11 +43,11 @@
             assign logo_w2 = logo_w | times: 2
           -%}
           <img
-            src="{{ settings.logo | image_url: width: logo_w }}"
-            srcset="{{ settings.logo | image_url: width: logo_w }} 1x, {{ settings.logo | image_url: width: logo_w2 }} 2x"
+            src="{{ header_logo | image_url: width: logo_w }}"
+            srcset="{{ header_logo | image_url: width: logo_w }} 1x, {{ header_logo | image_url: width: logo_w2 }} 2x"
             alt="{{ shop.name | escape }}"
             width="{{ logo_w }}"
-            height="{{ logo_w | divided_by: settings.logo.aspect_ratio | round }}"
+            height="{{ logo_w | divided_by: header_logo.aspect_ratio | round }}"
             style="width:{{ logo_w }}px"
             fetchpriority="high"
           >

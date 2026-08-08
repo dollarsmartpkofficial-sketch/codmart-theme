@@ -40,6 +40,12 @@
         "label": "t:settings.logo.image"
       },
       {
+        "type": "image_picker",
+        "id": "logo_alt",
+        "label": "t:settings.logo.image_alt",
+        "info": "t:settings.logo.image_alt_info"
+      },
+      {
         "type": "range",
         "id": "logo_width",
         "min": 60,

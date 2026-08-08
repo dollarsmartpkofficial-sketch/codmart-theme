@@ -12,8 +12,8 @@
     "logo_type": "image",
     "logo_width": 180,
     "logo_mark": "D",
-    "color_brand": "#741C1C",
-    "color_brand_dark": "#5A1414",
+    "color_brand": "#800000",
+    "color_brand_dark": "#5C0000",
     "color_sale": "#FF9900",
     "color_star": "#F7C900",
     "color_cod": "#128C4B",
@@ -77,7 +77,8 @@
     "social_instagram": "https://www.instagram.com/dollarsmart.pkofficial/",
     "social_youtube": "https://www.youtube.com/@dollarsmartpk",
     "social_tiktok": "https://www.tiktok.com/@dollarsmartpk",
-    "whatsapp_number": "923133330208"
+    "whatsapp_number": "923133330208",
+    "logo_alt": "shopify://shop_images/Mart_1.png"
   },
   "platform_customizations": {}
 }
