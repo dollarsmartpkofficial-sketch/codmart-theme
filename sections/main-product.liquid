@@ -196,13 +196,20 @@
                       {% render 'icon', name: 'truck', size: 20 %}
                       {{ block.settings.trigger_label | default: settings.cod_form_trigger }}
                     </button>
-                    {%- liquid
-                      assign trigger_sub = block.settings.trigger_sub
-                      if trigger_sub == blank
-                        assign trigger_sub = 'cod.form.trigger_sub' | t
-                      endif
-                    -%}
-                    <p class="order-now__sub">{{ trigger_sub }}</p>
+                    {%- comment -%}
+                      Blank means "use the default wording", so hiding the line
+                      needs its own switch — otherwise there is no way to get
+                      rid of it.
+                    {%- endcomment -%}
+                    {%- if block.settings.show_trigger_sub -%}
+                      {%- liquid
+                        assign trigger_sub = block.settings.trigger_sub
+                        if trigger_sub == blank
+                          assign trigger_sub = 'cod.form.trigger_sub' | t
+                        endif
+                      -%}
+                      <p class="order-now__sub">{{ trigger_sub }}</p>
+                    {%- endif -%}
                   </div>
 
                   <div class="modal" id="CodModal" aria-hidden="true" role="dialog" aria-modal="true"
@@ -468,7 +475,8 @@
         { "type": "text", "id": "heading", "label": "Heading" },
         { "type": "text", "id": "subheading", "label": "Subheading" },
         { "type": "text", "id": "trigger_label", "label": "Trigger button text" },
-        { "type": "text", "id": "trigger_sub", "label": "Text under trigger" },
+        { "type": "checkbox", "id": "show_trigger_sub", "label": "Show text under trigger", "default": true },
+        { "type": "text", "id": "trigger_sub", "label": "Text under trigger", "info": "Leave blank for the default wording." },
         { "type": "text", "id": "button_label", "label": "Submit button text" },
         { "type": "text", "id": "note", "label": "Note under submit", "default": "No advance payment — pay when your package arrives" },
         { "type": "checkbox", "id": "show_badges", "label": "Show trust badges", "default": true },
