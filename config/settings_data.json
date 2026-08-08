@@ -78,7 +78,9 @@
     "social_youtube": "https://www.youtube.com/@dollarsmartpk",
     "social_tiktok": "https://www.tiktok.com/@dollarsmartpk",
     "whatsapp_number": "923133330208",
-    "logo_alt": "shopify://shop_images/Mart_1.png"
+    "logo_alt": "shopify://shop_images/Mart_1.png",
+    "store_address": "Shop #38, Basement Saima Pari Mall,\nBlock H North Nazimabad Town,\nKarachi 75800, Pakistan",
+    "support_email": "dollarsmartpkofficial@gmail.com"
   },
   "platform_customizations": {}
 }

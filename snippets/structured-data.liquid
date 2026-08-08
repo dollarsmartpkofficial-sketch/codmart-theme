@@ -1,0 +1,190 @@
+{%- comment -%}
+  JSON-LD structured data.
+
+  Google Merchant Center reads price, availability and condition from here as
+  well as from the feed, and mismatches between the two are a common cause of
+  item disapproval — so everything below is taken from the same Liquid objects
+  the page renders, never hardcoded.
+
+  Emitted per page type: Organization and WebSite on the homepage, Product on
+  a product page, BreadcrumbList wherever there is a trail.
+{%- endcomment -%}
+
+{%- liquid
+  assign logo_image = settings.logo | default: settings.logo_alt
+-%}
+
+{%- case request.page_type -%}
+
+  {%- when 'index' -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }}
+      {%- if logo_image != blank -%},
+      "logo": {{ logo_image | image_url: width: 500 | prepend: 'https:' | json }}
+      {%- endif -%}
+      {%- if settings.store_tagline != blank -%},
+      "description": {{ settings.store_tagline | json }}
+      {%- endif -%},
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "areaServed": "PK",
+        "availableLanguage": ["en", "ur"]
+        {%- if settings.support_phone != blank -%},
+        "telephone": {{ settings.support_phone | json }}
+        {%- endif -%}
+        {%- if settings.support_email != blank -%},
+        "email": {{ settings.support_email | json }}
+        {%- endif -%}
+      }
+      {%- if shop.address.summary != blank -%},
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": {{ shop.address.address1 | json }},
+        "addressLocality": {{ shop.address.city | json }},
+        "postalCode": {{ shop.address.zip | json }},
+        "addressCountry": {{ shop.address.country_code | json }}
+      }
+      {%- endif -%}
+      {%- assign social = '' -%}
+      {%- if settings.social_facebook != blank -%}{%- assign social = social | append: settings.social_facebook | append: '|' -%}{%- endif -%}
+      {%- if settings.social_instagram != blank -%}{%- assign social = social | append: settings.social_instagram | append: '|' -%}{%- endif -%}
+      {%- if settings.social_youtube != blank -%}{%- assign social = social | append: settings.social_youtube | append: '|' -%}{%- endif -%}
+      {%- if settings.social_tiktok != blank -%}{%- assign social = social | append: settings.social_tiktok | append: '|' -%}{%- endif -%}
+      {%- if social != blank -%},
+      "sameAs": {{ social | split: '|' | json }}
+      {%- endif -%}
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": {{ shop.url | append: '/search?q={search_term_string}' | json }}
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+  {%- when 'product' -%}
+    {%- liquid
+      assign variant = product.selected_or_first_available_variant
+      assign rating = product.metafields.reviews.rating.value
+      assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+    -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ shop.url | append: product.url | json }},
+      "sku": {{ variant.sku | default: variant.id | json }},
+      {%- if product.description != blank -%}
+      "description": {{ product.description | strip_html | truncate: 500 | json }},
+      {%- endif -%}
+      {%- if product.featured_media.preview_image -%}
+      "image": [
+        {%- for media in product.media limit: 5 -%}
+          {%- if media.preview_image -%}
+            {{ media.preview_image | image_url: width: 1200 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ],
+      {%- endif -%}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | default: shop.name | json }}
+      },
+      {%- if rating != blank and rating_count > 0 -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ rating.rating | json }},
+        "bestRating": {{ rating.scale_max | default: 5 | json }},
+        "ratingCount": {{ rating_count | json }}
+      },
+      {%- endif -%}
+      "offers": {
+        "@type": "Offer",
+        "url": {{ shop.url | append: product.url | json }},
+        "price": {{ variant.price | divided_by: 100.0 | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "availability": {%- if variant.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }}
+        }
+        {%- if settings.return_days != blank -%},
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "PK",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": {{ settings.return_days | json }},
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        }
+        {%- endif -%}
+      }
+    }
+    </script>
+{%- endcase -%}
+
+{%- comment -%} Breadcrumbs help Google show the category path under the result. {%- endcomment -%}
+{%- if request.page_type == 'product' or request.page_type == 'collection' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": {{ 'general.breadcrumbs.home' | t | json }},
+        "item": {{ shop.url | json }}
+      }
+      {%- if request.page_type == 'collection' -%},
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ collection.title | json }},
+        "item": {{ shop.url | append: collection.url | json }}
+      }
+      {%- else -%}
+        {%- if collection -%},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": {{ shop.url | append: collection.url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ product.title | json }},
+          "item": {{ shop.url | append: product.url | json }}
+        }
+        {%- else -%},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ product.title | json }},
+          "item": {{ shop.url | append: product.url | json }}
+        }
+        {%- endif -%}
+      {%- endif -%}
+    ]
+  }
+  </script>
+{%- endif -%}
