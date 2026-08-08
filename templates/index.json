@@ -249,7 +249,7 @@
       "settings": {
         "collection": "electronic-items",
         "eyebrow": "Hand-picked",
-        "heading": "⭐ Electronics",
+        "heading": "📱 Electronics",
         "text": "Handpicked top sellers just for you",
         "show_link": true,
         "link_label": "View all",
@@ -302,12 +302,12 @@
       "type": "featured-products",
       "settings": {
         "collection": "home-essentials",
-        "eyebrow": "Don't miss out",
-        "heading": "🔥 Home Essential",
-        "text": "Order before the sale ends",
+        "eyebrow": "Everyday needs",
+        "heading": "🏠 Home Essentials",
+        "text": "The things that run a home",
         "show_link": true,
         "link_label": "View all",
-        "background": "page",
+        "background": "soft",
         "columns": 5,
         "limit": 5
       }
@@ -420,6 +420,62 @@
         "background": "#741c1c",
         "text_color": "#ffffff"
       }
+    },
+    "cat-onedollar": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "one-dollar-item-1",
+        "eyebrow": "Starting at Rs.250",
+        "heading": "💵 One Dollar",
+        "text": "Everything at one price",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-kitchen": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "kitchen-accessories",
+        "eyebrow": "Most popular",
+        "heading": "🍳 Kitchen",
+        "text": "Tools that earn their drawer space",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-health": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "health-and-beauty-products",
+        "eyebrow": "Look after yourself",
+        "heading": "💪 Health & Beauty",
+        "text": "Trimmers, rollers, skincare & more",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "soft",
+        "columns": 5,
+        "limit": 5
+      }
+    },
+    "cat-gadgets": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "gadgets-nbsp",
+        "eyebrow": "Trending now",
+        "heading": "⚡ Gadgets",
+        "text": "Small things that make life easier",
+        "show_link": true,
+        "link_label": "View all",
+        "background": "page",
+        "columns": 5,
+        "limit": 5
+      }
     }
   },
   "order": [
@@ -427,8 +483,12 @@
     "trust",
     "categories",
     "featured",
+    "cat-onedollar",
     "promos",
     "deals",
+    "cat-kitchen",
+    "cat-health",
+    "cat-gadgets",
     "steps",
     "testimonials",
     "cod-banner",
