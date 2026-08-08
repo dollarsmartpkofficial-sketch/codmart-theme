@@ -1047,3 +1047,28 @@ main > .wrap:last-child{padding-block-end:48px}
 /* An unfinished animation must never leave a dialog parked off screen. The
    resting position is set outright; the keyframes only animate towards it. */
 .modal.is-open .modal__card{transform:translateY(0)}
+
+/* ---------- audit fixes ---------- */
+
+/* An empty reviews block stacked section padding on top of empty-state
+   padding on top of the heading margin — well over 200px of nothing around
+   one line of text. */
+.reviews .empty-state{padding:20px 20px 8px}
+.reviews .empty-state p{margin-block-end:4px}
+
+/* Orange on white measures 2.1:1 — below the 4.5 needed for body text. The
+   bar stays brand orange; only the words are darkened enough to read. */
+.stock-low{color:#A86500}
+@supports (color:color-mix(in srgb,red,blue)){
+  .stock-low{color:color-mix(in srgb,var(--sale) 66%,#000)}
+}
+
+/* The COD green lands at 4.30 — just under. A touch darker clears it. */
+.tag-cod,.pdp__stock--in,.cod-badges span{color:#0E7340}
+@supports (color:color-mix(in srgb,red,blue)){
+  .tag-cod,.pdp__stock--in,.cod-badges span{color:color-mix(in srgb,var(--cod) 88%,#000)}
+}
+
+/* 44px is the smallest comfortable touch target; the burger was 32 tall. */
+.header__burger{min-width:44px;min-height:44px;display:grid;place-items:center}
+.announcement__phone{padding-block:4px}
