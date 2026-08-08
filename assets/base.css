@@ -186,11 +186,11 @@ h3{font-size:var(--fs-h3)}
 .modal--drawer{align-items:stretch;justify-content:flex-start;padding:0}
 .drawer__card{
   max-width:320px;width:86%;height:100%;max-height:none;border-radius:0;
-  display:flex;flex-direction:column;animation:drawer-in .22s ease-out;
+  display:flex;flex-direction:column;animation:drawer-in .22s ease-out forwards;
 }
-@keyframes drawer-in{from{transform:translateX(-100%)}to{transform:none}}
+@keyframes drawer-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 [dir='rtl'] .drawer__card{animation-name:drawer-in-rtl}
-@keyframes drawer-in-rtl{from{transform:translateX(100%)}to{transform:none}}
+@keyframes drawer-in-rtl{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .drawer__head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-block-end:1px solid var(--line)}
 .drawer__title{font-weight:800;font-size:15px}
 .drawer__close{width:34px;height:34px;display:grid;place-items:center;border-radius:var(--radius-sm)}
@@ -523,10 +523,10 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   position:relative;background:var(--bg);border-radius:var(--radius);
   width:100%;max-width:470px;max-height:92vh;overflow-y:auto;
   box-shadow:0 24px 70px rgba(0,0,0,.35);
-  animation:modal-pop .22s ease-out;
+  animation:modal-pop .22s ease-out forwards;
 }
-@keyframes modal-pop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
-@keyframes modal-slide{from{transform:translateY(100%)}to{transform:none}}
+@keyframes modal-pop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes modal-slide{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal__close{
   position:absolute;top:11px;inset-inline-end:11px;z-index:5;
   width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);
@@ -918,7 +918,7 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   .review-form{padding:18px}
   /* popup becomes a bottom sheet */
   .modal{padding:0;align-items:flex-end}
-  .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0;animation:modal-slide .25s ease-out}
+  .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0;animation:modal-slide .25s ease-out forwards}
   .modal__grabber{display:block}
   .sticky-atc img{display:none}
   .sticky-atc__label{display:none}
@@ -1043,3 +1043,7 @@ main > .wrap:last-child{padding-block-end:48px}
   padding:12px 18px;background:var(--soft);font-size:13.5px;font-weight:700;
 }
 .cart-note__actions{display:flex;flex-direction:column;gap:9px;padding:16px 18px}
+
+/* An unfinished animation must never leave a dialog parked off screen. The
+   resting position is set outright; the keyframes only animate towards it. */
+.modal.is-open .modal__card{transform:translateY(0)}
