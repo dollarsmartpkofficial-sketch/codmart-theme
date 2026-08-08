@@ -27,19 +27,11 @@
             "text": "💵 Cash on Delivery available",
             "link": ""
           }
-        },
-        "message-3": {
-          "type": "message",
-          "settings": {
-            "text": "🔄 7-day easy returns",
-            "link": ""
-          }
         }
       },
       "block_order": [
         "message-1",
-        "message-2",
-        "message-3"
+        "message-2"
       ],
       "settings": {
         "background": "#5c0000",
