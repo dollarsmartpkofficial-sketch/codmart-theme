@@ -14,15 +14,25 @@
       "blocks": {
         "category": {
           "type": "category",
-          "settings": {}
+          "settings": {
+            "source": "auto"
+          }
         },
         "title": {
           "type": "title",
-          "settings": {}
+          "settings": {
+            "size": "md"
+          }
         },
         "rating": {
           "type": "rating",
-          "settings": {}
+          "settings": {
+            "show_stars": true,
+            "star_size": 15,
+            "show_count": true,
+            "show_stock": true,
+            "show_sku": false
+          }
         },
         "price": {
           "type": "price",
@@ -38,7 +48,9 @@
         },
         "variant_picker": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "unavailable_style": "strike"
+          }
         },
         "cod_form": {
           "type": "cod_form",
@@ -46,6 +58,7 @@
             "heading": "",
             "subheading": "",
             "trigger_label": "",
+            "show_trigger_sub": true,
             "trigger_sub": "Ghar par pay karein",
             "button_label": "",
             "note": "No advance payment — pay when your package arrives",
@@ -64,8 +77,7 @@
             "offer_2_flag": "MOST POPULAR",
             "offer_3_qty": 3,
             "offer_3_discount": 16,
-            "offer_3_flag": "BEST VALUE",
-            "show_trigger_sub": true
+            "offer_3_flag": "BEST VALUE"
           }
         },
         "quantity": {
@@ -136,7 +148,7 @@
         "eyebrow": "You may also like",
         "heading": "You may also like",
         "columns_desktop": 3,
-        "limit": 3
+        "limit": 6
       }
     }
   },
