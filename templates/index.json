@@ -272,7 +272,7 @@
             "text": "Trimmers, rollers, hair removers & more",
             "emoji": "💄",
             "button_label": "Shop now",
-            "link": "",
+            "link": "shopify://collections/health-and-beauty-products",
             "button_style": "white"
           }
         },
@@ -282,12 +282,12 @@
             "color_from": "#1a1a2e",
             "color_to": "#3d0e0e",
             "text_color": "#ffffff",
-            "eyebrow": "Just arrived",
-            "heading": "Kids Collection",
-            "text": "Toys, LED cups and lots more",
-            "emoji": "🌵",
+            "eyebrow": "For the little ones",
+            "heading": "Toys & Hobbies",
+            "text": "Toys, games and gifts kids actually want",
+            "emoji": "🧸",
             "button_label": "Shop now",
-            "link": "",
+            "link": "shopify://collections/toys-hobbies",
             "button_style": "ghost"
           }
         }
