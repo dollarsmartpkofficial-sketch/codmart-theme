@@ -17,9 +17,17 @@
     assign socials = socials | append: 'twitter,'
   endif
   assign socials = socials | split: ','
+
+  comment
+    The footer sits on a dark surface, so it wants the same logo the header
+    uses — the one drawn light. And its background falls back to the brand
+    colour rather than storing a second copy of it.
+  endcomment
+  assign footer_logo = settings.logo_alt | default: settings.logo
+  assign footer_bg = section.settings.background | default: settings.color_brand
 -%}
 
-<footer class="footer" style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}">
+<footer class="footer" style="background:{{ footer_bg }};color:{{ section.settings.text_color }}">
   <div class="wrap">
     <div class="footer__grid">
       {%- for block in section.blocks -%}
@@ -28,12 +36,12 @@
 
             {%- when 'brand' -%}
               <div class="footer__brand">
-                {%- if settings.logo_type == 'image' and settings.logo != blank -%}
+                {%- if settings.logo_type == 'image' and footer_logo != blank -%}
                   <img
-                    src="{{ settings.logo | image_url: width: 140 }}"
+                    src="{{ footer_logo | image_url: width: 140 }}"
                     alt="{{ shop.name | escape }}"
                     width="140"
-                    height="{{ 140 | divided_by: settings.logo.aspect_ratio | round }}"
+                    height="{{ 140 | divided_by: footer_logo.aspect_ratio | round }}"
                     loading="lazy"
                   >
                 {%- else -%}
@@ -167,7 +175,7 @@
   "name": "Footer",
   "class": "footer-section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "background", "label": "Background", "info": "Leave blank to use your brand colour." },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#B3B3B3" },
     { "type": "text", "id": "copyright", "label": "Copyright line", "info": "Leave blank to use your store name and the current year." },
     { "type": "link_list", "id": "policy_menu", "label": "Policy links", "info": "Privacy policy, terms of service, refund policy." }
