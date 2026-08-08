@@ -254,8 +254,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "soft",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "cat-onedollar": {
@@ -268,8 +268,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "page",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "promos": {
@@ -322,8 +322,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "soft",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "cat-kitchen": {
@@ -336,8 +336,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "page",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "cat-health": {
@@ -350,8 +350,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "soft",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "cat-gadgets": {
@@ -364,8 +364,8 @@
         "show_link": true,
         "link_label": "View all",
         "background": "page",
-        "columns": 5,
-        "limit": 5
+        "columns": 4,
+        "limit": 8
       }
     },
     "steps": {
