@@ -15,6 +15,20 @@
   window.theme = DATA;
 
   /* ---------- money ---------- */
+  /* Something on this store rewrites the AJAX cart response: price comes back
+     as the string "2400.00" instead of 240000, and image is dropped entirely.
+     Normalise rather than assume — a theme cannot control which apps a
+     merchant installs. */
+  function toCents(value) {
+    if (typeof value === 'number') return value;
+    if (typeof value === 'string') {
+      var n = parseFloat(value.replace(/[^\d.-]/g, ''));
+      return isNaN(n) ? 0 : Math.round(n * 100);
+    }
+    return 0;
+  }
+  window.theme.toCents = toCents;
+
   function formatMoney(cents) {
     var format = DATA.moneyFormat || '{{amount}}';
     var value = (cents / 100).toFixed(
@@ -144,6 +158,10 @@
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (res.status) throw new Error(res.description || res.message);
+        /* The image on the page is more reliable than the one in the response. */
+        var near = form.closest('.card, [data-product-info]') || document;
+        var shot = near.querySelector('.card__media img, [data-gallery-main] img');
+        res.__image = (res.image || res.featured_image) || (shot ? shot.currentSrc || shot.src : '');
         document.dispatchEvent(new CustomEvent('cart:added', { detail: res }));
         refreshCartCount();
         if (btn) btn.innerHTML = DATA.strings.addedToCart || 'Added';
@@ -168,8 +186,9 @@
     if (!note || !item) return;
 
     var img = $('[data-note-image]', note);
-    if (img && item.image) {
-      img.src = item.image.replace(/(\.[a-z]+)(\?|$)/i, '_128x$1$2');
+    var src = item.__image || item.image || '';
+    if (img && src) {
+      img.src = src.indexOf('?') > -1 ? src + '&width=128' : src + '?width=128';
       img.alt = item.product_title || '';
       img.hidden = false;
     } else if (img) {
@@ -187,7 +206,13 @@
     }
 
     var price = $('[data-note-price]', note);
-    if (price) price.textContent = formatMoney(item.final_line_price != null ? item.final_line_price : item.price);
+    if (price) {
+      var line = item.final_line_price != null ? item.final_line_price
+               : item.line_price != null ? item.line_price
+               : item.original_line_price != null ? item.original_line_price
+               : item.price;
+      price.textContent = formatMoney(toCents(line));
+    }
 
     /* Totals come from the cart, not the line just added. */
     fetch(DATA.routes.cart + '.js', { headers: { Accept: 'application/json' } })
@@ -199,7 +224,7 @@
           var word = cart.item_count === 1 ? 'item' : 'items';
           count.textContent = cart.item_count + ' ' + word + ' in cart';
         }
-        if (sub) sub.textContent = formatMoney(cart.total_price);
+        if (sub) sub.textContent = formatMoney(toCents(cart.total_price));
       })
       .catch(function () {});
 
