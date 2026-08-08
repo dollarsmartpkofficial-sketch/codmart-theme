@@ -157,7 +157,7 @@
     add('checkout[shipping_address][last_name]', last);
     add('checkout[shipping_address][address1]', value('address'));
     add('checkout[shipping_address][city]', value('city'));
-    add('checkout[shipping_address][country]', box.dataset.country || '');
+    add('checkout[shipping_address][country]', form.dataset.country || '');
     add('checkout[email]', value('email'));
 
     /* Shopify documents the address fields but not the phone. Send it under
@@ -181,7 +181,13 @@
     submit.addEventListener('click', function () {
       if (!validate()) return;
       submit.setAttribute('aria-disabled', 'true');
-      window.location.href = buildCheckoutUrl();
+      try {
+        window.location.href = buildCheckoutUrl();
+      } catch (e) {
+        /* A dead button is worse than a failed click — give it back. */
+        submit.removeAttribute('aria-disabled');
+        console.error('[cod-form]', e);
+      }
     });
   }
 
