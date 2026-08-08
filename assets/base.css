@@ -982,3 +982,30 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .buys .shopify-payment-button__button--unbranded:hover:not([disabled]){
   background:var(--brand-dark)!important;
 }
+
+/* ---------- collection banner text ---------- */
+/* The banner sits on the brand colour, so .rte's brand-coloured links land
+   maroon on maroon — invisible, and a contrast failure. Underlined white
+   reads on any banner style. */
+.collection-banner__desc a{
+  color:currentColor;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.collection-banner__desc a:hover{opacity:.8}
+
+/* Collection descriptions carry SEO copy that runs for paragraphs. Clamp it
+   so the banner stays a banner — the full text is still in the DOM for
+   search engines, and the merchant can unclamp it. */
+.collection-banner__desc{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:var(--desc-lines,3);
+  overflow:hidden;
+}
+.collection-banner__desc--full{display:block;-webkit-line-clamp:none;overflow:visible}
+.collection-banner__more{
+  display:inline-block;margin-block-start:10px;
+  font-size:13.5px;font-weight:700;color:currentColor;
+  text-decoration:underline;text-underline-offset:3px;
+}

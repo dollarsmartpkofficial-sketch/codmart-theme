@@ -187,6 +187,18 @@
   });
 
   /* ==========================================================================
+     Collection banner — unclamp the SEO description on demand.
+     ========================================================================== */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-desc-toggle]');
+    if (!btn) return;
+    var desc = $('[data-collection-desc]');
+    if (!desc) return;
+    desc.classList.toggle('collection-banner__desc--full');
+    btn.hidden = desc.classList.contains('collection-banner__desc--full');
+  });
+
+  /* ==========================================================================
      Hero — take turns between the emoji in the ring.
      ========================================================================== */
   (function () {

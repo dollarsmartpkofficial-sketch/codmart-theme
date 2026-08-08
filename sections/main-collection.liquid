@@ -42,7 +42,21 @@
         {%- endif -%}
         <h1>{{ collection.title }}</h1>
         {%- if collection.description != blank and section.settings.show_description -%}
-          <div class="collection-banner__desc rte">{{ collection.description }}</div>
+          {%- liquid
+            assign lines = section.settings.description_lines
+            assign desc_class = 'collection-banner__desc rte'
+            if lines == 0
+              assign desc_class = desc_class | append: ' collection-banner__desc--full'
+            endif
+          -%}
+          <div class="{{ desc_class }}" style="--desc-lines:{{ lines }}" data-collection-desc>
+            {{ collection.description }}
+          </div>
+          {%- if lines > 0 -%}
+            <button type="button" class="collection-banner__more" data-desc-toggle>
+              {{ section.settings.more_label }}
+            </button>
+          {%- endif -%}
         {%- endif -%}
       </div>
     </div>
@@ -168,6 +182,17 @@
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Collection" },
     { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    {
+      "type": "range",
+      "id": "description_lines",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "label": "Description lines before “read more”",
+      "default": 3,
+      "info": "Collection descriptions often carry long SEO copy. Set to 0 to always show it in full."
+    },
+    { "type": "text", "id": "more_label", "label": "Read more label", "default": "Read more" },
     {
       "type": "paragraph",
       "content": "To show an emoji on the banner, add a `custom.emoji` metafield to the collection in Shopify admin."
