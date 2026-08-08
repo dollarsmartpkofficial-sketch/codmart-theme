@@ -5,9 +5,17 @@
   if search_placeholder == blank
     assign search_placeholder = 'general.search.placeholder' | t
   endif
+
+  comment
+    Fall back to the brand colour rather than repeating it. Two copies of the
+    same colour drift apart the moment one of them is changed — which is how
+    the header stayed on the old maroon after the brand colour moved.
+  endcomment
+  assign header_bg = section.settings.background | default: settings.color_brand
+  assign nav_bg = section.settings.nav_background | default: settings.color_brand_dark
 -%}
 
-<header class="header" style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}">
+<header class="header" style="background:{{ header_bg }};color:{{ section.settings.text_color }}">
   <div class="wrap header__main">
 
     <button
@@ -107,7 +115,7 @@
   </div>
 
   {%- if section.settings.menu != blank -%}
-    <nav class="header__nav" style="background:{{ section.settings.nav_background }}" aria-label="{{ 'general.accessibility.menu' | t }}">
+    <nav class="header__nav" style="background:{{ nav_bg }}" aria-label="{{ 'general.accessibility.menu' | t }}">
       <div class="wrap">
         <ul>
           {%- for link in section.settings.menu.links -%}
@@ -192,9 +200,9 @@
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
 
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#741C1C" },
+    { "type": "color", "id": "background", "label": "Background", "info": "Leave blank to use your brand colour." },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
-    { "type": "color", "id": "nav_background", "label": "Menu bar background", "default": "#5A1414" },
+    { "type": "color", "id": "nav_background", "label": "Menu bar background", "info": "Leave blank to use your dark brand colour." },
 
     { "type": "header", "content": "Search" },
     { "type": "checkbox", "id": "show_search", "label": "Show search bar", "default": true },

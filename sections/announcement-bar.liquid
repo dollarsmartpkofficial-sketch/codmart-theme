@@ -16,7 +16,7 @@
 {%- if has_blocks or settings.announcement_text != blank -%}
   <div
     class="announcement"
-    style="background:{{ section.settings.background }};color:{{ section.settings.text_color }}"
+    style="background:{{ section.settings.background | default: settings.color_brand_dark }};color:{{ section.settings.text_color }}"
     {{ section.shopify_attributes }}
   >
     <div class="wrap announcement__inner">
@@ -59,7 +59,7 @@
       "type": "color",
       "id": "background",
       "label": "Background",
-      "default": "#5A1414"
+      "info": "Leave blank to use your dark brand colour."
     },
     {
       "type": "color",
