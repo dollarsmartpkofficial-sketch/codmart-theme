@@ -87,18 +87,18 @@
         "c1": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "label": "Health & Beauty",
+            "collection": "one-dollar-item-1",
+            "label": "One Dollar",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "💪",
+            "emoji": "🪙",
             "show_count": true
           }
         },
         "c2": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "kitchen-accessories",
             "label": "Kitchen",
             "link": "",
             "icon_type": "emoji",
@@ -109,7 +109,18 @@
         "c3": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "home-essentials",
+            "label": "Home Essentials",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "🏠",
+            "show_count": true
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "electronic-items",
             "label": "Electronics",
             "link": "",
             "icon_type": "emoji",
@@ -117,36 +128,91 @@
             "show_count": true
           }
         },
-        "c4": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "label": "Home",
-            "link": "",
-            "icon_type": "emoji",
-            "emoji": "🏠",
-            "show_count": true
-          }
-        },
         "c5": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "label": "Kids",
+            "collection": "health-and-beauty-products",
+            "label": "Health & Beauty",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "🧸",
+            "emoji": "💪",
             "show_count": true
           }
         },
         "c6": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "label": "Fans & Cooling",
+            "collection": "home-decor",
+            "label": "Home Decor",
             "link": "",
             "icon_type": "emoji",
-            "emoji": "🌀",
+            "emoji": "🪴",
+            "show_count": true
+          }
+        },
+        "c7": {
+          "type": "category",
+          "settings": {
+            "collection": "gadgets-nbsp",
+            "label": "Gadgets",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "⚡",
+            "show_count": true
+          }
+        },
+        "c8": {
+          "type": "category",
+          "settings": {
+            "collection": "storage-organization",
+            "label": "Storage",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "📦",
+            "show_count": true
+          }
+        },
+        "c9": {
+          "type": "category",
+          "settings": {
+            "collection": "toys-hobbies",
+            "label": "Toys & Hobbies",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "🧸",
+            "show_count": true
+          }
+        },
+        "c10": {
+          "type": "category",
+          "settings": {
+            "collection": "cosmetics-1",
+            "label": "Cosmetics",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "💄",
+            "show_count": true
+          }
+        },
+        "c11": {
+          "type": "category",
+          "settings": {
+            "collection": "trumbler-drinkware",
+            "label": "Tumblers",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "🥤",
+            "show_count": true
+          }
+        },
+        "c12": {
+          "type": "category",
+          "settings": {
+            "collection": "cleaning-essentials",
+            "label": "Cleaning",
+            "link": "",
+            "icon_type": "emoji",
+            "emoji": "🧼",
             "show_count": true
           }
         }
@@ -157,7 +223,13 @@
         "c3",
         "c4",
         "c5",
-        "c6"
+        "c6",
+        "c7",
+        "c8",
+        "c9",
+        "c10",
+        "c11",
+        "c12"
       ],
       "settings": {
         "eyebrow": "Browse by category",
