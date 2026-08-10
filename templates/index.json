@@ -87,7 +87,7 @@
         "c1": {
           "type": "category",
           "settings": {
-            "collection": "one-dollar-item-1",
+            "collection": "things-under-1-dollar",
             "label": "One Dollar",
             "link": "",
             "icon_type": "emoji",
@@ -261,7 +261,7 @@
     "cat-onedollar": {
       "type": "featured-products",
       "settings": {
-        "collection": "one-dollar-item-1",
+        "collection": "things-under-1-dollar",
         "eyebrow": "Starting at Rs.250",
         "heading": "💵 One Dollar",
         "text": "Everything at one price",
