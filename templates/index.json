@@ -175,7 +175,7 @@
         "c9": {
           "type": "category",
           "settings": {
-            "collection": "toys-hobbies",
+            "collection": "kids-collection",
             "label": "Toys & Hobbies",
             "link": "",
             "icon_type": "emoji",
@@ -301,7 +301,7 @@
             "text": "Toys, games and gifts kids actually want",
             "emoji": "🧸",
             "button_label": "Shop now",
-            "link": "shopify://collections/toys-hobbies",
+            "link": "shopify://collections/kids-collection",
             "button_style": "ghost"
           }
         }
