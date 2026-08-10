@@ -66,6 +66,26 @@
   var releaseFocus = null;
   var lastTrigger = null;
 
+  /* The entry transition slides the mobile sheet up from a full card-height
+     below the fold. Transitions only advance while the page paints, so a tab
+     that stops compositing — a backgrounded browser, a throttled in-app
+     webview — holds that opening frame forever, leaving the sheet off screen
+     with its Checkout button unreachable and nothing on screen to explain why.
+
+     Timers keep running when frames do not, so once the entry is due the
+     resting position is asserted outright. If the transition did play, this
+     changes nothing; if it never started, the dialog snaps where it belongs. */
+  var settleTimer = null;
+
+  function settleDialog(modal) {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function () {
+      if (!modal.classList.contains('is-open')) return;
+      var card = modal.querySelector('.modal__card');
+      if (card) card.classList.add('is-settled');
+    }, 300);
+  }
+
   function openModal(id) {
     var modal = document.getElementById(id);
     if (!modal) return;
@@ -75,13 +95,17 @@
     modal.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
     releaseFocus = trapFocus(modal);
+    settleDialog(modal);
   }
 
   function closeModal(modal) {
     modal = modal || $('.modal.is-open');
     if (!modal) return;
+    clearTimeout(settleTimer);
     modal.classList.remove('is-open');
     modal.setAttribute('inert', '');
+    var card = modal.querySelector('.modal__card');
+    if (card) card.classList.remove('is-settled');
     document.body.style.overflow = '';
     if (releaseFocus) { releaseFocus(); releaseFocus = null; }
     if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }

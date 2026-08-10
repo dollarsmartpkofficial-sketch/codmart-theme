@@ -534,6 +534,10 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 @starting-style{
   .modal.is-open .modal__card{opacity:0;transform:translateY(18px) scale(.97)}
 }
+/* Set by global.js once the entry is due. Dropping the transition is what
+   makes this authoritative: with it still in play the resting value would be
+   just another target for a clock that has stopped. */
+.modal__card.is-settled{transition:none;transform:none;opacity:1}
 .modal__close{
   position:absolute;top:11px;inset-inline-end:11px;z-index:5;
   width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);
