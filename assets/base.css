@@ -474,6 +474,12 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .cod-form__fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px;margin-block-end:14px}
 .cod-form__fields .field--full{grid-column:1/-1}
 
+.cod-item{display:flex;gap:12px;align-items:center;padding-block-end:14px;margin-block-end:14px;border-block-end:1px solid var(--line)}
+.cod-item__img{width:64px;height:64px;flex-shrink:0;object-fit:cover;border-radius:var(--radius-sm);background:var(--soft)}
+.cod-item__info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cod-item__info b{font-size:14px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cod-item__variant{font-size:12.5px;color:var(--muted)}
+.cod-item .price{font-size:15px;font-weight:800}
 .cod-qty{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-block-end:16px}
 .cod-qty label{font-size:14px;font-weight:700}
 .offers{display:flex;flex-direction:column;gap:8px;margin-block-end:16px}

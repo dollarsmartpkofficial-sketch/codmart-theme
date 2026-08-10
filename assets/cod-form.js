@@ -223,9 +223,26 @@
   /* Keep the form in sync when the shopper switches variant. */
   document.addEventListener('variant:changed', function (e) {
     if (!e.detail || !e.detail.variant) return;
-    variantId = e.detail.variant.id;
-    unitPrice = e.detail.variant.price;
+    var variant = e.detail.variant;
+    variantId = variant.id;
+    unitPrice = variant.price;
     form.dataset.variantId = variantId;
+
+    /* The thumbnail row names a variant and a price; leaving those on the
+       previous selection would have the shopper confirming an order for
+       something other than what the summary below is charging them for. */
+    var itemPrice = form.querySelector('[data-cod-item-price]');
+    if (itemPrice) itemPrice.textContent = money(unitPrice);
+
+    var itemVariant = form.querySelector('[data-cod-item-variant]');
+    if (itemVariant && variant.title) itemVariant.textContent = variant.title;
+
+    var itemImage = form.querySelector('.cod-item__img');
+    if (itemImage && variant.featured_image && variant.featured_image.src) {
+      itemImage.removeAttribute('srcset');
+      itemImage.src = variant.featured_image.src;
+    }
+
     renderSummary();
   });
 

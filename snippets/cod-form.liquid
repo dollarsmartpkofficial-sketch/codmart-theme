@@ -46,6 +46,34 @@
 
   <div class="cod-form__body">
 
+    {%- comment -%}
+      The dialog covers the product page it was opened from, so the shopper
+      loses sight of what they picked at the moment they are asked to commit
+      to it. The thumbnail is the confirmation that they are buying the thing
+      they were just looking at.
+    {%- endcomment -%}
+    {%- assign cod_image = product.featured_media.preview_image -%}
+    <div class="cod-item">
+      {%- if cod_image -%}
+        <img
+          class="cod-item__img"
+          src="{{ cod_image | image_url: width: 128 }}"
+          srcset="{{ cod_image | image_url: width: 128 }} 1x, {{ cod_image | image_url: width: 256 }} 2x"
+          alt="{{ cod_image.alt | default: product.title | escape }}"
+          width="64"
+          height="64"
+          loading="lazy"
+        >
+      {%- endif -%}
+      <div class="cod-item__info">
+        <b>{{ product.title }}</b>
+        {%- unless variant.title == 'Default Title' -%}
+          <span class="cod-item__variant" data-cod-item-variant>{{ variant.title }}</span>
+        {%- endunless -%}
+        <span class="price" data-cod-item-price>{{ variant.price | money }}</span>
+      </div>
+    </div>
+
     {%- comment -%} Quantity offers — the biggest lever on average order value. {%- endcomment -%}
     {%- if block.settings.show_offers -%}
       <div class="offers" role="radiogroup" aria-label="{{ block.settings.offers_label }}" data-cod-offers>
