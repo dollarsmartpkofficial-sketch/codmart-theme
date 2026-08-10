@@ -183,7 +183,11 @@ h3{font-size:var(--fs-h3)}
 .submenu a:hover{background:var(--brand-soft);color:var(--brand)}
 
 /* drawer (mobile menu) */
-.modal--drawer{align-items:stretch;justify-content:flex-start;padding:0}
+/* Doubled up for the same reason as the card below: `.modal` sets padding
+   further down the file, and at equal specificity the later rule wins — that
+   padding was insetting the drawer 20px top and bottom, shortening a panel
+   that is meant to run the full height. */
+.modal.modal--drawer{align-items:stretch;justify-content:flex-start;padding:0}
 /* Qualified by the parent on purpose: `.modal__card` sets max-height further
    down the file at the same specificity, so an unqualified `.drawer__card`
    loses to it and the panel stops short of the viewport with its last link
