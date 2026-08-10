@@ -943,11 +943,14 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   .reviews__summary{grid-template-columns:minmax(0,1fr)}
   .reviews__list{grid-template-columns:minmax(0,1fr)}
   .review-form{padding:18px}
-  /* popup becomes a bottom sheet */
-  .modal{padding:0;align-items:flex-end}
-  .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0}
-  @starting-style{.modal.is-open .modal__card{opacity:1;transform:translateY(100%)}}
-  .modal__grabber{display:block}
+  /* A popup becomes a bottom sheet. The menu drawer must be left out: it is a
+     full-height panel that slides in from the side, and capping it at 90vh
+     pushed its footer — the phone number and WhatsApp link — past the bottom
+     of the card, where it could be seen but not tapped. */
+  .modal:not(.modal--drawer){padding:0;align-items:flex-end}
+  .modal:not(.modal--drawer) .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0}
+  @starting-style{.modal.is-open:not(.modal--drawer) .modal__card{opacity:1;transform:translateY(100%)}}
+  .modal:not(.modal--drawer) .modal__grabber{display:block}
   .sticky-atc img{display:none}
   .sticky-atc__label{display:none}
   .sticky-atc__info b{font-size:12.5px}
