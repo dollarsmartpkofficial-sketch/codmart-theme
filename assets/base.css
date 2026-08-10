@@ -635,7 +635,15 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 
 .accordion{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .accordion__item + .accordion__item{border-block-start:1px solid var(--line)}
-.accordion__summary{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-size:14px;font-weight:800}
+.accordion__summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;font-size:14px;font-weight:800;cursor:pointer;list-style:none}
+/* Firefox and Safari draw their own triangle next to the chevron. */
+.accordion__summary::-webkit-details-marker{display:none}
+.accordion__summary::marker{content:''}
+/* The chevron has to say which way the row will move, or it is decoration.
+   Turning it on [open] means an unanimated browser still shows the right
+   direction — the resting value is the one the state selector sets. */
+.accordion__summary svg{flex-shrink:0;transition:transform .2s ease}
+.accordion__item[open] > .accordion__summary svg{transform:rotate(180deg)}
 .accordion__content{padding:0 16px 16px;font-size:13.8px;color:var(--muted);line-height:1.65}
 .accordion__content ul{margin-block-start:8px;margin-inline-start:18px;list-style:disc;display:flex;flex-direction:column;gap:5px}
 
