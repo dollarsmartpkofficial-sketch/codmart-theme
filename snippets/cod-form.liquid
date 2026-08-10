@@ -158,10 +158,21 @@
         <span class="error" hidden>{{ 'cod.form.errors.address' | t }}</span>
       </div>
 
+      {%- comment -%}
+        Checkout's contact box takes an email or a mobile, but a cart permalink
+        can only pre-fill it with a real email — passing a phone number there
+        fails the whole link with "Cart Error: Email is invalid". So an email
+        collected here is the difference between a checkout the shopper only
+        has to confirm and one that still asks them to type.
+      {%- endcomment -%}
       {%- if settings.cod_field_email -%}
         <div class="field field--full">
-          <label for="CodEmail-{{ product.id }}">{{ 'cod.form.email' | t }} <span class="hint">{{ 'cod.form.optional' | t }}</span></label>
-          <input id="CodEmail-{{ product.id }}" type="email" name="email" autocomplete="email" placeholder="you@example.com">
+          <label for="CodEmail-{{ product.id }}">
+            {{- 'cod.form.email' | t -}}
+            {%- unless settings.cod_email_required %} <span class="hint">{{ 'cod.form.optional' | t }}</span>{% endunless -%}
+          </label>
+          <input id="CodEmail-{{ product.id }}" type="email" name="email" autocomplete="email"
+                 placeholder="you@example.com"{% if settings.cod_email_required %} required{% endif %}>
           <span class="error" hidden>{{ 'cod.form.errors.email' | t }}</span>
         </div>
       {%- endif -%}

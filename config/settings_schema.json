@@ -489,7 +489,14 @@
         "type": "checkbox",
         "id": "cod_field_email",
         "label": "t:settings.cod.field_email",
-        "default": false
+        "info": "t:settings.cod.field_email_info",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cod_email_required",
+        "label": "t:settings.cod.field_email_required",
+        "default": true
       },
       {
         "type": "checkbox",
