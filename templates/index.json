@@ -164,7 +164,7 @@
         "c8": {
           "type": "category",
           "settings": {
-            "collection": "storage-organization",
+            "collection": "storage-organizer",
             "label": "Storage Organizer",
             "link": "",
             "icon_type": "emoji",
