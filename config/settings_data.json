@@ -39,6 +39,7 @@
     "announcement_text": "Free delivery above Rs.3,500 · Cash on Delivery · 7-day returns",
     "return_days": "7",
     "payment_methods": "COD\nEasyPaisa\nJazzCash\nBank Transfer\nCredit Card",
+    "cod_order_endpoint": "https://dollarsmart.vercel.app/api/shop/orders/cod",
     "cod_form_enabled": true,
     "cod_form_mode": "popup",
     "cod_form_auto_open": false,

@@ -35,6 +35,7 @@
   data-variant-id="{{ variant.id }}"
   data-variant-price="{{ variant.price }}"
   data-country="{{ shop.address.country_code | default: localization.country.iso_code }}"
+  data-order-endpoint="{{ settings.cod_order_endpoint | escape }}"
 >
   <div class="cod-form__head">
     {% render 'icon', name: 'truck', size: 22 %}
@@ -251,6 +252,13 @@
       {{ block.settings.button_label | default: settings.cod_form_button }}
     </button>
 
+    {%- comment -%}
+      Shown in place of the form once the order exists. It carries the order
+      number because that is the only proof the shopper gets — they never
+      reach a Shopify confirmation page.
+    {%- endcomment -%}
+    <p class="cod-error" data-cod-error role="alert" hidden></p>
+
     <p class="cod-note">{{ cod_note }}</p>
 
     {%- if block.settings.show_badges -%}
@@ -261,5 +269,15 @@
         <span>{% render 'icon', name: 'truck', size: 14 %} {{ settings.delivery_time }}</span>
       </div>
     {%- endif -%}
+  </div>
+
+  <div class="cod-done" data-cod-done hidden>
+    <span class="cod-done__tick" aria-hidden="true">{% render 'icon', name: 'check', size: 30 %}</span>
+    <b>{{ settings.cod_form_success }}</b>
+    <span class="cod-done__num" data-cod-done-number></span>
+    <p>{{ 'cod.form.done_note' | t }}</p>
+    <button type="button" class="btn btn--outline btn--block" data-modal-close>
+      {{ 'cart.continue_shopping' | t }}
+    </button>
   </div>
 </div>

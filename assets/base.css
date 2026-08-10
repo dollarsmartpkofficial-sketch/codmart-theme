@@ -482,6 +482,13 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .cod-form__fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px;margin-block-end:14px}
 .cod-form__fields .field--full{grid-column:1/-1}
 
+.cod-done{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:34px 22px}
+.cod-done__tick{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#E1F5EE;color:#0F6E56}
+.cod-done b{font-size:17px}
+.cod-done__num{font-size:20px;font-weight:800;color:var(--brand);letter-spacing:.3px}
+.cod-done p{font-size:13.5px;color:var(--muted);line-height:1.6;margin:0}
+.cod-done .btn{margin-block-start:8px}
+.cod-error{font-size:13px;color:#A32D2D;text-align:center;margin-block-start:10px}
 .cod-item{display:flex;gap:12px;align-items:center;padding-block-end:14px;margin-block-end:14px;border-block-end:1px solid var(--line)}
 .cod-item__img{width:64px;height:64px;flex-shrink:0;object-fit:cover;border-radius:var(--radius-sm);background:var(--soft)}
 .cod-item__info{display:flex;flex-direction:column;gap:2px;min-width:0}

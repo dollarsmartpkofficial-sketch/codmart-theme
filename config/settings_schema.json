@@ -483,6 +483,20 @@
       },
       {
         "type": "header",
+        "content": "t:settings.cod.endpoint_header"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:settings.cod.endpoint_help"
+      },
+      {
+        "type": "text",
+        "id": "cod_order_endpoint",
+        "label": "t:settings.cod.endpoint_url",
+        "info": "t:settings.cod.endpoint_url_info"
+      },
+      {
+        "type": "header",
         "content": "t:settings.cod.fields_header"
       },
       {

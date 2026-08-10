@@ -168,6 +168,9 @@
       "summary": "Order summary",
       "delivery": "Delivery charges",
       "total": "Total (COD)",
+      "done_note": "We will call you shortly to confirm. Keep the cash ready for the courier.",
+      "done_number": "Order number",
+      "failed": "Could not place the order. Taking you to checkout instead…",
       "errors": {
         "name": "Please enter your name",
         "phone": "Please enter a valid mobile number",

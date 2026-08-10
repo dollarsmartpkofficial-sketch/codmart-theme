@@ -217,18 +217,99 @@
     return '/cart/' + variantId + ':' + state.qty + '?' + params.join('&');
   }
 
+  function goToCheckout() {
+    try {
+      window.location.href = buildCheckoutUrl();
+    } catch (e) {
+      submit.removeAttribute('aria-disabled');
+      console.error('[cod-form]', e);
+    }
+  }
+
+  /* Placing the order outright needs a service that holds an admin token, so
+     it lives outside the theme; Shopify grants order creation to apps only.
+     Whenever that service is absent, unreachable or unhappy, the shopper is
+     handed to checkout exactly as before. A shopper who has typed their
+     address must never be left holding nothing. */
+  function placeOrder() {
+    var endpoint = (form.dataset.orderEndpoint || '').trim();
+    if (!endpoint) { goToCheckout(); return; }
+
+    var payload = {
+      name: value('name'),
+      phone: value('phone'),
+      address: value('address'),
+      city: value('city'),
+      email: value('email'),
+      items: [{
+        product_id: form.dataset.productId,
+        variant_id: variantId,
+        quantity: state.qty
+      }]
+    };
+
+    /* Long enough for a cold serverless start, short enough that nobody is
+       left staring at a spinner deciding the shop is broken. */
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (controller) controller.abort(); }, 12000);
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (res) {
+        return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+      })
+      .then(function (r) {
+        clearTimeout(timer);
+        if (!r.ok || !r.body || !r.body.order_number) throw new Error((r.body && r.body.error) || 'rejected');
+        showDone(r.body);
+      })
+      .catch(function (err) {
+        clearTimeout(timer);
+        console.error('[cod-form] order service:', err && err.message);
+        var note = form.querySelector('[data-cod-error]');
+        if (note) { note.textContent = strings().codFailed || ''; note.hidden = !note.textContent; }
+        goToCheckout();
+      });
+  }
+
+  function showDone(order) {
+    var done = document.querySelector('[data-cod-done]');
+    if (!done) { goToCheckout(); return; }
+
+    var num = done.querySelector('[data-cod-done-number]');
+    if (num) num.textContent = order.order_number;
+
+    form.hidden = true;
+    done.hidden = false;
+
+    /* The ad platforms read this from the browser, and this shopper never
+       reaches the checkout page that would normally report it. Without these
+       the campaigns keep spending against conversions they cannot see. */
+    var total = typeof order.total === 'number' ? order.total : 0;
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Purchase', { value: total, currency: 'PKR' });
+    }
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'purchase', {
+        transaction_id: order.order_number,
+        value: total,
+        currency: 'PKR'
+      });
+    }
+
+    done.scrollIntoView({ block: 'nearest' });
+  }
+
   var submit = form.querySelector('[data-cod-submit]');
   if (submit) {
     submit.addEventListener('click', function () {
       if (!validate()) return;
       submit.setAttribute('aria-disabled', 'true');
-      try {
-        window.location.href = buildCheckoutUrl();
-      } catch (e) {
-        /* A dead button is worse than a failed click — give it back. */
-        submit.removeAttribute('aria-disabled');
-        console.error('[cod-form]', e);
-      }
+      placeOrder();
     });
   }
 
