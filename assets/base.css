@@ -186,11 +186,12 @@ h3{font-size:var(--fs-h3)}
 .modal--drawer{align-items:stretch;justify-content:flex-start;padding:0}
 .drawer__card{
   max-width:320px;width:86%;height:100%;max-height:none;border-radius:0;
-  display:flex;flex-direction:column;animation:drawer-in .22s ease-out forwards;
+  display:flex;flex-direction:column;
 }
-@keyframes drawer-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
-[dir='rtl'] .drawer__card{animation-name:drawer-in-rtl}
-@keyframes drawer-in-rtl{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@starting-style{
+  .modal.is-open .drawer__card{transform:translateX(-100%)}
+  [dir='rtl'] .modal.is-open .drawer__card{transform:translateX(100%)}
+}
 .drawer__head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-block-end:1px solid var(--line)}
 .drawer__title{font-weight:800;font-size:15px}
 .drawer__close{width:34px;height:34px;display:grid;place-items:center;border-radius:var(--radius-sm)}
@@ -523,10 +524,16 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   position:relative;background:var(--bg);border-radius:var(--radius);
   width:100%;max-width:470px;max-height:92vh;overflow-y:auto;
   box-shadow:0 24px 70px rgba(0,0,0,.35);
-  animation:modal-pop .22s ease-out forwards;
+  transition:opacity .22s ease-out,transform .22s ease-out;
 }
-@keyframes modal-pop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes modal-slide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+/* Only the entry state is declared; the resting state is the plain default.
+   A browser that never runs the transition therefore shows the dialog exactly
+   where it belongs. An animation does the opposite — it holds its `from` frame
+   whenever it fails to advance, which parks the bottom sheet, and the Checkout
+   button inside it, below the fold with nothing to tell the shopper why. */
+@starting-style{
+  .modal.is-open .modal__card{opacity:0;transform:translateY(18px) scale(.97)}
+}
 .modal__close{
   position:absolute;top:11px;inset-inline-end:11px;z-index:5;
   width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);
@@ -918,7 +925,8 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
   .review-form{padding:18px}
   /* popup becomes a bottom sheet */
   .modal{padding:0;align-items:flex-end}
-  .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0;animation:modal-slide .25s ease-out forwards}
+  .modal__card{max-width:none;max-height:90vh;border-radius:var(--radius) var(--radius) 0 0}
+  @starting-style{.modal.is-open .modal__card{opacity:1;transform:translateY(100%)}}
   .modal__grabber{display:block}
   .sticky-atc img{display:none}
   .sticky-atc__label{display:none}
@@ -1044,9 +1052,8 @@ main > .wrap:last-child{padding-block-end:48px}
 }
 .cart-note__actions{display:flex;flex-direction:column;gap:9px;padding:16px 18px}
 
-/* An unfinished animation must never leave a dialog parked off screen. The
-   resting position is set outright; the keyframes only animate towards it. */
-.modal.is-open .modal__card{transform:translateY(0)}
+/* The resting position is now the default value rather than a keyframe, so
+   there is nothing left here to correct. See the @starting-style rules above. */
 
 /* ---------- audit fixes ---------- */
 
