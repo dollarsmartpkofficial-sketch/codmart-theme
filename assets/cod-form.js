@@ -283,7 +283,14 @@
     var num = done.querySelector('[data-cod-done-number]');
     if (num) num.textContent = order.order_number;
 
-    form.hidden = true;
+    /* The panel is a child of the form, so hiding the form would hide the
+       confirmation with it — the shopper would be left on the page they
+       started from with no sign the order had gone through, and would
+       reasonably send it again. Only the parts being replaced are hidden. */
+    ['.cod-form__head', '.cod-form__body'].forEach(function (sel) {
+      var part = form.querySelector(sel);
+      if (part) part.hidden = true;
+    });
     done.hidden = false;
 
     /* The ad platforms read this from the browser, and this shopper never
