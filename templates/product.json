@@ -63,7 +63,7 @@
             "button_label": "",
             "note": "No advance payment — pay when your package arrives",
             "show_badges": true,
-            "show_offers": true,
+            "show_offers": false,
             "offers_label": "Choose a bundle",
             "offers_save_label": "Best value",
             "unit_singular": "Piece",
