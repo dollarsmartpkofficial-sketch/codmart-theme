@@ -184,7 +184,11 @@ h3{font-size:var(--fs-h3)}
 
 /* drawer (mobile menu) */
 .modal--drawer{align-items:stretch;justify-content:flex-start;padding:0}
-.drawer__card{
+/* Qualified by the parent on purpose: `.modal__card` sets max-height further
+   down the file at the same specificity, so an unqualified `.drawer__card`
+   loses to it and the panel stops short of the viewport with its last link
+   sitting on the cut. */
+.modal--drawer .drawer__card{
   max-width:320px;width:86%;height:100%;max-height:none;border-radius:0;
   display:flex;flex-direction:column;
 }
