@@ -148,11 +148,17 @@
       if (bad) { ok = false; firstBad = firstBad || input; }
     });
 
+    /* Stricter than the usual "something@something.something": a stray dot or
+       a leading dash passes that and is then rejected further down the line,
+       where the shopper has no way to fix it. */
     var email = form.querySelector('input[name="email"]');
     if (email && email.value.trim() !== '') {
-      var badEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+      var value = email.value.trim().toLowerCase();
+      var badEmail = !/^[a-z0-9._%+-]+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}$/.test(value)
+        || value.indexOf('..') !== -1;
       setError(email, badEmail);
       if (badEmail) { ok = false; firstBad = firstBad || email; }
+      if (!badEmail) email.value = value;
     }
 
     if (firstBad) firstBad.focus();
@@ -187,7 +193,13 @@
     add('checkout[shipping_address][address1]', value('address'));
     add('checkout[shipping_address][city]', value('city'));
     add('checkout[shipping_address][country]', form.dataset.country || '');
-    add('checkout[email]', value('email'));
+
+    /* The email is deliberately not sent. Shopify validates it more strictly
+       than any client-side check can predict, and a value it dislikes fails
+       the whole permalink with a "Cart Error: Email is invalid" page that has
+       no way back to the shop. This path is the fallback for when placing the
+       order outright fails; it has to survive anything the shopper typed.
+       Leaving it out costs one field on checkout and cannot dead-end. */
 
     /* Shopify documents the address fields but not the phone. Send it under
        both spellings — whichever the checkout recognises wins, and the other
