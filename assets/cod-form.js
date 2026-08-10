@@ -143,18 +143,16 @@
   }
 
   function buildCheckoutUrl() {
-    var name = value('name');
-    var parts = name.split(/\s+/);
-    var first = parts.shift() || '';
-    var last = parts.join(' ') || first;
-
     var params = [];
     function add(key, val) {
       if (val) params.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
     }
 
-    add('checkout[shipping_address][first_name]', first);
-    add('checkout[shipping_address][last_name]', last);
+    /* Checkout requires a last name and treats the first as optional, so the
+       whole name goes in one field. Splitting on a space is wrong here: a
+       shopper who enters "Ahmed" has nothing left for the second field, and
+       repeating the first name prints "Ahmed Ahmed" on the shipping label. */
+    add('checkout[shipping_address][last_name]', value('name'));
     add('checkout[shipping_address][address1]', value('address'));
     add('checkout[shipping_address][city]', value('city'));
     add('checkout[shipping_address][country]', form.dataset.country || '');
