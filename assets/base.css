@@ -474,6 +474,8 @@ body:not(.animations-on) .hero__emoji:not(.is-active){display:none}
 .cod-form__fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px;margin-block-end:14px}
 .cod-form__fields .field--full{grid-column:1/-1}
 
+.cod-qty{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-block-end:16px}
+.cod-qty label{font-size:14px;font-weight:700}
 .offers{display:flex;flex-direction:column;gap:8px;margin-block-end:16px}
 .offer{
   position:relative;display:flex;align-items:center;gap:11px;width:100%;text-align:start;

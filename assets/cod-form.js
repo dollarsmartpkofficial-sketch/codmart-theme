@@ -88,6 +88,37 @@
     if (el.total) el.total.textContent = money(t.total);
   }
 
+  /* ---------- quantity stepper ----------
+     Stands in for the offer tiers when those are switched off. It drives the
+     same state.qty the tiers do, so the summary and the checkout link need to
+     know nothing about which control the shopper was given. */
+  var qtyInput = form.querySelector('[data-cod-qty-input]');
+
+  if (qtyInput) {
+    var readQty = function () {
+      return Math.max(1, parseInt(qtyInput.value, 10) || 1);
+    };
+
+    var applyQty = function (next) {
+      qtyInput.value = next;
+      state.qty = next;
+      state.discount = 0;
+      renderSummary();
+    };
+
+    form.addEventListener('click', function (e) {
+      if (e.target.closest('[data-cod-qty-minus]')) applyQty(Math.max(1, readQty() - 1));
+      if (e.target.closest('[data-cod-qty-plus]')) applyQty(readQty() + 1);
+    });
+
+    qtyInput.addEventListener('input', function () { applyQty(readQty()); });
+
+    /* Guard the blank field a shopper leaves behind while retyping. */
+    qtyInput.addEventListener('blur', function () { applyQty(readQty()); });
+
+    state.qty = readQty();
+  }
+
   /* ---------- validation ---------- */
   function fieldOf(input) { return input.closest('.field'); }
 

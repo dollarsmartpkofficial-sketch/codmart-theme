@@ -94,6 +94,20 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+    {%- else -%}
+      {%- comment -%}
+        Without the offer tiers the shopper still needs a way to order more
+        than one, so the plain stepper stands in. Same control as the product
+        page, so the number behaves the way they have already seen it behave.
+      {%- endcomment -%}
+      <div class="cod-qty">
+        <label for="CodQty-{{ product.id }}">{{ 'products.product.quantity' | t }}</label>
+        <div class="qty" data-cod-qty>
+          <button type="button" data-cod-qty-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">−</button>
+          <input id="CodQty-{{ product.id }}" type="number" value="1" min="1" inputmode="numeric" data-cod-qty-input>
+          <button type="button" data-cod-qty-plus aria-label="{{ 'products.product.increase_quantity' | t }}">+</button>
+        </div>
+      </div>
     {%- endif -%}
 
     <div class="cod-form__fields">
